@@ -16,12 +16,6 @@ var place = {
       description: "Selected seat."
 
     },
-    // places: {
-    // 	row_1: {"place-1_1" : false, "place-1_2" : true, "place-1_3" : false, "place-1_4" : true, "place-1_5" : true, "place-1_6" : true, "place-1_7" : false, "place-1_8" : true, "place-1_9" : false}],
-    // 	row_2: {"place-2_1" : false, "place-2_2" : true, "place-2_3" : false, "place-2_4" : false, "place-2_5" : true, "place-2_6" : false, "place-2_7" : true, "place-2_8" : true, "place-2_9" : true}],
-    // 	row_3: {"place-3_1" : true, "place-3_2" : true, "place-3_3" : true, "place-3_4" : true, "place-3_5" : true, "place-3_6" : true, "place-3_7" : false, "place-3_8" : true, "place-3_9" : false}],
-    // 	row_4: {"place-4_1" : true, "place-4_2" : true, "place-4_3" : true, "place-4_4" : false, "place-4_5" : true, "place-4_6" : false, "place-4_7" : false, "place-4_8" : true, "place-4_9" : false}]
-    // },
     places: [
     	[false, true, false, true, true, true, false, true, false],
     	[false, true, false, false, true, false, true, true, true],

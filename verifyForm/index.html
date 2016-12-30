@@ -11,16 +11,16 @@
 <body>
 
 	<div class="container">
-	  <form action="" class="order">
+	  <form action="" name="order" class="order">
 		<div class="message">
 		  <span id="messageHelp"></span>
 		  <label for="message">Enter the banner message:</label>
-		  <input type="text"  name="message" id="message" onblur="Validate.prototype.validateNonEmpty(this, document.getElementById('messageHelp'));" required size="32" minlength="1" maxlength="32" placeholder="I fit form 1 to 32 characters">
+		  <input type="text"  name="message" id="message" onblur="Validate.prototype.validateNonEmpty(this, document.getElementById('messageHelp'));" required size="32" minlength="1" maxlength="32" placeholder="It fits form 1 to 32 characters">
 		</div>
 		<div class="zipcode">
 		  <span id="zipcodeHelp"></span>
 		  <label for="zipcode">Enter ZIP code of the location:</label>
-		  <input type="text" name="zipcode" id="zipcode" onblur="Validate.prototype.validateZipcode(this, document.getElementById('zipcodeHelp'));" required pattern="/[0-9][0-9][0-9][0-9][0-9]/"  placeholder="XXXXX">
+		  <input type="text" name="zipcode" id="zipcode" required  placeholder="xxxxx" maxlength="5">
 		</div>
 		<div class="date">
 		  <span id="dateHelp"></span>
@@ -30,17 +30,17 @@
 		<div class="name">
 		  <span id="nameHelp"></span>
 		  <label for="name">Enter your name:</label>
-		  <input type="text" name="name" id="name" onblur="Validate.prototype.validateNonEmpty(this, document.getElementById('nameHelp'));" required> 	  	
+		  <input type="text" name="name" id="name" onblur="Validate.prototype.validateNonEmpty(this, document.getElementById('nameHelp'));" required minlength="1" maxlength="32" placeholder="Asshole"> 	  	
 		</div>
 		<div class="phoneNumber">
 		  <span id="phoneNumberHelp"></span>
 		  <label for="phoneNumber">Enter your phone number:</label>
-		  <input type="tel" name="phoneNumber" id="phoneNumber" onblur="Validate.prototype.validateNonEmpty(this, document.getElementById('phoneNumberHelp'));" required>
+		  <input type="tel" name="phoneNumber" id="phoneNumber" onblur="Validate.prototype.validateNonEmpty(this, document.getElementById('phoneNumberHelp'));" required pattern="/^(+7|8)-?\d{3}-?\d{3}-?\d{2}-?\d{2}$/" placeholder="+x-xxx-xxx-xx-xx">
 		</div>
 		<div class="email">
 		  <span id="emailHelp"></span>
 		  <label for="email">Enter your email address:</label>
-		  <input type="email" id="email" onblur="Validate.prototype.validateNonEmpty(this, document.getElementById('emailHelp'));" required>
+		  <input type="email" id="email" onblur="Validate.prototype.validateNonEmpty(this, document.getElementById('emailHelp'));" required pattern="/^\w+@\w+\.\w{2,4}$/" placeholder="asshole@indark.com" title="asshole@indark.com">
 		</div>
 		<button class="btn" type="submit">Send</button>	  	
 	  </form>

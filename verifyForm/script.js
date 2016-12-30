@@ -1,12 +1,13 @@
-var Validate, zipcode;
-
+var Validate, zipcode, phoneNumber, email;
+// Конструктор полей и их подсказок.
 Validate = function (inputField, helpField) {
   this.inputField = inputField;
   this.helpField = helpField;	
 }
-
+//Функция проверки на наличие текста.
 Validate.prototype.validateNonEmpty = function (inputField, helpField) {
-  // проверка наличия текста
+  inputField = document.getElementById(inputField);
+  helpField =  document.getElementById(helpField);
   if (inputField.value.length == 0) {
   	if (helpField != null)
   	  helpField.innerHTML = "Please enter a value.";
@@ -18,22 +19,56 @@ Validate.prototype.validateNonEmpty = function (inputField, helpField) {
   	  return true;
   }
 }
+//Функция проверки правильности ввода выбранного поля по шаблону.
+Validate.prototype.validateRegex = function(regex ,inputField, helpField, message) {
+  if (inputField.value != regex)//Проверка на правильность шаблона
+    helpField.innerHTML = message;//Присвоение сообщение "полю-помощнику".
+    return false;// Не true:(.
+  if(helpField != null)
+    helpField.innerHTML = "";//Всё окей.
+  return true;
 
-Validate.prototype.validateZipcode = function(inputField, helpField) {
-	// Verify an amount of a value in the string.
-	if(isNaN(inputField.value)) {
-	  if(helpField != null)
-	    helpField.innerHTML = "Enter only numbers. Mkey?"
-	  return false;
-	}
-	else if (inputField.value.length == 0) {
+}
+zipcode = new Validate('zipcode', 'zipcodeHelp');
+//Поле проверки индекса.
+zipcode.validateZipcode = function() {
+  var selZipFiled = document.getElementById(zipcode.inputField),
+      selZipHelp = document.getElementById(zipcode.helpField);    
+	// Пользователь вводит только цифры?
+  if(isNaN(selZipFiled.value)) {
+    if(selZipHelp != null)
+      selZipHelp.innerHTML = "Enter only numbers. Mkey?"//Кажется, нет.
+    return false;
+  }
+  // Больше или меньше цифр, чем того требуется?
+  else if(selZipFiled.value.length != 5) {
+    selZipHelp.innerHTML = "You have to enter 5 numbers. Mkey?"// Повнимательней, пожалуйста.     
+  }
+  // В поле есть что-нибудь?
+	else if (selZipFiled.value.length == 0) {
   	  if (helpField != null)
-  	    helpField.innerHTML = "Please enter a value.";
+  	    selZipHelp.innerHTML = "Please enter a value. Mkey?";// А должно быть.
   	  return false;
     }
 	else {
-	  if(helpField != null)
-	  	helpField.innerHTML = "";
+	  if(selZipHelp != null)
+	  	selZipHelp.innerHTML = "";// Пользователь - молодец.
 	  return true;
 	}
+}
+
+window.onload = function(evt) {
+  document.getElementById(zipcode.inputField).onblur = function(evt) {
+    zipcode.validateZipcode();
+  }
+  //
+}
+//Проверка номера телефона
+phoneNumber = new Validate('phoneNumber', 'phoneNumberHelp'); 
+validatePhoneNumber = function() {
+  //Если атрибут pattern не соответствует заначению ввода...
+}
+
+Validate.prototype.validateEmail = function(inputField, helpField) {
+
 }
