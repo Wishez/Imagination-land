@@ -6,8 +6,6 @@ Validate = function (inputField, helpField) {
 }
 //Функция проверки на наличие текста.
 Validate.prototype.validateNonEmpty = function (inputField, helpField) {
-  inputField = document.getElementById(inputField);
-  helpField =  document.getElementById(helpField);
   if (inputField.value.length == 0) {
   	if (helpField != null)
   	  helpField.innerHTML = "Please enter a value.";
@@ -38,37 +36,36 @@ zipcode.validateZipcode = function() {
   if(isNaN(selZipFiled.value)) {
     if(selZipHelp != null)
       selZipHelp.innerHTML = "Enter only numbers. Mkey?"//Кажется, нет.
+      selZipFiled
+        .value
+        .replace(/[a-zA-Z!\.@#$%^&\*\+-\(\)]*/, '');
     return false;
   }
   // Больше или меньше цифр, чем того требуется?
   else if(selZipFiled.value.length != 5) {
     selZipHelp.innerHTML = "You have to enter 5 numbers. Mkey?"// Повнимательней, пожалуйста.     
   }
-  // В поле есть что-нибудь?
-	else if (selZipFiled.value.length == 0) {
-  	  if (helpField != null)
-  	    selZipHelp.innerHTML = "Please enter a value. Mkey?";// А должно быть.
-  	  return false;
-    }
-	else {
-	  if(selZipHelp != null)
-	  	selZipHelp.innerHTML = "";// Пользователь - молодец.
-	  return true;
-	}
+  else {
+   if(selZipHelp != null)
+	 selZipHelp.innerHTML = "";// Пользователь - молодец.
+	 return true;
+  }
 }
 
 window.onload = function(evt) {
   document.getElementById(zipcode.inputField).onblur = function(evt) {
     zipcode.validateZipcode();
   }
-  //
 }
+console.log(Validate.prototype.validateNonEmpty);
 //Проверка номера телефона
 phoneNumber = new Validate('phoneNumber', 'phoneNumberHelp'); 
-validatePhoneNumber = function() {
+phoneNumber.validatePhoneNumber = function() {
   //Если атрибут pattern не соответствует заначению ввода...
+  var selPhoneNumberField = document.getElementById('phoneNumber'),
+  	  selPhoneNumberHelp = document.getElementById('phoneNumberHelp'); 
+  // phoneNumber.validateRegex(regex, input);
 }
-
 Validate.prototype.validateEmail = function(inputField, helpField) {
 
 }
