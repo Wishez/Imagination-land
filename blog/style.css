@@ -1,0 +1,7 @@
+.searchBlock {
+  margin-top: 10px;
+}
+.searchBlock > input {
+  height: 30px; 
+}
+

@@ -10,10 +10,16 @@
 <body>
   <div class="container text-center">
   	<h1>My Blog</h1>
-    <button type='btn'>Add new article</button>
+    <button type='button' class="btn btn-danger">Add new article</button>
+    <div class="searchBlock">
+      <input id="search" type='search' value="" placeholder="Search">
+      <button id="searchBtn" type='submit' class="btn btn-primary">Search</button>
+      <div id="zero"></div>	
+    </div>
   	<div id="articles">
   		
   	</div>
+  	<button id="showNotes" type='button' class="btn btn-lg btn-info">Showe all articles</button>
   </div>
 </body>
 </html>
