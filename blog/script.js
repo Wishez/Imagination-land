@@ -57,15 +57,15 @@
     blog.creatArticle( randomNote );	  
   }
 },
-aboutSomething = new Note('01/14/2017', 'Here is text for the article.'),
-anotherOne = new Note('01/15/2017', '<i>The article</i> on next day.'),
+aboutSomething = new Note("01/14/2017", "Here is text for the article."),
+anotherOne = new Note("01/15/2017", "<i>The article</i> on next day."),
 raport = new Note("17/01/2017", "Here is, how you can see, all basic functions for the blog. Of course, i'm sure, i can add more functions which my imagination could create and to styleshout this page, but i will go to learn new things next to improve a quality of a code and my imagination.")
 
 // Конструктор записи
 function Note( date, body ) {
-  var newDate = new Date(date);
+  var newDate = new Date( date );
 
-  blog.notes.unshift({"date" : date, "body" : body});
+  blog.notes.unshift( {"date" : date, "body" : body} );
 }
 
 window.onload = function(e) {

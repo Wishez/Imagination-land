@@ -17,5 +17,9 @@ body {
   text-align: left;
 }
 
+.article:nth-child(odd) {
+  background-color: #eee;
+}
+
 
 
