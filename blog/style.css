@@ -1,7 +1,21 @@
+body {
+  font-size: 16px;
+  background-color: #fff;
+  
+}
 .searchBlock {
   margin-top: 10px;
 }
 .searchBlock > input {
   height: 30px; 
 }
+#articles {
+  width: 50%;
+  margin: 0 auto;
+}
+.article > p {
+  text-align: left;
+}
+
+
 
