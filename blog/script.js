@@ -1,13 +1,33 @@
+window.onload = function(e) {
+   blog.generateBlog();
+
+   var btnSearch = document.querySelector('#searchBtn'),
+       btnShowNotes = document.querySelector('#showNotes'),
+       btnShowRandomArticle = document.querySelector('#showRandomArticle');
+
+
+   btnSearch.addEventListener('click', blog.searchNote, false);
+   btnShowNotes.addEventListener('click', function() {
+   	 blog.cleanArticles();
+   	 blog.generateBlog();
+   }, false);
+   btnShowRandomArticle.addEventListener('click', blog.showRandomArticle, false);
+}
+
  var blog = {
   // Массив всех записей в блоге 
   notes : [], 
   
   creatArticle : function( note ) {
-    var article = document.createElement( 'div' ); 
-      article.classList.add( 'article' );
-      article.innerHTML = "<h3 class='article__date'>" +  
-                          note.date + "</h3><p class='article__paragraph'>" + 
-                          note.body + "</p>";
+    var article = document.createElement( 'div' ),
+        date = note.date,
+        zeroBlock = document.querySelector('#zero');
+
+    zeroBlock.innerHTML = "";
+
+    article.classList.add( 'article' );
+    article.innerHTML = "<h3 class='article__date'>" + note.toStringDate() + "</h3><p class='article__paragraph'>" + 
+                        note.body + "<br>By <span class='text-danger'>" + note.signature + "</span></p>";
     // Если заменить выборку на переменную с выборкой - выдаёт ошибку.
     document.querySelector( '#articles' ).appendChild( article ); 
   },
@@ -27,7 +47,7 @@
   // Поиск статей.
   searchNote : function() {
   	var search = document.querySelector( '#search' ).value.toLowerCase(),
-  	    noMatches = true,
+  	    failMatches = [],
         zeroBlock = document.querySelector('#zero');
 
     zeroBlock.innerHTML = "";
@@ -42,10 +62,10 @@
 	  	return blog.creatArticle( note ); 
 	  } 	          
  	  
- 	  return noMatches = false;
+ 	  return failMatches.push(false);
     });
 
-    if ( noMatches != true ) {
+    if ( failMatches.length == blog.notes.length ) {
       return zeroBlock.innerHTML = 'Zero matches.';
     }
   },
@@ -53,34 +73,28 @@
   showRandomArticle : function() {
     var i = Math.floor( Math.random() * blog.notes.length ),
         randomNote = blog.notes[i];
+
     blog.cleanArticles();
     blog.creatArticle( randomNote );	  
   }
 },
 aboutSomething = new Note("01/14/2017", "Here is text for the article."),
 anotherOne = new Note("01/15/2017", "<i>The article</i> on next day."),
-raport = new Note("17/01/2017", "Here is, how you can see, all basic functions for the blog. Of course, i'm sure, i can add more functions which my imagination could create and to styleshout this page, but i will go to learn new things next to improve a quality of a code and my imagination.")
+raport = new Note("01/17/2017", "Here is, how you can see, all basic functions for the blog. Of course, i'm sure, i can add more functions which my imagination could create and to styleshout this page, but i will go to learn new things next to improve a quality of a code and my imagination.")
 
 // Конструктор записи
 function Note( date, body ) {
-  var newDate = new Date( date );
+  this.date = new Date( date );
+  this.body = body;
 
-  blog.notes.unshift( {"date" : date, "body" : body} );
+  blog.notes.unshift(this);
 }
 
-window.onload = function(e) {
-   blog.generateBlog();
+Note.prototype.signature = 'Shining Finger';
+Note.prototype.toStringDate = function() {
+  var dayMonthYear = this.date.getDate() + "/" +  this.date.getMonth() + 1 + "/" + this.date.getFullYear();
+  return dayMonthYear;
 
-   var btnSearch = document.querySelector('#searchBtn'),
-       btnShowNotes = document.querySelector('#showNotes'),
-       btnShowRandomArticle = document.querySelector('#showRandomArticle');
-
-
-   btnSearch.addEventListener('click', blog.searchNote, false);
-   btnShowNotes.addEventListener('click', function() {
-   	 blog.cleanArticles();
-   	 blog.generateBlog();
-   }, false);
-   btnShowRandomArticle.addEventListener('click', blog.showRandomArticle, false);
 }
+console.log(blog.notes);
 
