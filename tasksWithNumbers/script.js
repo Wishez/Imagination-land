@@ -11,6 +11,9 @@ window.onload = function() {
   document.querySelector('#getDecimal').onclick = function(e) {
     getDecimal();
   }
+  document.querySelector('#fibBinet').onclick = function(e) {
+    fibBinet();
+  }
 };// end onload
 
 // Functions
@@ -60,6 +63,15 @@ function getDecimal(num) {
   }
 
   result = num.toFixed(10);
+
+  insertResult(result, nameFunc);
+}
+
+function fibBinet(n) {
+  n = prompt('Whih is "n"?', '');
+  var phi = (1 + Math.sqrt(5)) / 2; //
+  var result = Math.round(Math.pow(phi, n) / Math.sqrt(5)); 
+  var nameFunc = 'fibBinet(' + n + ');';
 
   insertResult(result, nameFunc);
 }
