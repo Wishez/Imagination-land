@@ -1,0 +1,23 @@
+body {
+	background-color: #0ff;
+}
+.single-item {
+  width: 80%;
+  margin: 20px auto 0;
+  background-color: hsl(5, 10%, 80%);
+  padding: 20px 0 30px;
+  border: 10px solid #fff ; 
+}
+
+.slick-arrow {
+	margin: 0 -20px;
+}
+.slick-prev:before, .slick-next:before {
+	color: #f0f;
+}
+
+.items__row h3{
+	display: inline-block;
+}
+
+
