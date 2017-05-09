@@ -36,7 +36,11 @@ body {
 	width: 600px;
 }
 
+<<<<<<< HEAD
 #mario, #man, #player {
+=======
+#mario, #man {
+>>>>>>> ebd3e1a36852d37bde4d085e1715bea0f45e5008
 	height: 400px;
 	width: 400px;
 }

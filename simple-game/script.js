@@ -362,6 +362,7 @@ function runGame(plans, Display) {
   startLevel(0, 3);
 }
 
+<<<<<<< HEAD
 
 var results = [
   {name: "Удовлетворён", count: 1043, color: "lightblue"},
@@ -374,6 +375,22 @@ addEventListener('load', function() {
 var c_context = document.getElementById('c').getContext('2d'),
     grid_c = document.getElementById('grid').getContext('2d');
 
+=======
+addEventListener('load', function() {
+  var c = document.getElementById('c'),
+    c_context = c.getContext('2d'),
+    grid = document.getElementById('grid'),
+    grid_c = grid.getContext('2d');
+
+    
+    // grid_c.beginPath();
+    // for (var y = 10; y < 100; y += 10) {
+    //   grid_c.moveTo(10, y);
+    //   grid_c.lineTo(90, y);
+    // }
+    // grid_c.stroke();
+    // c element
+>>>>>>> ebd3e1a36852d37bde4d085e1715bea0f45e5008
     c_context.fillStyle = '#ff0';
     c_context.fillRect(10, 10, 100, 50);
 
@@ -394,6 +411,7 @@ var c_context = document.getElementById('c').getContext('2d'),
     }
     grid_c.stroke();  
 
+<<<<<<< HEAD
    var r = document.getElementById('rect').getContext('2d');
 
    r.beginPath();
@@ -537,3 +555,6 @@ function flipHorizantally(context, around) {
   context.scale(-1, 1);
   context.translate(-around, 0);
 }
+=======
+});
+>>>>>>> ebd3e1a36852d37bde4d085e1715bea0f45e5008
