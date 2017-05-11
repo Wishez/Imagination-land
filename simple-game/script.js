@@ -362,7 +362,6 @@ function runGame(plans, Display) {
   startLevel(0, 3);
 }
 
-<<<<<<< HEAD
 
 var results = [
   {name: "Удовлетворён", count: 1043, color: "lightblue"},
@@ -371,16 +370,12 @@ var results = [
   {name: "Без комментариев", count: 175, color: "silver"}
 ];
 
-addEventListener('load', function() {
-var c_context = document.getElementById('c').getContext('2d'),
-    grid_c = document.getElementById('grid').getContext('2d');
 
-=======
 addEventListener('load', function() {
-  var c = document.getElementById('c'),
-    c_context = c.getContext('2d'),
-    grid = document.getElementById('grid'),
-    grid_c = grid.getContext('2d');
+  
+  var c_context = getElContext('c'),
+      grid = document.getElementById('grid'),
+      grid_c = grid.getContext('2d');
 
     
     // grid_c.beginPath();
@@ -390,7 +385,7 @@ addEventListener('load', function() {
     // }
     // grid_c.stroke();
     // c element
->>>>>>> ebd3e1a36852d37bde4d085e1715bea0f45e5008
+
     c_context.fillStyle = '#ff0';
     c_context.fillRect(10, 10, 100, 50);
 
@@ -411,8 +406,7 @@ addEventListener('load', function() {
     }
     grid_c.stroke();  
 
-<<<<<<< HEAD
-   var r = document.getElementById('rect').getContext('2d');
+   var r = getElContext('rect');
 
    r.beginPath();
 
@@ -460,7 +454,7 @@ addEventListener('load', function() {
    r.stroke();
    r.closePath();
 
-   var d = document.getElementById('d').getContext('2d'),
+   var d = getElContext('d'),
        total = results.reduce(function(sum, choice) {
          return sum + choice.count;
        }, 0),
@@ -483,78 +477,98 @@ addEventListener('load', function() {
     // d.fillText('Hello World!', 110, 30);
     d.strokeText('Hello World!', 110, 30);
 
+  var img = document.createElement('img'),
+      mario = getElContext('mario');
 
-});
-
-var img = document.createElement('img');
-
-img.src = 'mario.png';
+  img.src = 'mario.png';
 
 
-img.addEventListener('load', function() {
-var mario = document.getElementById('mario').getContext('2d');
+  img.addEventListener('load', function() {
 
-  for (var y = 10; y <= 400; y += 30){
-    for (var x = 10; x <= 400; x += 50)
-      mario.drawImage(img, x, y , 30, 20);
+    for (var y = 10; y <= 400; y += 30){
+      for (var x = 10; x <= 400; x += 50)
+        mario.drawImage(img, x, y , 30, 20);
+    }
+  });
+
+  var man = getElContext('man'),
+      manImg = document.createElement('img'),
+      spriteW = 24, spriteH = 100;
+
+  manImg.src = 'a_man.png';
+
+  manImg.addEventListener('load', function() {
+    var cycle = 0;
+
+    setInterval(function() {
+      man.clearRect(0, 0, spriteW, spriteH);
+      man.drawImage(manImg, cycle * spriteW, 0, spriteW, spriteH,
+       0, 0, spriteW, spriteH);
+
+      cycle = (cycle + 1) % 9;
+    }, 120);
+    man.scale(3, .5);
+    man.beginPath();
+    man.arc(50, 150, 40, 0, 7);
+    man.lineWidth = 3;
+    man.strokeStyle = '#c0f';
+    man.fillStyle = '#ff0';
+    man.stroke();
+    man.fill();
+    man.closePath();
+  });
+
+  var playerImg = document.createElement('img'),
+      player = getElContext('player'),
+      spriteW = 37, spriteH = 100;
+
+  playerImg.src = 'a_man.png';
+
+  playerImg.addEventListener('load', function() {
+    var cycle = 0;
+
+
+    flipHorizantally(player, (100 + spriteW / 2));
+    setInterval(function() {
+      player.clearRect(0, 0, spriteW, spriteH);
+      player.drawImage(playerImg, cycle * spriteW, 0, spriteW, spriteH, 0, 0, spriteW, spriteH);
+
+      cycle = (cycle + 1) % 9;
+      
+    }, 120);
+
+
+
+  });
+
+  function flipHorizantally(context, around) {
+    context.translate(around, 0);
+    context.scale(-1, 1);
+    context.translate(-around, 0);
   }
-});
-
-var manImg = document.createElement('img');
-manImg.src = 'a_man.png';
-var spriteW = 24, spriteH = 100;
-
-manImg.addEventListener('load', function() {
-  var man = document.getElementById('man').getContext('2d'),
-      cycle = 0;
-
-  setInterval(function() {
-    man.clearRect(0, 0, spriteW, spriteH);
-    man.drawImage(manImg, cycle * spriteW, 0, spriteW, spriteH,
-     0, 0, spriteW, spriteH);
-
-    cycle = (cycle + 1) % 9;
-  }, 120);
-  man.scale(3, .5);
-  man.beginPath();
-  man.arc(50, 150, 40, 0, 7);
-  man.lineWidth = 3;
-  man.strokeStyle = '#c0f';
-  man.fillStyle = '#ff0';
-  man.stroke();
-  man.fill();
-  man.closePath();
-});
-
-var playerImg = document.createElement('img'),
-    spriteW = 37, spriteH = 100;
-
-playerImg.src = 'a_man.png';
-
-playerImg.addEventListener('load', function() {
-  var player = document.getElementById('player').getContext('2d'),
-      cycle = 0;
 
 
-  flipHorizantally(player, (100 + spriteW / 2));
-  setInterval(function() {
-    player.clearRect(0, 0, spriteW, spriteH);
-    player.drawImage(playerImg, cycle * spriteW, 0, spriteW, spriteH, 0, 0, spriteW, spriteH);
+  var tree = getElContext('tree');
+  tree.fillStyle = '#f0f';
+  function branch(length, angle, scale) {
+    tree.fillRect(0, 0, 1, length);
 
-    cycle = (cycle + 1) % 9;
-    
-  }, 120);
+    if (length < 8) return;
 
-
+    tree.save();
+    tree.translate(0, length);
+    tree.rotate(-angle);
+    branch(length * scale, angle, scale);
+    tree.rotate(2 * angle);
+    branch(length * scale, angle, scale);
+    tree.restore();
+  }
+  tree.translate(150, 0);
+  branch(37, 0.5, 0.8);
 
 });
 
+function getElContext(el) {
+     return document.getElementById(el).getContext('2d');;
+};  
 
-function flipHorizantally(context, around) {
-  context.translate(around, 0);
-  context.scale(-1, 1);
-  context.translate(-around, 0);
-}
-=======
-});
->>>>>>> ebd3e1a36852d37bde4d085e1715bea0f45e5008
