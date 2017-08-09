@@ -6,21 +6,37 @@ const START = 'START';
 const END = 'END';
 const FIRST_RIGHT_CORNER = 'FIRST_RIGHT_CORNER';
 const LAST_LEFT_CORNER = 'LAST_LEFT_CORNER';
-const width = 5;
-const height = 5;
+const width = 20;
+const height = 20;
 // Selects
-let grid = getEl('#grid');
-let nextGeneration = getEl('#next');
+
+let grid = customGreed('#grid', width, height, '20');
+const nextGeneration = getEl('#next');
+const reset = getEl('#reset');
 
 let steps = 0;
-  
+let result = getEl('#result');
+
 makeField(grid, width, height);
   
   
 nextGeneration.addEventListener('click', () => {
   generateGeneration(grid, width, height);
+  result.innerText = steps;
 });
-  
+
+reset.addEventListener('click', () => {
+  cleanGrid(grid);
+  makeField(grid, width, height);
+  steps = 0;
+  result.innerText = '';
+});
+
+
+function cleanGrid(grid) {
+  while (grid.childNodes.length !== 0)
+    grid.removeChild(grid.lastChild);
+}
 function makeField(grid, width, height) {
   let id = 1, x, y;
 
@@ -36,9 +52,7 @@ function makeField(grid, width, height) {
       entity.onclick = (e) => {
         divineJob(grid, width, e.target);
       }
-        if (x + 1 % width - 1 === 0) {
-         grid.appendChild(createEl('br'));
-      }
+    
       grid.appendChild(entity);
       id += 1;
     }
@@ -93,11 +107,6 @@ function liveOrDie(grid, entity, width, heigth) {
   } else {
     entity.disabled = true;
   }
-  if (entity.disabled) {
-    console.log(entity.value, 'entity has had ', neighborsLength, 'neighbors was died.')
-  } else {
-    console.log(entity.value, 'entity has had ', neighborsLength, 'neighbors to continue to live.')
-  }
     
 };
 
@@ -106,14 +115,14 @@ function checkNeighbors(grid, element, width, heigth) {
   let people = grid.childNodes;
   let entityId = element.value;
   // ids of neigthborses
-  let right = (entityId + 1), 
-      left = (entityId - 1),
-      top = (entityId - width),
-      bottom = (entityId + width),
-      topRight = (entityId - width + 1),
-      topLeft = (entityId - width - 1),
-      bottomRight = (entityId + width - 1),
-      bottomLeft = (entityId + width + 1);
+  let right = +entityId + 1, 
+      left = entityId - 1,
+      top = entityId - width,
+      bottom = +entityId + width,
+      topRight = entityId - width + 1,
+      topLeft = entityId - width - 1,
+      bottomRight = +entityId + width + 1,
+      bottomLeft = +entityId + width - 1;
 
   const position = geolocate(entityId, width, heigth);
   switch (position) {
@@ -162,22 +171,20 @@ function checkNeighbors(grid, element, width, heigth) {
 
   const neighborsIds = [
     top,
-    bottom,
     left, 
     right, 
     topRight,
     topLeft,
     bottomLeft,
+    bottom,
     bottomRight
   ];
-  
-  console.log(`Position of ${entityId} is ${position}`);
 
   return neighborsIds
     .map(id => {
       // If id equil -1, than an entity doesn't exist.
-      let entity = people[id];
-        
+      let entity = people[id - 1];
+
       return id > 0 && entity && entity.type === 'checkbox' ? 
             entity.checked :
             false;
@@ -198,21 +205,21 @@ function geolocate(entityId, width, height) {
   
   // У 3 и 4 пункта априорная вероятность больше, чем у остальных.
   const square = width * height;
-
-  if (entityId % width === 1) {
+  // Для начала проверяется первый элемент.
+  if (+entityId === 1) {
+    return START;
+  } else if (entityId % width === 1) {
     // Левый конец строки.
     return LEFT_END;
   } else if (entityId % width === 0) {
     // Правый конец строки.
     return RIGHT_END;
-  } else if (entityId === 0) {
-    return START;
-  } else if (entityId === width) {
+  } else if (+entityId === width) {
     // Правый угол в последней строке.
     return FIRST_RIGHT_CORNER;
-  } else if (entityId === square) {
+  } else if (+entityId === square) {
     return END;
-  } else if (entityId === (square - width) ){ 
+  } else if (+entityId === (square - width) ){ 
     // Левый угол в последней строке.
     return LAST_LEFT_CORNER;
   } else {
@@ -227,3 +234,17 @@ function createEl(tag) {
 function getEl(name) {
   return document.querySelector(name); 
 }
+
+function customGreed(grid, width, height, sizeCell) {
+
+  let el = getEl(grid);
+  let styles = el.style;
+  let i;
+
+  for (let i = 0; i < height; i++) 
+    styles.gridTemplateRows += ` ${sizeCell}px`
+  for (let i = 0; i < width; i++) 
+    styles.gridTemplateColumns += ` ${sizeCell}px`
+
+  return el;
+}  
