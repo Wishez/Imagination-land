@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+	<div class="container">
+		<!-- START styles -->
+		<ul class="styles" id='styles'>	
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Релизм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="./img/r_1.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button 
+						data-style='r'
+						class="singleStyleImageContainer__button">Подробнее
+					</button>
+				</div>
+			</li>
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Сюрреализм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="./img/sl_1.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='sl' 
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Абстракция</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="./img/a_1.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='a'
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+		</ul>
+		<!-- END styles -->
+		<!-- START Single style -->
+
+		<!-- END Single style  -->
+
+		<!-- START style card -->
+		<div id='styleCard' class="styleCard styleCard_zeroHeight">
+			<button id='closeStyleCardButton'
+				type='button' 
+				class='styleCard__closeButton'>x</button>
+
+			<h3 id='styleName' class="styleCard__name"></h3>
+			<!-- START styleCardPresentation -->
+			<div class="styleCardPresentation">
+				<div class="styleCardPresentationMainImage">
+					<img id='mainImage' data-src="" class="imageContainer styleCardPresentationImageContainer" alt='Пример работы' />
+					<button 
+					    type='button'
+						id='before' 
+						class="styleCardPresentation__button styleCardPresentation__button_before">
+							До
+					</button>
+					<button 
+						type='button'
+						id='after' 
+						class="styleCardPresentation__button styleCardPresentation__button_after"
+					>
+							После
+					</button>
+					<span id='imageNumber' class='styleCardPresentation__number'></span>
+				</div>
+				<!-- END styleCardPresentation -->
+
+				<!-- START Work's examples -->
+				<div id='workExamples' class="workExamples">
+					<!-- <img data-src="./img/2.jpg" class="imageContainer workExamples__image" alt='Пример работы'
+						data-num='1' />
+					<img data-src="./img/1.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='2'/>
+					<img data-src="./img/3.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='3'/>
+					<img data-src="./img/4.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='4'/>
+					<img data-src="./img/5.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='5'/>
+					<img data-src="./img/6.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='6' /> -->
+				</div>
+				<!-- END Work's examples -->
+			</div>
+			<!-- END Style's card presentation -->
+			<div class="styleCardData">	
+				<h5 class="styleCardData__title">Популярные размеры:</h5>
+				<!-- START Data with style list -->
+				<ul class="styleCardDataSizesList">
+					<li class="styleCardDataSizesList__size">30x50&nbsp;&mdash; 3500&#8381;</li>
+					<li class="styleCardDataSizesList__size">40x60&nbsp;см&nbsp;&mdash; 3990&#8381;</li>
+					<li class="styleCardDataSizesList__size">60x90&nbsp;см&nbsp;&mdash; 4990&#8381;</li>
+					<li class="styleCardDataSizesList__size">80x80&nbsp;см&nbsp;&mdash; 5990&#8381;</li>
+					<li class="styleCardDataSizesList__size">100x100&nbsp;см&nbsp;&mdash; 8500&#8381;</li>
+				</ul>
+				<!-- END Data with style list -->
+				<button 
+					type="button" 
+					class='styleCardData__button' 
+					id='orderPicture'>Заказать</button>
+				<ul class="styleCardDataConditions">
+					<li class="styleCardDataConditions__condition">Готовность эскиза: 4&nbsp;&ndash;&nbsp;36 часов</li>
+					<li class="styleCardDataConditions__condition">Предоплата: 1000&#8381;</li>
+					<li class="styleCardDataConditions__condition">+1 человек: 1000&#8381;</li>
+					<li class="styleCardDataConditions__condition">Любой размер под заказ</li>
+				</ul>
+				<h5 class="styleCardData__title">Особенности стиля: </h5>
+
+				<ul class="styleCardDataStyleBrief" id='stlyleDescription'>
+					<li class="styleCardDataStyleBrief__description"></li>
+				</ul>
+			</div>
+		</div>
+		<!-- END style card -->
+		
+		<!-- START order picture form  -->
+		<p style='margin-top: 5%;'>NextContent</p>
+		<!-- END order picture form  -->
+	</div>
+	
+	<script src="./js/main.js"></script>
+</body>
+
+</html>

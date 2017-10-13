@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
+$darkGray: #212121
+$first: #FDD349
+$second: #78302F
+$third: #365E63
+$white: #f1f1f1
+
+$baseFontSize: 16
+
+%darkCianBg
+	background-color: $third
+%burgundyBg
+	background-color: $second
+%yellowBg
+	background-color: $first
+%clearfix 
+	&::after, &::before 
+		visibility: hidden;
+		display: block;
+		font-size: 0;
+		content: " ";
+		clear: both;
+		height: 0;
+
+%pointIt
+	cursor: pointer
+// Positions
+%relative
+	position: relative	
+%absolute
+	position: absolute
+// Display
+%block
+	display: block
+%inlineBlock
+	display: inline-block
+// Simple Grid
+%fullWidth
+	width: 100%
+%halfWidth
+	width: 49.7%
+// %halfWidth-sm
+// 	width: 49.7%
+// %four-sm
+	// @media screen and (max-width: $xs)
+	// width: 30%
+%three
+	width: 25%
+%five
+	width: 20%
+// Borders
+%defaultBorderRadius
+	border-radius: 2px
+// Margins
+%defaultMarginTop
+	margin-top: 1em	
+%zeroMarginTop
+	margin-top: 0	
+%increasedMarginTop
+	margin-top: 1.5em	
+%redusedMarginTop
+	margin-top: 0.5em	
+%centerBlock
+	margin-left: auto
+	margin-right: auto
+	@extend %block
+// Opacity
+%lowestOpacity
+	opacity: 0
+%halfOpacity
+	opacity: 0.5
+%fullOpacity
+	opacity: 1
+// Flex-box classes
+%flex
+	display: flex
+
+%defaultFlexFlow
+	flex-flow: row wrap
+%nowrap
+	flex-wrap: nowrap
+%wrap
+	flex-wrap: wrap
+
+%rowDirection
+	flex-direction: row
+%columnDirection
+	flex-direction: column
+
+%spaceBetween
+	justify-content: space-between
+%justifyStart
+	justify-content: flex-start
+%justifyAround
+	justify-content: space-around
+%alignCenter
+	align-items: center
+%alignStart
+	align-items: flex-start
+%defaultFlex
+	@extend %flex
+	@extend %defaultFlexFlow
+	@extend %justifyStart
+	@extend %alignCenter
+// Font classes
+%fs-16
+	font-size: 	(16em / $baseFontSize)
+%fs-18
+	font-size: 	(18em / $baseFontSize)
+%fs-21
+	font-size: 	(21em / $baseFontSize)
+%bold 
+	font-weight: bold
+// Transitions
+%smoothButton
+	transition: color 0.6s, background 0.5s, transform 0.5s
+	&:active
+		transform: translateY(3px)
+%paleButton
+	@extend %halfOpacity
+	transition: color 0.6s, background 0.5s, opacity 0.7s, transform 0.5s
+	&:hover
+		@extend %fullOpacity
+// List styles
+%unstyled
+	list-style: none
+// Блоки и элементы по-умолчанию 
+.imageContainer
+	@extend %defaultBorderRadius
+	@extend %relative
+	@extend %lowestOpacity
+	&_fadeIn
+  		transition: opacity 1.5s
+	  	@extend %fullOpacity
+
+
+body
+	& * 
+		margin: 0	
+		border: 0
+		outline: 0
+		padding: 0
+		&, &::after, &::before
+			box-sizing: border-box
+	background-color: $white
+	padding: 5% 0;
+	font-size: 	#{$baseFontSize}px
+	line-height: 135%
+	font-family: 'PT Sans', sans-serif;
+
+// Группированные элементы с определённым цветом шрифта
+.styleCard, .singleStyleImageContainer__button
+	color: $white
+.styleCardData__button, .styleCardPresentation__number
+	color: $darkGray
+// START Styles section
+.styles
+	@extend %unstyled
+	@extend %flex
+	@extend %justifyAround
+	@extend %alignStart
+	@extend %defaultFlexFlow
+	@extend %fullOpacity
+	&, & *
+		transition: height 1.5s, opacity 1s, display 2s
+	&_hidden, &_hidden *
+		height: 0
+		max-width: none
+		@extend %lowestOpacity
+
+// START Single style
+
+.singleStyle
+	@extend %three
+
+.singleStyleImageContainer
+	@extend %defaultMarginTop
+	@extend %relative
+	
+.singleStyleImageContainer__image
+	@extend %fullWidth
+	min-height: 164px 
+
+.singleStyleImageContainer__button
+	left: calc(50% - 55px)
+	max-width: 110px
+	@extend %halfWidth;
+	@extend %burgundyBg
+
+
+.styleCardPresentationMainImage
+	@extend %relative
+	// min-height: 260px 
+// START Card
+.styleCard
+	@extend %flex
+	@extend %rowDirection
+	@extend %wrap
+	@extend %alignStart
+	@extend %justifyStart
+	@extend %defaultBorderRadius
+	@extend %lowestOpacity
+	@extend %darkCianBg
+	@extend %defaultMarginTop
+	@extend %centerBlock
+	@extend %relative
+	max-width: 900px
+	padding: 3% 1.5em 5%
+	margin-top: 0
+	width: 0;
+	transition: width 1.5s, opacity 1s, height 2s, margin 1s, padding 1s
+	& button
+		display: none
+	&_shown
+		@extend %fullOpacity
+		width: 100%
+		margin-top: 5%
+		height: auto;
+		& button
+			display: block;
+	&_zeroHeight
+		&, & * 
+			height: 0
+
+.styleCard__closeButton
+	@extend %absolute
+	top: -20px;
+	right: -20px
+	padding: 3px 10px;
+	border: 2px solid $darkGray
+	border-radius: 50%
+	@extend %burgundyBg;
+	@extend %paleButton
+	transform: rotate(25deg)
+	&:hover
+		transform: none
+
+.styleCard__name, .singleStyle__name
+	@extend %fullWidth
+	@extend %fs-21
+	@extend %bold
+// START Card presentation
+.styleCardPresentation
+	@extend %halfWidth
+	padding-right: 1.5em
+	@extend %pointIt
+	@extend %defaultMarginTop
+
+.styleCardPresentationImageContainer
+		@extend %fullWidth
+
+.styleCardPresentation__button, 
+.styleCardPresentation__number,
+.singleStyleImageContainer__button
+	@extend %absolute
+	@extend %defaultBorderRadius
+	padding: 5px 0
+	@extend %paleButton
+.styleCardPresentation__number, .styleCardPresentation__button_before
+		left: 20px
+.styleCardPresentation__button
+	@extend %burgundyBg
+	top: 20px
+	max-width: 70px
+	@extend %three;
+	&_after
+		right: 20px
+	&_active
+		@extend %fullOpacity
+.styleCardPresentation__number, .singleStyleImageContainer__button
+	bottom: 20px
+.styleCardPresentation__number
+	@extend %yellowBg
+	text-align: center	
+	max-width: 50px;
+	@extend %three;
+// END Card presentation
+// START Work's examples
+.workExamples
+	@extend %defaultFlex
+
+.workExamples__image
+	@extend %pointIt
+	@extend %three
+	@extend %defaultMarginTop
+	padding-right: 0.5em
+	transition: transform 0.5s
+	z-index: 1
+	&:hover
+		transform: scale(1.25, 1.25)
+		z-index: 10
+// END Work's examples
+// START StyleCard data
+.styleCardData
+	@extend %halfWidth
+	@extend %defaultMarginTop
+.styleCardData__title:not(:first-of-type)
+	@extend %increasedMarginTop
+
+.styleCardData__title
+	@extend %fs-18;
+	@extend %bold
+// END StyleCard data
+.styleCardDataSizesList, .styleCardDataStyleBrief, .styleCardDataConditions
+	@extend %unstyled
+	@extend %increasedMarginTop
+
+.styleCardDataSizesList__size, 
+.styleCardDataStyleBrief__descritption, 
+.styleCardDataConditions__condition
+	@extend %redusedMarginTop
+	&:first-of-type
+		@extend %zeroMarginTop
+
+.styleCardData__button
+	@extend %bold
+	@extend %halfWidth
+	padding: 10px 0;
+	@extend %defaultBorderRadius
+	@extend %defaultMarginTop
+	@extend %yellowBg
+	@extend %smoothButton
+	&:hover
+		background-color: darken($first, 10%)
+		color: lighten($darkGray, 10%)
+
+
+
