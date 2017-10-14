@@ -6,9 +6,11 @@
 	<link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
+	<!-- START container -->
 	<div class="container">
 		<!-- START styles -->
-		<ul class="styles" id='styles'>	
+		<ul class="styles" id='styles'>
+			<!-- START singleStyle -->	
 			<li class="singleStyle">
 				<h3 class="singleStyle__name">Релизм</h3>
 				<div class="singleStyleImageContainer">	
@@ -19,6 +21,9 @@
 					</button>
 				</div>
 			</li>
+			<!-- END singleStyle -->
+
+			<!-- START singleStyle -->
 			<li class="singleStyle">
 				<h3 class="singleStyle__name">Сюрреализм</h3>
 				<div class="singleStyleImageContainer">	
@@ -28,6 +33,9 @@
 						class="singleStyleImageContainer__button">Подробнее</button>
 				</div>
 			</li>
+			<!-- END singleStyle -->
+
+			<!-- START singleStyle -->
 			<li class="singleStyle">
 				<h3 class="singleStyle__name">Абстракция</h3>
 				<div class="singleStyleImageContainer">	
@@ -37,11 +45,10 @@
 						class="singleStyleImageContainer__button">Подробнее</button>
 				</div>
 			</li>
+			<!-- END singleStyle  -->
 		</ul>
 		<!-- END styles -->
-		<!-- START Single style -->
 
-		<!-- END Single style  -->
 
 		<!-- START style card -->
 		<div id='styleCard' class="styleCard styleCard_zeroHeight">
@@ -69,24 +76,16 @@
 					</button>
 					<span id='imageNumber' class='styleCardPresentation__number'></span>
 				</div>
-				<!-- END styleCardPresentation -->
+				<!-- END styleCardPresentationMainImage -->
 
-				<!-- START Work's examples -->
-				<div id='workExamples' class="workExamples">
-					<!-- <img data-src="./img/2.jpg" class="imageContainer workExamples__image" alt='Пример работы'
-						data-num='1' />
-					<img data-src="./img/1.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='2'/>
-					<img data-src="./img/3.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='3'/>
-					<img data-src="./img/4.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='4'/>
-					<img data-src="./img/5.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='5'/>
-					<img data-src="./img/6.jpg" class="imageContainer workExamples__image" alt='Пример работы' data-num='6' /> -->
-				</div>
-				<!-- END Work's examples -->
+				<!-- START workExamples -->
+				<div id='workExamples' class="workExamples"></div>
+				<!-- END workExamples -->
 			</div>
-			<!-- END Style's card presentation -->
+			<!-- END styleCardPresentation -->
 			<div class="styleCardData">	
 				<h5 class="styleCardData__title">Популярные размеры:</h5>
-				<!-- START Data with style list -->
+				<!-- START styleCardDataSizesList -->
 				<ul class="styleCardDataSizesList">
 					<li class="styleCardDataSizesList__size">30x50&nbsp;&mdash; 3500&#8381;</li>
 					<li class="styleCardDataSizesList__size">40x60&nbsp;см&nbsp;&mdash; 3990&#8381;</li>
@@ -94,22 +93,25 @@
 					<li class="styleCardDataSizesList__size">80x80&nbsp;см&nbsp;&mdash; 5990&#8381;</li>
 					<li class="styleCardDataSizesList__size">100x100&nbsp;см&nbsp;&mdash; 8500&#8381;</li>
 				</ul>
-				<!-- END Data with style list -->
+				<!-- END styleCardDataSizesList -->
 				<button 
 					type="button" 
 					class='styleCardData__button' 
 					id='orderPicture'>Заказать</button>
+				<!-- START styleCardDataConditions -->
 				<ul class="styleCardDataConditions">
 					<li class="styleCardDataConditions__condition">Готовность эскиза: 4&nbsp;&ndash;&nbsp;36 часов</li>
 					<li class="styleCardDataConditions__condition">Предоплата: 1000&#8381;</li>
 					<li class="styleCardDataConditions__condition">+1 человек: 1000&#8381;</li>
 					<li class="styleCardDataConditions__condition">Любой размер под заказ</li>
 				</ul>
+				<!-- END styleCardDataConditions -->
 				<h5 class="styleCardData__title">Особенности стиля: </h5>
-
+				<!-- START styleCardDataStyleBrief -->
 				<ul class="styleCardDataStyleBrief" id='stlyleDescription'>
 					<li class="styleCardDataStyleBrief__description"></li>
 				</ul>
+				<!-- END styleCardDataStyleBrief -->
 			</div>
 		</div>
 		<!-- END style card -->
@@ -118,7 +120,7 @@
 		<p style='margin-top: 5%;'>NextContent</p>
 		<!-- END order picture form  -->
 	</div>
-	
+	<!-- END container -->
 	<script src="./js/main.js"></script>
 </body>
 

@@ -1,9 +1,298 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Регистрирует как анонимный модуль.
+		define(factory);
+	} else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+		module.exports = factory();
+	} else {
+		window.ScrewDriver = factory();
+	}
+})(function () {
+	var that = {};
+
+	var subscribe = function subscribe(name, fn) {
+		if (!that.channels[name]) that.channels[name] = {};
+
+		that.channels[name] = {
+			context: this,
+			callback: fn
+		};
+
+		return this;
+	};
+	var unsubscribe = function unsubscribe(name) {
+		if (!that.channels[name]) return false;
+
+		delete that.channels[name];
+
+		return this;
+	};
+
+	var publish = function publish(name) {
+		var _subscribtion$callbac;
+
+		if (!that.channels[name]) return false;
+
+		var subscribtion = that.channels[name];
+		var args = [].concat(Array.prototype.slice.call(arguments)).slice(1);
+
+		(_subscribtion$callbac = subscribtion.callback).apply.apply(_subscribtion$callbac, [subscribtion.context].concat(_toConsumableArray(args)));
+
+		return this;
+	};
+
+	var remove = function remove(name) {
+		if (!that.channels[name]) return false;
+
+		for (var key in that.channels[name]) {
+			if (that.hasOwnProperty(key)) delete that[key];
+		}
+
+		return this;
+	};
+
+	var installTo = function installTo(obj) {
+		obj.cannels = {};
+		obj.mount = subscribe;
+		obj.unmount = unsubscribe;
+		obj.init = publish;
+	};
+
+	// Фасад, принадлежащий медиатору.
+	return that = _extends({}, that, {
+		channels: {},
+		mount: subscribe,
+		unmount: unsubscribe,
+		init: publish,
+		remove: remove,
+		installTo: installTo
+	});
+});
+
+},{}],2:[function(require,module,exports){
+'use strict';
+
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _conf = require('./conf.js');
+
+var _lozad = require('lozad');
+
+var _lozad2 = _interopRequireDefault(_lozad);
+
+var _zooming = require('zooming');
+
+var _zooming2 = _interopRequireDefault(_zooming);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var cards = function cards() {
+	/* 
+  * Производительно загружает картинки, добавляя им анимацию, когда они загрузились
+  * и собираются появится.
+  * 
+  * @param {String} imageClass - Класс изображений, собирающиеся плавно появится.
+  *
+  * @private
+  */
+	var _loadImages = function _loadImages(imageClass) {
+		(0, _lozad2.default)(imageClass, {
+			load: function load(el) {
+				el.src = el.dataset.src;
+				el.onload = function () {
+					el.classList.add('imageContainer_fadeIn');
+				};
+			}
+		}).observe();
+	};
+
+	/* 
+  * Обычная обёртка для установки события элементу
+  * 
+  * @param {String} selector - Селектор, к которому привязывается событие. 
+  * @param {Function} callback - Обратный вызов, вызывающийся после того, как событие произойдёт.
+  * @param {String} event - Событие, на которое будет тригерить функция
+  * По умолчанию стоит событие клика.
+  *
+  * @public
+  */
+	var screwed = function screwed(selector, callback) {
+		var event = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'click';
+
+		$(document).on(event, selector, callback);
+	};
+
+	var _createExample = function _createExample(src, before, num) {
+		return '<img data-src=\'' + src + '\' data-before=\'' + before + '\' data-num=\'' + num + '\'' + ' alt="Пример работы" class="imageContainer workExamples__image"/>';
+	};
+
+	var _composeAndShowExamples = function _composeAndShowExamples($node, examples) {
+		var resultHtml = '';
+
+		examples.forEach(function (example) {
+			// Компануется строка с картинками работ.
+			resultHtml += _createExample(example.src, example.before, example.num);
+		});
+		// Отображается в DOM.
+		$node.html(resultHtml);
+	};
+
+	var _customMainImage = function _customMainImage(props) {
+		props.$mainImage.attr('src', props.src);
+		props.$before.data('src', props.before);
+		props.$after.data('src', props.src);
+		props.$imageNumber.text(props.num);
+	};
+
+	var _changeActiveButton = function _changeActiveButton($node) {
+		var activeCls = 'styleCardPresentation__button_active';
+
+		$('.' + activeCls).removeClass(activeCls);
+		$node.addClass(activeCls);
+	};
+	/*
+  * Привязывает события к базовым элементам, а как после того, как 
+  * событие тригерит - выполняет задачу.
+  * 
+  * @public
+  */
+	var baseScrewed = function baseScrewed() {
+		var imageClass = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.imageContainer';
+
+		// Выборки
+		var $styleCard = $('#styleCard');
+		var $styles = $('#styles');
+		var $mainImage = $('#mainImage');
+		var $styleName = $('#styleName');
+		var $before = $('#before');
+		var $after = $('#after');
+		var $imageNumber = $('#imageNumber');
+		var $workExamples = $('#workExamples');
+		var $styleDescription = $('#stlyleDescription');
+		// Устанавливает масштабирование для главной картинки в карточке стиля
+		var zooming = new _zooming2.default({
+			bgColor: '#212121'
+		});
+		zooming.listen('#mainImage');
+
+		/*
+   * Открывает краточку стиля по нажатию на кнопку "Подробнее",
+   * а после заполняет её данными
+   */
+		screwed('.workExamples__image', function (e) {
+			_customMainImage(_extends({}, $(this).data(), {
+				$imageNumber: $imageNumber,
+				$mainImage: $mainImage,
+				$before: $before,
+				$after: $after
+			}));
+			_changeActiveButton($after);
+		});
+
+		/*
+   * Открывает краточку стиля по нажатию на кнопку "Подробнее",
+   * а после заполняет её данными
+   */
+		screwed('.singleStyleImageContainer__button', function (e) {
+			// Берутся данные о стиле и его примеры
+			var cls = 'styleCard';
+			var styleData = _conf.styles[e.target.dataset.style];
+			// Object
+			var meta = styleData.meta;
+			// Array
+			var examples = styleData.examples;
+			var firstExample = examples[0];
+
+			// Анимация карточки и стилей
+			$styles.addClass('styles_hidden');
+			$styleCard.removeClass(cls + '_zeroHeight').addClass(cls + '_shown');
+
+			// Заполнение карточки данными
+			$styleName.text(meta.name);
+			$styleDescription.text(meta.description);
+			// Главная картинка
+			_customMainImage({
+				src: firstExample.src,
+				before: firstExample.before,
+				num: firstExample.num,
+				$imageNumber: $imageNumber,
+				$mainImage: $mainImage,
+				$before: $before,
+				$after: $after
+			});
+			// Устанавливается по-умолчанию активный класс
+			// "готовой работе".
+			_changeActiveButton($after);
+			// Компануются примеры стиля, а после отображаются
+			_composeAndShowExamples($workExamples, examples);
+			// Все скомпонованные картинки плавно загружаются
+			_loadImages('.imageContainer');
+		}); // End screwed
+
+
+		/*
+   * Плавно закрывает карточку стиля 
+   * и очищает контейнер с экземплярами работ.
+   */
+		screwed('#closeStyleCardButton', function (e) {
+			var cls = 'styleCard';
+			$styles.removeClass('styles_hidden');
+			$styleCard.removeClass(cls + '_shown');
+
+			setTimeout(function () {
+				$styleCard.addClass(cls + '_zeroHeight');
+			}, 1000);
+
+			$workExamples.empty();
+		}); // End screwed
+
+		/*
+   * Меняется активное состояние кнопки "До" и "После" состояние кнопки,
+   * вместе с главной картинкой в карточке стиля.
+   */
+		screwed('#after, #before', function (e) {
+			var $this = $(this);
+			// Меняется картинка
+			$mainImage.attr('src', $this.data('src'));
+			// Меняется активная кнопка
+			_changeActiveButton($this);
+		}); // End screwed
+
+		/*
+   * Плавно и производительно загружает все картинки стилей.
+   */
+		_loadImages(imageClass);
+	}; // End baseScrewed
+
+	// Импортируется в фасад медиатора.
+	this.screwed = screwed;
+	this.cards = {
+		run: baseScrewed
+	};
+};
+
+exports.default = cards;
+
+},{"./conf.js":3,"lozad":6,"zooming":7}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+// ./
 var styles = exports.styles = {
 	r: { meta: {
 			description: 'Будет выглядить, как настоящая фотография.',
@@ -68,214 +357,29 @@ var styles = exports.styles = {
 		}] // end "a"
 	} };
 
-},{}],2:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+require('jquery');
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _cards = require('./cards.js');
 
-var _conf = require('./conf.js');
+var _cards2 = _interopRequireDefault(_cards);
 
-(function (factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Регистрирует как анонимный модуль.
-		define(['jquery', 'lozad', 'zooming'], factory);
-	} else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
-		// CommonJS
-		module.exports = factory(require('jquery'), require('lozad'), require('zooming'));
-	} else {
-		// Импорт в jQuery 
-		factory(jQuery, lozad, zooming);
-	}
-})(function ($, lozad, Zooming) {
-	/* 
-  * Производительно загружает картинки, добавляя им анимацию, когда они загрузились
-  * и собираются появится.
-  * 
-  * @param {String} imageClass - Класс изображений, собирающиеся плавно появится.
-  *
-  * @public
-  */
-	var _loadImages = function _loadImages(imageClass) {
-		lozad(imageClass, {
-			load: function load(el) {
-				el.src = el.dataset.src;
-				el.onload = function () {
-					el.classList.add('imageContainer_fadeIn');
-				};
-			}
-		}).observe();
-	};
+var _ScrewDriver = require('./ScrewDriver.js');
 
-	/* 
-  * Обычная обёртка для установки события элементу
-  * 
-  * @param {String} selector - Селектор, к которому привязывается событие. 
-  * @param {Function} callback - Обратный вызов, вызывающийся после того, как событие произойдёт.
-  * @param {String} event - Событие, на которое будет тригерить функция
-  * По умолчанию стоит событие клика.
-  *
-  * @public
-  */
-	var screwedClick = function screwedClick(selector, callback) {
-		var event = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'click';
+var _ScrewDriver2 = _interopRequireDefault(_ScrewDriver);
 
-		$(document).on(event, selector, callback);
-	};
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var _createExample = function _createExample(src, before, num) {
-		return '<img data-src=\'' + src + '\' data-before=\'' + before + '\' data-num=\'' + num + '\'' + ' alt="Пример работы" class="imageContainer workExamples__image"/>';
-	};
-
-	var _composeAndShowExamples = function _composeAndShowExamples($node, examples) {
-		var resultHtml = '';
-
-		examples.forEach(function (example) {
-			// Компануется строка с картинками работ.
-			resultHtml += _createExample(example.src, example.before, example.num);
-		});
-		// Отображается в DOM.
-		$node.html(resultHtml);
-	};
-
-	var _customMainImage = function _customMainImage(props) {
-		props.$mainImage.attr('src', props.src);
-		props.$before.data('src', props.before);
-		props.$after.data('src', props.src);
-		props.$imageNumber.text(props.num);
-	};
-
-	var _changeActiveButton = function _changeActiveButton($node) {
-		var activeCls = 'styleCardPresentation__button_active';
-
-		$('.' + activeCls).removeClass(activeCls);
-		$node.addClass(activeCls);
-	};
-	/*
-  * Привязывает события к базовым элементам, а как после того, как 
-  * событие тригерит - выполняет задачу.
-  * 
-  * @public
-  */
-	var baseScrewed = function baseScrewed(imageClass) {
-		// Выборки
-		var $styleCard = $('#styleCard');
-		var $styles = $('#styles');
-		var $mainImage = $('#mainImage');
-		var $styleName = $('#styleName');
-		var $before = $('#before');
-		var $after = $('#after');
-		var $imageNumber = $('#imageNumber');
-		var $workExamples = $('#workExamples');
-		var $styleDescription = $('#stlyleDescription');
-		// Устанавливает масштабирование для главной картинки в карточке стиля
-		var zooming = new Zooming({
-			bgColor: '#212121'
-		});
-		zooming.listen('#mainImage');
-
-		/*
-   * Открывает краточку стиля по нажатию на кнопку "Подробнее",
-   * а после заполняет её данными
-   */
-		$.ScrewDriver.screwed('.workExamples__image', function (e) {
-			_customMainImage(_extends({}, $(this).data(), {
-				$imageNumber: $imageNumber,
-				$mainImage: $mainImage,
-				$before: $before,
-				$after: $after
-			}));
-			_changeActiveButton($after);
-		});
-
-		/*
-   * Открывает краточку стиля по нажатию на кнопку "Подробнее",
-   * а после заполняет её данными
-   */
-		$.ScrewDriver.screwed('.singleStyleImageContainer__button', function (e) {
-			// Берутся данные о стиле и его примеры
-			var cls = 'styleCard';
-			var styleData = _conf.styles[e.target.dataset.style];
-			// Object
-			var meta = styleData.meta;
-			// Array
-			var examples = styleData.examples;
-			var firstExample = examples[0];
-
-			// Анимация карточки и стилей
-			$styles.addClass('styles_hidden');
-			$styleCard.removeClass(cls + '_zeroHeight').addClass(cls + '_shown');
-
-			// Заполнение карточки данными
-			$styleName.text(meta.name);
-			$styleDescription.text(meta.description);
-			// Главная картинка
-			_customMainImage({
-				src: firstExample.src,
-				before: firstExample.before,
-				num: firstExample.num,
-				$imageNumber: $imageNumber,
-				$mainImage: $mainImage,
-				$before: $before,
-				$after: $after
-			});
-			// Устанавливается по-умолчанию активный класс
-			// "готовой работе".
-			_changeActiveButton($after);
-			// Компануются примеры стиля, а после отображаются
-			_composeAndShowExamples($workExamples, examples);
-			// Все скомпонованные картинки плавно загружаются
-			_loadImages('.imageContainer');
-		}); // End screwed
-
-
-		/*
-   * Плавно закрывает карточку стиля 
-   * и очищает контейнер с экземплярами работ.
-   */
-		$.ScrewDriver.screwed('#closeStyleCardButton', function (e) {
-			var cls = 'styleCard';
-			$styles.removeClass('styles_hidden');
-			$styleCard.removeClass(cls + '_shown');
-
-			setTimeout(function () {
-				$styleCard.addClass(cls + '_zeroHeight');
-			}, 1000);
-
-			$workExamples.empty();
-		}); // End screwed
-
-		/*
-   * Меняется активное состояние кнопки "До" и "После" состояние кнопки,
-   * вместе с главной картинкой в карточке стиля.
-   */
-		$.ScrewDriver.screwed('#after, #before', function (e) {
-			var $this = $(this);
-			// Меняется картинка
-			$mainImage.attr('src', $this.data('src'));
-			// Меняется активная кнопка
-			_changeActiveButton($this);
-		}); // End screwed
-
-		/*
-   * Плавно и производительно загружает все картинки стилей.
-   */
-		_loadImages(imageClass);
-	}; // End baseScrewed
-
-	// Фасад, импортируемый, как подмодуль jQuery.
-	$.ScrewDriver = {
-		screwed: screwedClick,
-		customScrewed: baseScrewed
-	};
-});
+_ScrewDriver2.default.mount('cards', _cards2.default);
+_ScrewDriver2.default.init('cards');
 
 $(document).ready(function () {
-	$.ScrewDriver.customScrewed('.imageContainer');
+	_ScrewDriver2.default.cards.run();
 });
 
-},{"./conf.js":1,"jquery":3,"lozad":4,"zooming":5}],3:[function(require,module,exports){
+},{"./ScrewDriver.js":1,"./cards.js":2,"jquery":5}],5:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -10538,7 +10642,7 @@ return jQuery;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*! lozad.js - v1.0.7 - 2017-10-13
 * https://github.com/ApoorvSaxena/lozad.js
 * Copyright (c) 2017 Apoorv Saxena; Licensed MIT */
@@ -10639,7 +10743,7 @@ return lozad;
 
 })));
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
@@ -11611,6 +11715,6 @@ return Zooming$1;
 })));
 
 
-},{}]},{},[2])
+},{}]},{},[4])
 
 //# sourceMappingURL=main.js.map

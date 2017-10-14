@@ -1,9 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
+@import 'breakpoint';
+
 $darkGray: #212121
 $first: #FDD349
 $second: #78302F
 $third: #365E63
 $white: #f1f1f1
+
+$bigScreen: 1600px
+$lg: 1200 1600px
+$md: 992px 1199px
+$sm: 801px 991px
+$xs: max-width 800px
+$xxs: max-width 540px
 
 $baseFontSize: 16
 
@@ -39,15 +48,52 @@ $baseFontSize: 16
 	width: 100%
 %halfWidth
 	width: 49.7%
-// %halfWidth-sm
-// 	width: 49.7%
-// %four-sm
-	// @media screen and (max-width: $xs)
-	// width: 30%
-%three
+%four
 	width: 25%
 %five
 	width: 20%
+// md
+%fullWidth-md
+	@include breakpoint($md)
+		width: 100%
+%four-md
+	@include breakpoint($md)
+		width: 25%
+%halfWidth-md
+	@include breakpoint($md)
+		width: 49.7%
+		width: 25%
+%five-md
+	@include breakpoint($md)
+		width: 20%
+// sm
+%fullWidth-sm
+	@include breakpoint($sm)
+		width: 100%
+%halfWidth-sm
+	@include breakpoint($sm)
+		width: 45%
+%four-sm
+	@include breakpoint($sm)
+		width: 25%
+%five-sm
+	@include breakpoint($sm)
+		width: 20%
+// xs
+%fullWidth-xs
+	@include breakpoint($xs)
+		width: 100%
+%halfWidth-xs
+	@include breakpoint($xs)
+		width: 45%
+%four-xs
+	@include breakpoint($xs)
+%five-xs
+	@include breakpoint($xs)
+		width: 20%
+%fullWidth-xxs
+	@include breakpoint($xxs)
+		width: 100%
 // Borders
 %defaultBorderRadius
 	border-radius: 2px
@@ -124,6 +170,8 @@ $baseFontSize: 16
 // List styles
 %unstyled
 	list-style: none
+
+
 // Блоки и элементы по-умолчанию 
 .imageContainer
 	@extend %defaultBorderRadius
@@ -132,14 +180,12 @@ $baseFontSize: 16
 	&_fadeIn
   		transition: opacity 1.5s
 	  	@extend %fullOpacity
-
-
 body
 	& * 
 		margin: 0	
 		border: 0
-		outline: 0
 		padding: 0
+		outline-color: #6F95B5
 		&, &::after, &::before
 			box-sizing: border-box
 	background-color: $white
@@ -161,6 +207,10 @@ body
 	@extend %alignStart
 	@extend %defaultFlexFlow
 	@extend %fullOpacity
+	@include breakpoint($xs)
+		flex-direction: column
+		flex-wrap: nowrap
+		padding: 10% 5%
 	&, & *
 		transition: height 1.5s, opacity 1s, display 2s
 	&_hidden, &_hidden *
@@ -171,7 +221,15 @@ body
 // START Single style
 
 .singleStyle
-	@extend %three
+	@extend %four
+	@extend %halfWidth-sm
+	@extend %defaultMarginTop
+	@extend %halfWidth-sm
+	@extend %fullWidth-xs
+	@include breakpoint($xs)
+		font-size: (28em / $baseFontSize)
+		
+
 
 .singleStyleImageContainer
 	@extend %defaultMarginTop
@@ -186,6 +244,11 @@ body
 	max-width: 110px
 	@extend %halfWidth;
 	@extend %burgundyBg
+	@include breakpoint($xs)
+		max-width: 200px
+		left: calc(50% - 100px)
+		padding: 15px 0 !important
+		bottom: 30px !important
 
 
 .styleCardPresentationMainImage
@@ -202,13 +265,18 @@ body
 	@extend %lowestOpacity
 	@extend %darkCianBg
 	@extend %defaultMarginTop
-	@extend %centerBlock
+	// @extend %centerBlock
 	@extend %relative
 	max-width: 900px
 	padding: 3% 1.5em 5%
 	margin-top: 0
 	width: 0;
 	transition: width 1.5s, opacity 1s, height 2s, margin 1s, padding 1s
+	@include breakpoint($xs)
+		font-size: (28em / $baseFontSize)
+		max-width: none
+		line-height: 145%
+		padding: 10% 6%
 	& button
 		display: none
 	&_shown
@@ -226,25 +294,32 @@ body
 	@extend %absolute
 	top: -20px;
 	right: -20px
-	padding: 3px 10px;
+	padding: 5px 10px;
 	border: 2px solid $darkGray
 	border-radius: 50%
+	line-height: 100%
+	transform: none
 	@extend %burgundyBg;
 	@extend %paleButton
-	transform: rotate(25deg)
+	@include breakpoint($xs)
+		padding-top: 3px
+		font-size: (21em / $baseFontSize)
 	&:hover
-		transform: none
+		transform: rotate(25deg)
 
 .styleCard__name, .singleStyle__name
 	@extend %fullWidth
 	@extend %fs-21
 	@extend %bold
+	@include breakpoint($xs)
+		font-size: (28em / $baseFontSize)
 // START Card presentation
 .styleCardPresentation
 	@extend %halfWidth
-	padding-right: 1.5em
 	@extend %pointIt
 	@extend %defaultMarginTop
+	@extend %fullWidth-xs
+	padding-right: 1.5em
 
 .styleCardPresentationImageContainer
 		@extend %fullWidth
@@ -262,7 +337,9 @@ body
 	@extend %burgundyBg
 	top: 20px
 	max-width: 70px
-	@extend %three;
+	@extend %four;
+	@include breakpoint($xs)
+		max-width: 100px
 	&_after
 		right: 20px
 	&_active
@@ -273,7 +350,7 @@ body
 	@extend %yellowBg
 	text-align: center	
 	max-width: 50px;
-	@extend %three;
+	@extend %four;
 // END Card presentation
 // START Work's examples
 .workExamples
@@ -281,7 +358,7 @@ body
 
 .workExamples__image
 	@extend %pointIt
-	@extend %three
+	@extend %four
 	@extend %defaultMarginTop
 	padding-right: 0.5em
 	transition: transform 0.5s
@@ -294,6 +371,9 @@ body
 .styleCardData
 	@extend %halfWidth
 	@extend %defaultMarginTop
+	// @extend %fullWidth-xs
+	@include breakpoint($xs)
+		width: 100%
 .styleCardData__title:not(:first-of-type)
 	@extend %increasedMarginTop
 

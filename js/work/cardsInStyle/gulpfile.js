@@ -43,10 +43,7 @@ const settings = {
 }, 
 templatesPath = settings.build,
 scssPathes = ['node_modules/susy/sass', 
-              'node_modules/breakpoint-sass/stylesheets',
-             'node_modules/bootstrap-sass/assets/stylesheets',
-             'node_modules/font-awesome-sass/assets/stylesheets/',
-             'node_modules/semantic-ui-sass/'];
+              'node_modules/breakpoint-sass/stylesheets'];
 
 
 
