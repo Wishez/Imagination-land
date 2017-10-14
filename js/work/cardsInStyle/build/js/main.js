@@ -20,7 +20,12 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	var that = {};
 
 	var subscribe = function subscribe(name, fn) {
-		if (!that.channels[name]) that.channels[name] = {};
+		if (!that.channels[name]) {
+			that.channels[name] = {};
+		} else {
+			// Во избежание конфликта пространства имён.
+			return false;
+		}
 
 		that.channels[name] = {
 			context: this,
@@ -79,214 +84,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 });
 
 },{}],2:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _conf = require('./conf.js');
-
-var _lozad = require('lozad');
-
-var _lozad2 = _interopRequireDefault(_lozad);
-
-var _zooming = require('zooming');
-
-var _zooming2 = _interopRequireDefault(_zooming);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var cards = function cards() {
-	/* 
-  * Производительно загружает картинки, добавляя им анимацию, когда они загрузились
-  * и собираются появится.
-  * 
-  * @param {String} imageClass - Класс изображений, собирающиеся плавно появится.
-  *
-  * @private
-  */
-	var _loadImages = function _loadImages(imageClass) {
-		(0, _lozad2.default)(imageClass, {
-			load: function load(el) {
-				el.src = el.dataset.src;
-				el.onload = function () {
-					el.classList.add('imageContainer_fadeIn');
-				};
-			}
-		}).observe();
-	};
-
-	/* 
-  * Обычная обёртка для установки события элементу
-  * 
-  * @param {String} selector - Селектор, к которому привязывается событие. 
-  * @param {Function} callback - Обратный вызов, вызывающийся после того, как событие произойдёт.
-  * @param {String} event - Событие, на которое будет тригерить функция
-  * По умолчанию стоит событие клика.
-  *
-  * @public
-  */
-	var screwed = function screwed(selector, callback) {
-		var event = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'click';
-
-		$(document).on(event, selector, callback);
-	};
-
-	var _createExample = function _createExample(src, before, num) {
-		return '<img data-src=\'' + src + '\' data-before=\'' + before + '\' data-num=\'' + num + '\'' + ' alt="Пример работы" class="imageContainer workExamples__image"/>';
-	};
-
-	var _composeAndShowExamples = function _composeAndShowExamples($node, examples) {
-		var resultHtml = '';
-
-		examples.forEach(function (example) {
-			// Компануется строка с картинками работ.
-			resultHtml += _createExample(example.src, example.before, example.num);
-		});
-		// Отображается в DOM.
-		$node.html(resultHtml);
-	};
-
-	var _customMainImage = function _customMainImage(props) {
-		props.$mainImage.attr('src', props.src);
-		props.$before.data('src', props.before);
-		props.$after.data('src', props.src);
-		props.$imageNumber.text(props.num);
-	};
-
-	var _changeActiveButton = function _changeActiveButton($node) {
-		var activeCls = 'styleCardPresentation__button_active';
-
-		$('.' + activeCls).removeClass(activeCls);
-		$node.addClass(activeCls);
-	};
-	/*
-  * Привязывает события к базовым элементам, а как после того, как 
-  * событие тригерит - выполняет задачу.
-  * 
-  * @public
-  */
-	var baseScrewed = function baseScrewed() {
-		var imageClass = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.imageContainer';
-
-		// Выборки
-		var $styleCard = $('#styleCard');
-		var $styles = $('#styles');
-		var $mainImage = $('#mainImage');
-		var $styleName = $('#styleName');
-		var $before = $('#before');
-		var $after = $('#after');
-		var $imageNumber = $('#imageNumber');
-		var $workExamples = $('#workExamples');
-		var $styleDescription = $('#stlyleDescription');
-		// Устанавливает масштабирование для главной картинки в карточке стиля
-		var zooming = new _zooming2.default({
-			bgColor: '#212121'
-		});
-		zooming.listen('#mainImage');
-
-		/*
-   * Открывает краточку стиля по нажатию на кнопку "Подробнее",
-   * а после заполняет её данными
-   */
-		screwed('.workExamples__image', function (e) {
-			_customMainImage(_extends({}, $(this).data(), {
-				$imageNumber: $imageNumber,
-				$mainImage: $mainImage,
-				$before: $before,
-				$after: $after
-			}));
-			_changeActiveButton($after);
-		});
-
-		/*
-   * Открывает краточку стиля по нажатию на кнопку "Подробнее",
-   * а после заполняет её данными
-   */
-		screwed('.singleStyleImageContainer__button', function (e) {
-			// Берутся данные о стиле и его примеры
-			var cls = 'styleCard';
-			var styleData = _conf.styles[e.target.dataset.style];
-			// Object
-			var meta = styleData.meta;
-			// Array
-			var examples = styleData.examples;
-			var firstExample = examples[0];
-
-			// Анимация карточки и стилей
-			$styles.addClass('styles_hidden');
-			$styleCard.removeClass(cls + '_zeroHeight').addClass(cls + '_shown');
-
-			// Заполнение карточки данными
-			$styleName.text(meta.name);
-			$styleDescription.text(meta.description);
-			// Главная картинка
-			_customMainImage({
-				src: firstExample.src,
-				before: firstExample.before,
-				num: firstExample.num,
-				$imageNumber: $imageNumber,
-				$mainImage: $mainImage,
-				$before: $before,
-				$after: $after
-			});
-			// Устанавливается по-умолчанию активный класс
-			// "готовой работе".
-			_changeActiveButton($after);
-			// Компануются примеры стиля, а после отображаются
-			_composeAndShowExamples($workExamples, examples);
-			// Все скомпонованные картинки плавно загружаются
-			_loadImages('.imageContainer');
-		}); // End screwed
-
-
-		/*
-   * Плавно закрывает карточку стиля 
-   * и очищает контейнер с экземплярами работ.
-   */
-		screwed('#closeStyleCardButton', function (e) {
-			var cls = 'styleCard';
-			$styles.removeClass('styles_hidden');
-			$styleCard.removeClass(cls + '_shown');
-
-			setTimeout(function () {
-				$styleCard.addClass(cls + '_zeroHeight');
-			}, 1000);
-
-			$workExamples.empty();
-		}); // End screwed
-
-		/*
-   * Меняется активное состояние кнопки "До" и "После" состояние кнопки,
-   * вместе с главной картинкой в карточке стиля.
-   */
-		screwed('#after, #before', function (e) {
-			var $this = $(this);
-			// Меняется картинка
-			$mainImage.attr('src', $this.data('src'));
-			// Меняется активная кнопка
-			_changeActiveButton($this);
-		}); // End screwed
-
-		/*
-   * Плавно и производительно загружает все картинки стилей.
-   */
-		_loadImages(imageClass);
-	}; // End baseScrewed
-
-	// Импортируется в фасад медиатора.
-	this.screwed = screwed;
-	this.cards = {
-		run: baseScrewed
-	};
-};
-
-exports.default = cards;
-
-},{"./conf.js":3,"lozad":6,"zooming":7}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -357,14 +154,277 @@ var styles = exports.styles = {
 		}] // end "a"
 	} };
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // Объект со стилями
+
+
+var _conf = require('./conf.js');
+
+var _lozad = require('lozad');
+
+var _lozad2 = _interopRequireDefault(_lozad);
+
+var _zooming = require('zooming');
+
+var _zooming2 = _interopRequireDefault(_zooming);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* 
+ * Производительно загружает картинки, добавляя им анимацию, когда они загрузились
+ * и собираются появится.
+ * 
+ * @param {String} imageClass - Класс изображений, собирающиеся плавно появится.
+ *
+ */
+var fashionableCards = function fashionableCards() {
+
+	/* 
+  * Производительно загружает картинки, добавляя им анимацию, когда они загрузились
+  * и собираются появится.
+  * 
+  * @param {String} imageClass - Класс изображений, собирающиеся плавно появится.
+  *
+  * @private
+  */
+	var _loadImages = function _loadImages(imageClass) {
+		(0, _lozad2.default)(imageClass, {
+			load: function load(el) {
+				el.src = el.dataset.src;
+				el.onload = function () {
+					el.classList.add('imageContainer_fadeIn');
+				};
+			}
+		}).observe();
+	};
+
+	/* 
+  * Обычная обёртка для установки события элементу
+  * 
+  * @param {String} selector - Селектор, к которому привязывается событие. 
+  * @param {Function} callback - Обратный вызов, вызывающийся после того, как событие произойдёт.
+  * @param {String} event - Событие, на которое будет тригерить функция
+  * По умолчанию стоит событие клика.
+  *
+  * @public
+  */
+	var screwed = function screwed(selector, callback) {
+		var event = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'click';
+
+		$(document).on(event, selector, callback);
+	};
+
+	/*
+  * Создаёт строку с экземпляром работы стиля в виде изображения.
+  * 
+  * @param {String} src - Абсалютный или относительный путь к сделанной работе(имею в виду изображение).
+  * @param {String} before - Абсалютный или относительный путь к работе(изображению), ещё не переделанной под заказ.
+  * @param {String} num - Номер картинки.
+  * 
+  * @private
+  */
+	var _createExample = function _createExample(src, before, num) {
+		return '<img data-src=\'' + src + '\' data-before=\'' + before + '\' data-num=\'' + num + '\'' + ' alt="Пример работы" class="imageContainer workExamples__image"/>';
+	};
+
+	/*
+  * Компонует экземпляры и засовывает их в контейнер.
+  * 
+  * @param {Object} $node - Узел DOM, в который будут помещены экземпляры работ.
+  * @param {Array} examples - Массив с данными об одной из работ в стиле.
+  * 
+  * @private
+  */
+	var _composeAndShowExamples = function _composeAndShowExamples($node, examples) {
+		var resultHtml = '';
+
+		examples.forEach(function (example) {
+			// Компануется строка с картинками работ.
+			resultHtml += _createExample(example.src, example.before, example.num);
+		});
+		// Отображается в DOM.
+		$node.html(resultHtml);
+	};
+
+	/*
+  * Настраивает главную картинку в карточке стиля.
+  * 
+  * @param {Object} props - Объект с данными изображение, которое нужно отобразить.
+  * 
+  * @private
+  */
+	var _customMainImage = function _customMainImage(props) {
+		props.$mainImage.attr('src', props.src);
+		props.$before.data('src', props.before);
+		props.$after.data('src', props.src);
+		props.$imageNumber.text(props.num);
+	};
+
+	/*
+  * Меняет активное состояние кнопки.
+  * 
+  * @param {Object} $node - Выборка с кнопкой "До" или "После".
+  * 
+  * @private
+  */
+	var _changeActiveButton = function _changeActiveButton($node) {
+		var activeCls = 'styleCardPresentation__button_active';
+
+		$('.' + activeCls).removeClass(activeCls);
+		$node.addClass(activeCls);
+	};
+
+	/*
+  * Привязывает события к базовым элементам, а как после того, как 
+  * событие тригерит - выполняет задачу.
+  * 
+  * @param {Object} props - Описывает базовые идентификаторы и классы для элементов,
+  * которые будут отображать логику приложения. Их можно переопределить при запуске модуля.
+  * 
+  * 
+  * @public
+  */
+	var baseScrewed = function baseScrewed() {
+		var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+			imageClass: '.imageContainer',
+			cardId: '#styleCard',
+			styleContainerId: '#styles',
+			mainImageId: '#mainImage',
+			styleNameId: '#styleName',
+			beforeButtonId: '#before',
+			afterButtonId: '#after',
+			imageNumberId: '#imageNumber',
+			workExamplesContainerId: '#workExamples',
+			styleDescriptionId: '#stlyleDescription',
+			zoomImageBg: '#212121'
+		};
+
+		// Выборки
+		var $styleCard = $(props.cardId);
+		var $styles = $(props.styleContainerId);
+		var $mainImage = $(props.mainImageId);
+		var $styleName = $(props.styleNameId);
+		var $before = $(props.beforeButtonId);
+		var $after = $(props.afterButtonId);
+		var $imageNumber = $(props.imageNumberId);
+		var $workExamples = $(props.workExamplesContainerId);
+		var $styleDescription = $(props.styleDescriptionId);
+		// Устанавливает масштабирование для главной картинки в карточке стиля
+		var zooming = new _zooming2.default({
+			bgColor: props.zoomImageBg
+		});
+		zooming.listen('#mainImage');
+
+		/*
+   * Открывает краточку стиля по нажатию на кнопку "Подробнее",
+   * а после заполняет её данными
+   */
+		screwed('.workExamples__image', function (e) {
+			_customMainImage(_extends({}, $(this).data(), {
+				$imageNumber: $imageNumber,
+				$mainImage: $mainImage,
+				$before: $before,
+				$after: $after
+			}));
+			_changeActiveButton($after);
+		});
+
+		/*
+   * Открывает краточку стиля по нажатию на кнопку "Подробнее",
+   * а после заполняет её данными
+   */
+		screwed('.singleStyleImageContainer__button', function (e) {
+			// Берутся данные о стиле и его примеры
+			var cls = 'styleCard';
+			// Objects
+			var styleData = _conf.styles[e.target.dataset.style];
+			var meta = styleData.meta;
+			// Array
+			var examples = styleData.examples;
+			// Object
+			var firstExample = examples[0];
+
+			// Анимация карточки и стилей
+			$styles.addClass('styles_hidden');
+			$styleCard.removeClass(cls + '_zeroHeight').addClass(cls + '_shown');
+
+			// Заполнение карточки данными
+			$styleName.text(meta.name);
+			$styleDescription.text(meta.description);
+			// Главная картинка
+			_customMainImage({
+				src: firstExample.src,
+				before: firstExample.before,
+				num: firstExample.num,
+				$imageNumber: $imageNumber,
+				$mainImage: $mainImage,
+				$before: $before,
+				$after: $after
+			});
+			// Устанавливается по-умолчанию активный класс
+			// "готовой работе".
+			_changeActiveButton($after);
+			// Компануются примеры стиля, а после отображаются
+			_composeAndShowExamples($workExamples, examples);
+			// Все скомпонованные картинки плавно загружаются
+			_loadImages(props.imageClass);
+		}); // End screwed
+
+		/*
+   * Плавно закрывает карточку стиля 
+   * и очищает контейнер с экземплярами работ.
+   */
+		screwed('#closeStyleCardButton', function () {
+			var cls = 'styleCard';
+			$styles.removeClass('styles_hidden');
+			$styleCard.removeClass(cls + '_shown');
+
+			setTimeout(function () {
+				$styleCard.addClass(cls + '_zeroHeight');
+			}, 1000);
+
+			$workExamples.empty();
+		}); // End screwed
+
+		/*
+   * Меняется активное состояние кнопки "До" и "После" состояние кнопки,
+   * вместе с главной картинкой в карточке стиля.
+   */
+		screwed('#after, #before', function () {
+			var $this = $(this);
+			// Меняется картинка
+			$mainImage.attr('src', $this.data('src'));
+			// Меняется активная кнопка
+			_changeActiveButton($this);
+		}); // End screwed
+
+		// Плавно и производительно загружает все картинки стилей.
+		_loadImages(props.imageClass);
+	}; // End baseScrewed
+
+	// Импортируется в фасад медиатора.
+	this.screwed = screwed;
+	this.FC = {
+		run: baseScrewed
+	};
+};
+
+exports.default = fashionableCards;
+
+},{"./conf.js":2,"lozad":6,"zooming":7}],4:[function(require,module,exports){
 'use strict';
 
 require('jquery');
 
-var _cards = require('./cards.js');
+var _fashionableCards = require('./fashionableCards.js');
 
-var _cards2 = _interopRequireDefault(_cards);
+var _fashionableCards2 = _interopRequireDefault(_fashionableCards);
 
 var _ScrewDriver = require('./ScrewDriver.js');
 
@@ -372,14 +432,14 @@ var _ScrewDriver2 = _interopRequireDefault(_ScrewDriver);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_ScrewDriver2.default.mount('cards', _cards2.default);
-_ScrewDriver2.default.init('cards');
+_ScrewDriver2.default.mount('fashionableCards', _fashionableCards2.default);
+_ScrewDriver2.default.init('fashionableCards');
 
 $(document).ready(function () {
-	_ScrewDriver2.default.cards.run();
+	_ScrewDriver2.default.FC.run();
 });
 
-},{"./ScrewDriver.js":1,"./cards.js":2,"jquery":5}],5:[function(require,module,exports){
+},{"./ScrewDriver.js":1,"./fashionableCards.js":3,"jquery":5}],5:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!

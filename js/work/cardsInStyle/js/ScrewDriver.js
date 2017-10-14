@@ -11,9 +11,12 @@
 	let that = {};
 
 	const subscribe = function(name, fn) {
-		if (!that.channels[name])
+		if (!that.channels[name]) {
 			that.channels[name] = {};
-
+		} else {
+			// Во избежание конфликта пространства имён.
+			return false;
+		}
 		
 		that.channels[name] = { 
 			context: this,
@@ -26,6 +29,8 @@
 		if (!that.channels[name]) return false;
 
 		delete that.channels[name];
+
+
 
 		return this;
 	};

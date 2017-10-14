@@ -1,10 +1,10 @@
 import 'jquery';
-import cards from './cards.js';
+import fashionableCards from './fashionableCards.js';
 import ScrewDriver from './ScrewDriver.js';
 
-ScrewDriver.mount('cards', cards);
-ScrewDriver.init('cards');
+ScrewDriver.mount('fashionableCards', fashionableCards);
+ScrewDriver.init('fashionableCards');
 
 $(document).ready(function() {
-	ScrewDriver.cards.run();
+	ScrewDriver.FC.run();
 });

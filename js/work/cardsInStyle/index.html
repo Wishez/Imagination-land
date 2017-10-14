@@ -54,7 +54,7 @@
 		<div id='styleCard' class="styleCard styleCard_zeroHeight">
 			<button id='closeStyleCardButton'
 				type='button' 
-				class='styleCard__closeButton'>x</button>
+				class='styleCard__closeButton closeButton'>x</button>
 
 			<h3 id='styleName' class="styleCard__name"></h3>
 			<!-- START styleCardPresentation -->
@@ -96,7 +96,7 @@
 				<!-- END styleCardDataSizesList -->
 				<button 
 					type="button" 
-					class='styleCardData__button' 
+					class='styleCardData__button bigButton' 
 					id='orderPicture'>Заказать</button>
 				<!-- START styleCardDataConditions -->
 				<ul class="styleCardDataConditions">
@@ -116,9 +116,69 @@
 		</div>
 		<!-- END style card -->
 		
-		<!-- START order picture form  -->
-		<p style='margin-top: 5%;'>NextContent</p>
-		<!-- END order picture form  -->
+		<!-- begin orderFormContainer -->
+		<div class="orderFormContainer">
+			<button id='orderFormCloseButton'
+				type='button' 
+				class='orderFormContainer__closeButton closeButton'>x</button>
+			<h2 class="orderFormContainer__styleName"></h2>
+			<p class="orderFormContainer__hint">Оставьте Ваши данные, 
+				мы перезвоним и расскажем подробнее</p>
+			<!-- begin orderForm -->
+			<form 
+				id='orderForm'
+				class="orderForm"
+				method='post'
+			>
+				<!-- begin orderFormController -->
+				<div class="orderFormController">
+					<label class='orderFormController__label'>Ваше имя</label>
+					<input type="text"
+					 	name="name"
+					 	class='orderFormController__input' 
+					 	placeholder="Светлана Иванова"
+					 	max-length='90'
+					 	min-length='3'
+					 	required
+					 >
+				</div>
+				<div class="orderFormController">
+					<label class='orderFormController__label'>Ваш e-mail</label>
+					<input type="email"
+					 	name="email"
+					 	class='orderFormController__input' 
+					 	placeholder="example@mail.ru"
+					 	max-length='120'
+					 	min-length='5'
+					 	required
+					 >
+				</div>
+				<div class="orderFormController">
+					<label class='orderFormController__label'>Ваше имя</label>
+					<input type="tel"
+					 	name="phone"
+					 	class='orderFormController__input' 
+					 	placeholder="+7 (912) 345-67-89"
+					 	max-length='30'
+					 	min-length='3'
+					 	required 
+					 >
+				</div>
+				<div class="orderFormController orderFormController_select">
+					<label class='orderFormController__label'>Номер понравившегося изображения</label>
+					<select value=""
+						class='orderFormController__select'
+					 	name="imageNumber" 
+					 	placeholder="1"
+					 	id='preferedImageNum'
+					 >
+					 <option></option>
+					</select>
+				</div>
+				<!-- end orderFormController -->
+				<button 
+					type="submit" 
+					class='orderForm__button bigButton'>Оставить заявку</button>
 	</div>
 	<!-- END container -->
 	<script src="./js/main.js"></script>

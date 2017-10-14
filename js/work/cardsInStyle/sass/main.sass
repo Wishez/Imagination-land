@@ -180,6 +180,33 @@ $baseFontSize: 16
 	&_fadeIn
   		transition: opacity 1.5s
 	  	@extend %fullOpacity
+
+.bigButton
+	@extend %bold
+	padding: 10px 0;
+	@extend %defaultBorderRadius
+	@extend %yellowBg
+	@extend %defaultMarginTop
+	@extend %smoothButton
+	&:hover
+		background-color: darken($first, 10%)
+		color: lighten($darkGray, 10%)
+
+.closeButton
+	@extend %absolute
+	top: -20px;
+	right: -20px
+	padding: 5px 10px;
+	border: 2px solid $darkGray;
+	border-radius: 50%
+	line-height: 100%
+	transform: none
+	@extend %paleButton
+	@include breakpoint($xs)
+		padding-top: 3px
+		font-size: (21em / $baseFontSize)
+	&:hover
+		transform: rotate(25deg)
 body
 	& * 
 		margin: 0	
@@ -195,9 +222,9 @@ body
 	font-family: 'PT Sans', sans-serif;
 
 // Группированные элементы с определённым цветом шрифта
-.styleCard, .singleStyleImageContainer__button
+.styleCard, .singleStyleImageContainer__button, .orderFormContainer
 	color: $white
-.styleCardData__button, .styleCardPresentation__number
+.styleCardPresentation__number, .bigButton
 	color: $darkGray
 // START Styles section
 .styles
@@ -290,22 +317,10 @@ body
 		&, & * 
 			height: 0
 
+
 .styleCard__closeButton
-	@extend %absolute
-	top: -20px;
-	right: -20px
-	padding: 5px 10px;
-	border: 2px solid $darkGray
-	border-radius: 50%
-	line-height: 100%
-	transform: none
-	@extend %burgundyBg;
-	@extend %paleButton
-	@include breakpoint($xs)
-		padding-top: 3px
-		font-size: (21em / $baseFontSize)
-	&:hover
-		transform: rotate(25deg)
+	@extend %burgundyBg
+
 
 .styleCard__name, .singleStyle__name
 	@extend %fullWidth
@@ -392,17 +407,46 @@ body
 	&:first-of-type
 		@extend %zeroMarginTop
 
+
+
 .styleCardData__button
-	@extend %bold
 	@extend %halfWidth
-	padding: 10px 0;
+
+
+.orderFormContainer
+	@extend %fullWidth
 	@extend %defaultBorderRadius
+	position: fixed
+	top: 10%
+	left: calc(100% - 625px)
+	max-width: 500px
+	@extend %burgundyBg
+	padding: 5%
+	@include breakpoint($xs)
+		max-width: none
+		width: 90%
+		left: 5%
+		font-size: (28em / $baseFontSize)
+
+.orderFormController
+	@extend %fullWidth
+
+.orderFormController__input, .orderFormController__label
+	@extend %block 
+.orderFormController__label
 	@extend %defaultMarginTop
-	@extend %yellowBg
-	@extend %smoothButton
-	&:hover
-		background-color: darken($first, 10%)
-		color: lighten($darkGray, 10%)
-
-
+.orderFormController__input
+	color: $darkGray
+	background-color: $white
+	padding: 5px 10px 
+	@extend %fullWidth
+	margin-top: 0.5em
+	&:valid
+	&:invalid
+	&:required
+.orderForm__button
+	@extend %halfWidth
+	@extend %centerBlock
+.orderFormContainer__closeButton
+	@extend %darkCianBg
 

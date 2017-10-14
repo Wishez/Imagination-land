@@ -1,8 +1,17 @@
+// Объект со стилями
 import { styles } from './conf.js';
 import lozad from 'lozad';
 import Zooming from 'zooming';
 
-const cards = function() {
+/* 
+ * Производительно загружает картинки, добавляя им анимацию, когда они загрузились
+ * и собираются появится.
+ * 
+ * @param {String} imageClass - Класс изображений, собирающиеся плавно появится.
+ *
+ */
+const fashionableCards = function() {
+
 	/* 
 	 * Производительно загружает картинки, добавляя им анимацию, когда они загрузились
 	 * и собираются появится.
@@ -36,11 +45,28 @@ const cards = function() {
 		$(document).on(event, selector, callback);
 	}
 
+	/*
+	 * Создаёт строку с экземпляром работы стиля в виде изображения.
+	 * 
+	 * @param {String} src - Абсалютный или относительный путь к сделанной работе(имею в виду изображение).
+	 * @param {String} before - Абсалютный или относительный путь к работе(изображению), ещё не переделанной под заказ.
+	 * @param {String} num - Номер картинки.
+	 * 
+	 * @private
+	 */
 	const _createExample = (src, before, num) => (
 		`<img data-src='${src}' data-before='${before}' data-num='${num}'` +
 		' alt="Пример работы" class="imageContainer workExamples__image"/>'
 	);
-	
+
+	/*
+	 * Компонует экземпляры и засовывает их в контейнер.
+	 * 
+	 * @param {Object} $node - Узел DOM, в который будут помещены экземпляры работ.
+	 * @param {Array} examples - Массив с данными об одной из работ в стиле.
+	 * 
+	 * @private
+	 */
 	const _composeAndShowExamples = ($node, examples) => {
 		let resultHtml = '';
 
@@ -56,6 +82,13 @@ const cards = function() {
 		$node.html(resultHtml);
 	};
 
+	/*
+	 * Настраивает главную картинку в карточке стиля.
+	 * 
+	 * @param {Object} props - Объект с данными изображение, которое нужно отобразить.
+	 * 
+	 * @private
+	 */
 	const _customMainImage = props => {
 			props.$mainImage.attr('src', props.src);
 			props.$before.data('src', props.before);
@@ -63,32 +96,58 @@ const cards = function() {
 			props.$imageNumber.text(props.num);
 	};
 
+	/*
+	 * Меняет активное состояние кнопки.
+	 * 
+	 * @param {Object} $node - Выборка с кнопкой "До" или "После".
+	 * 
+	 * @private
+	 */
 	const _changeActiveButton = $node => {
 		const activeCls = 'styleCardPresentation__button_active';
 
 		$(`.${activeCls}`).removeClass(activeCls);
 		$node.addClass(activeCls);
 	}
+
 	/*
 	 * Привязывает события к базовым элементам, а как после того, как 
 	 * событие тригерит - выполняет задачу.
 	 * 
+	 * @param {Object} props - Описывает базовые идентификаторы и классы для элементов,
+	 * которые будут отображать логику приложения. Их можно переопределить при запуске модуля.
+	 * 
+	 * 
 	 * @public
 	 */
-	const baseScrewed = (imageClass='.imageContainer') => {
+	const baseScrewed = (
+		props = {
+			imageClass: '.imageContainer',
+			cardId: '#styleCard',
+			styleContainerId: '#styles',
+			mainImageId: '#mainImage',
+			styleNameId: '#styleName',
+			beforeButtonId: '#before',
+			afterButtonId: '#after',
+			imageNumberId: '#imageNumber',
+			workExamplesContainerId: '#workExamples',
+			styleDescriptionId: '#stlyleDescription',
+			zoomImageBg: '#212121'
+		}
+	) => {
 		// Выборки
-		let $styleCard = $('#styleCard');
-		let $styles = $('#styles');
-		let $mainImage = $('#mainImage');
-		let $styleName = $('#styleName');
-		let $before = $('#before');
-		let $after = $('#after');
-		let $imageNumber = $('#imageNumber');
-		let $workExamples = $('#workExamples');
-		let $styleDescription = $('#stlyleDescription');
+		let $styleCard = $(props.cardId);
+		let $styles = $(props.styleContainerId);
+		let $mainImage = $(props.mainImageId);
+		let $styleName = $(props.styleNameId);
+		let $before = $(props.beforeButtonId);
+		let $after = $(props.afterButtonId);
+		let $imageNumber = $(props.imageNumberId);
+		let $workExamples = $(props.workExamplesContainerId);
+		let $styleDescription = $(props.styleDescriptionId);
 		// Устанавливает масштабирование для главной картинки в карточке стиля
 		const zooming = new Zooming({
-			bgColor: '#212121'
+			bgColor: props.zoomImageBg
 		});
 		zooming.listen('#mainImage');
 		
@@ -114,11 +173,12 @@ const cards = function() {
 		screwed('.singleStyleImageContainer__button', e => {
 			// Берутся данные о стиле и его примеры
 			const cls = 'styleCard';
+			// Objects
 			const styleData = styles[e.target.dataset.style];
-			// Object
 			const meta = styleData.meta;
 			// Array
 			const examples = styleData.examples;
+			// Object
 			const firstExample = examples[0];
 
 			// Анимация карточки и стилей
@@ -146,16 +206,15 @@ const cards = function() {
 			// Компануются примеры стиля, а после отображаются
 			_composeAndShowExamples($workExamples, examples)
 			// Все скомпонованные картинки плавно загружаются
-			_loadImages('.imageContainer');
+			_loadImages(props.imageClass);
 
 		}); // End screwed
-
 
 		/*
 		 * Плавно закрывает карточку стиля 
 		 * и очищает контейнер с экземплярами работ.
 		 */
-		screwed('#closeStyleCardButton', e => {
+		screwed('#closeStyleCardButton', () => {
 			const cls = 'styleCard';
 			$styles.removeClass('styles_hidden');
 			$styleCard.removeClass(`${cls}_shown`);
@@ -171,7 +230,7 @@ const cards = function() {
 		 * Меняется активное состояние кнопки "До" и "После" состояние кнопки,
 		 * вместе с главной картинкой в карточке стиля.
 		 */
-		screwed('#after, #before', function(e) {
+		screwed('#after, #before', function() {
 			let $this = $(this);
 			// Меняется картинка
 			$mainImage.attr('src', $this.data('src'));
@@ -180,17 +239,15 @@ const cards = function() {
 
 		}); // End screwed
 
-		/*
-		 * Плавно и производительно загружает все картинки стилей.
-		 */
-		_loadImages(imageClass);
+		// Плавно и производительно загружает все картинки стилей.
+		_loadImages(props.imageClass);
 	}; // End baseScrewed
 
 	// Импортируется в фасад медиатора.
 	this.screwed = screwed;
-	this.cards = {
+	this.FC = {
 		run: baseScrewed
 	};
 }
 
-export default cards;
+export default fashionableCards;
