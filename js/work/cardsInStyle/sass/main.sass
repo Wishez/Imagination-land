@@ -14,7 +14,7 @@ $sm: 801px 991px
 $xs: max-width 800px
 $xxs: max-width 540px
 
-$baseFontSize: 16
+$baseFontSize: 18
 
 %darkCianBg
 	background-color: $third
@@ -44,12 +44,18 @@ $baseFontSize: 16
 %inlineBlock
 	display: inline-block
 // Simple Grid
+%zeroMaxHeight
+	max-height: 0
+%bigMaxHeight
+	max-height: 1920px
+%zeroWidth
+	width: 0
 %fullWidth
 	width: 100%
 %halfWidth
 	width: 49.7%
 %four
-	width: 25%
+	width: 23.5%
 %five
 	width: 20%
 // md
@@ -155,11 +161,24 @@ $baseFontSize: 16
 	font-size: 	(18em / $baseFontSize)
 %fs-21
 	font-size: 	(21em / $baseFontSize)
+%fs-24
+	font-size: 	(24em / $baseFontSize)
+%fs-28
+	font-size: 	(28em / $baseFontSize)
+%fs-21-xs
+	@include breakpoint($xs)
+		font-size: 	(21em / $baseFontSize)
+%fs-28-xs
+	@include breakpoint($xs)
+		font-size: 	(28em / $baseFontSize)
+%fs-32-xs
+	@include breakpoint($xs)
+		font-size: 	(32em / $baseFontSize)
 %bold 
 	font-weight: bold
 // Transitions
 %smoothButton
-	transition: color 0.6s, background 0.5s, transform 0.5s
+	transition: color 0.6s, background 0.5s, transform 0.5s, opacity 0.5s
 	&:active
 		transform: translateY(3px)
 %paleButton
@@ -170,7 +189,14 @@ $baseFontSize: 16
 // List styles
 %unstyled
 	list-style: none
-
+%hiddenFlow
+	overflow: hidden
+%hiddenElement
+	visibility: hidden
+%zeroIndex
+	z-index: 0
+%bigIndex
+	z-index: 4
 
 // Блоки и элементы по-умолчанию 
 .imageContainer
@@ -186,7 +212,6 @@ $baseFontSize: 16
 	padding: 10px 0;
 	@extend %defaultBorderRadius
 	@extend %yellowBg
-	@extend %defaultMarginTop
 	@extend %smoothButton
 	&:hover
 		background-color: darken($first, 10%)
@@ -202,9 +227,10 @@ $baseFontSize: 16
 	line-height: 100%
 	transform: none
 	@extend %paleButton
+	@extend %fs-21-xs
 	@include breakpoint($xs)
 		padding-top: 3px
-		font-size: (21em / $baseFontSize)
+
 	&:hover
 		transform: rotate(25deg)
 body
@@ -234,15 +260,20 @@ body
 	@extend %alignStart
 	@extend %defaultFlexFlow
 	@extend %fullOpacity
+	& *
+		// @extend %bigIndex
 	@include breakpoint($xs)
 		flex-direction: column
 		flex-wrap: nowrap
 		padding: 10% 5%
 	&, & *
-		transition: height 1.5s, opacity 1s, display 2s
+		@extend %bigMaxHeight
+		transition: max-height 1s, opacity 1s, display 2s
 	&_hidden, &_hidden *
-		height: 0
-		max-width: none
+		max-height: 0
+		// @extend %zeroIndex
+		// @extend %zeroMaxHeight
+		// max-width: none
 		@extend %lowestOpacity
 
 // START Single style
@@ -250,11 +281,10 @@ body
 .singleStyle
 	@extend %four
 	@extend %halfWidth-sm
-	@extend %defaultMarginTop
+	@extend %increasedMarginTop
 	@extend %halfWidth-sm
 	@extend %fullWidth-xs
-	@include breakpoint($xs)
-		font-size: (28em / $baseFontSize)
+	@extend %fs-28-xs
 		
 
 
@@ -280,7 +310,6 @@ body
 
 .styleCardPresentationMainImage
 	@extend %relative
-	// min-height: 260px 
 // START Card
 .styleCard
 	@extend %flex
@@ -289,33 +318,32 @@ body
 	@extend %alignStart
 	@extend %justifyStart
 	@extend %defaultBorderRadius
-	@extend %lowestOpacity
 	@extend %darkCianBg
 	@extend %defaultMarginTop
-	// @extend %centerBlock
+	@extend %lowestOpacity
+	@extend %zeroWidth
 	@extend %relative
+	@extend %fs-28-xs
+	@extend %zeroMaxHeight
 	max-width: 900px
 	padding: 3% 1.5em 5%
 	margin-top: 0
-	width: 0;
-	transition: width 1.5s, opacity 1s, height 2s, margin 1s, padding 1s
+	&, & *
+		transition: width 1.5s, opacity 1s, max-height 1.5s, margin 1s, padding 1s
+	& *
+		max-height: 0
 	@include breakpoint($xs)
-		font-size: (28em / $baseFontSize)
 		max-width: none
 		line-height: 145%
 		padding: 10% 6%
-	& button
-		display: none
-	&_shown
-		@extend %fullOpacity
-		width: 100%
-		margin-top: 5%
-		height: auto;
-		& button
-			display: block;
-	&_zeroHeight
-		&, & * 
-			height: 0
+
+.styleCard_shown
+	@extend %fullWidth
+	@extend %fullOpacity
+	@extend %increasedMarginTop
+	@extend %bigMaxHeight
+	& *
+		max-height: 1600px
 
 
 .styleCard__closeButton
@@ -326,8 +354,8 @@ body
 	@extend %fullWidth
 	@extend %fs-21
 	@extend %bold
-	@include breakpoint($xs)
-		font-size: (28em / $baseFontSize)
+	@extend %fs-28-xs
+
 // START Card presentation
 .styleCardPresentation
 	@extend %halfWidth
@@ -386,9 +414,7 @@ body
 .styleCardData
 	@extend %halfWidth
 	@extend %defaultMarginTop
-	// @extend %fullWidth-xs
-	@include breakpoint($xs)
-		width: 100%
+	@extend %fullWidth-xs
 .styleCardData__title:not(:first-of-type)
 	@extend %increasedMarginTop
 
@@ -411,42 +437,74 @@ body
 
 .styleCardData__button
 	@extend %halfWidth
+	@extend %defaultMarginTop
 
 
 .orderFormContainer
 	@extend %fullWidth
 	@extend %defaultBorderRadius
-	position: fixed
-	top: 10%
-	left: calc(100% - 625px)
-	max-width: 500px
 	@extend %burgundyBg
-	padding: 5%
+	position: fixed
+	top: 5%
+	left: 25%
+	max-width: 500px
+	padding: 4% 5%
+	transition: width 1.5s, max-height 1s, opacity 1.5s
+	&, & *
+		@extend %bigIndex
+		@extend %fullOpacity
+	& *:not(.orderForm__button):not(.orderFormContainer__closeButton)  
+		transition: opacity 1s
+	&_hidden
+		@extend %hiddenElement
+	@extend %bigMaxHeight
+	@extend %fullOpacity
+	@extend %fs-21-xs
 	@include breakpoint($xs)
 		max-width: none
 		width: 90%
 		left: 5%
-		font-size: (28em / $baseFontSize)
+	@include breakpoint(max-width 500px)
+		font-size: (28em / 16)
+.orderFormContainer_closed
+	@extend %zeroWidth
+	@extend %zeroMaxHeight
+	&.orderFormContainer, &.orderFormContainer * 
+		@extend %lowestOpacity
 
 .orderFormController
 	@extend %fullWidth
-
 .orderFormController__input, .orderFormController__label
 	@extend %block 
 .orderFormController__label
 	@extend %defaultMarginTop
-.orderFormController__input
+.orderFormController__input, .orderFormController__select
 	color: $darkGray
 	background-color: $white
-	padding: 5px 10px 
+	padding: 0.8em 1em
 	@extend %fullWidth
 	margin-top: 0.5em
-	&:valid
-	&:invalid
-	&:required
+	&:focus
+		&:invalid, &:valid
+			border: 2px solid 
+		&:invalid	
+			border-color: #941302
+		&:valid
+			border-color: #3D6651
+
 .orderForm__button
 	@extend %halfWidth
 	@extend %centerBlock
+	@extend %increasedMarginTop
 .orderFormContainer__closeButton
 	@extend %darkCianBg
 
+.orderFormContainer__hint
+	@extend %defaultMarginTop
+
+.orderFormContainer__styleName
+	font-size: (22em / 16)
+
+.orderForm__error
+	color: $first
+	@extend %defaultMarginTop

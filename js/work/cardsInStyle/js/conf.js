@@ -69,5 +69,145 @@ export const styles = {
 				"before": "./img/sl_3_b.jpg",
 				"num": "3"
 			}] 
-	} // end "a"
+	}, // end "sl"
+	imp: { meta: {
+			description: 'Яркое выражение вашей натуры.',
+			name: 'Импрессионизм'
+		},
+		examples: [{
+				"src": "./img/sl_1.jpg",
+				"before": "./img/sl_1_b.jpg",
+				"num": "1",
+			},
+			{
+				"src": "./img/sl_2.jpg",
+				"before": "./img/sl_2_b.jpg",
+				"num": "2"
+			},
+			{
+				"src": "./img/sl_3.jpg",
+				"before": "./img/sl_3_b.jpg",
+				"num": "3"
+			}] 
+	}, // end "imp"
+	mdrn: { meta: {
+			description: 'Современное изображение.',
+			name: 'Модернизм'
+		},
+		examples: [{
+				"src": "./img/sl_1.jpg",
+				"before": "./img/sl_1_b.jpg",
+				"num": "1",
+			},
+			{
+				"src": "./img/sl_2.jpg",
+				"before": "./img/sl_2_b.jpg",
+				"num": "2"
+			},
+			{
+				"src": "./img/sl_3.jpg",
+				"before": "./img/sl_3_b.jpg",
+				"num": "3"
+			}] 
+	}, // end "mdrn"
+	cb: { meta: {
+			description: 'Сделаем из вас квадрат.',
+			name: 'Кубизм'
+		},
+		examples: [{
+				"src": "./img/sl_1.jpg",
+				"before": "./img/sl_1_b.jpg",
+				"num": "1",
+			},
+			{
+				"src": "./img/sl_2.jpg",
+				"before": "./img/sl_2_b.jpg",
+				"num": "2"
+			},
+			{
+				"src": "./img/sl_3.jpg",
+				"before": "./img/sl_3_b.jpg",
+				"num": "3"
+			}] 
+	},
+	gpr: { meta: {
+			description: 'Тоже самое, что и фотореализм.',
+			name: 'Гиперреализм'
+		},
+		examples: [{
+				"src": "./img/sl_1.jpg",
+				"before": "./img/sl_1_b.jpg",
+				"num": "4",
+			},
+			{
+				"src": "./img/sl_2.jpg",
+				"before": "./img/sl_2_b.jpg",
+				"num": "4"
+			},
+			{
+				"src": "./img/sl_3.jpg",
+				"before": "./img/sl_3_b.jpg",
+				"num": "4"
+			}] 
+	},
+	phr: { meta: {
+			description: 'Сделаем из квадрата реальную фотографию.',
+			name: 'Фотореализм'
+		},
+		examples: [{
+				"src": "./img/sl_1.jpg",
+				"before": "./img/sl_1_b.jpg",
+				"num": "1414",
+			},
+			{
+				"src": "./img/sl_2.jpg",
+				"before": "./img/sl_2_b.jpg",
+				"num": "2594"
+			},
+			{
+				"src": "./img/sl_3.jpg",
+				"before": "./img/sl_3_b.jpg",
+				"num": "34"
+			}] 
+	},
+	next1: { meta: {
+			description: 'Тест1',
+			name: 'Прочее 1'
+		},
+		examples: [{
+				"src": "./img/sl_1.jpg",
+				"before": "./img/sl_1_b.jpg",
+				"num": "19",
+			},
+			{
+				"src": "./img/sl_2.jpg",
+				"before": "./img/sl_2_b.jpg",
+				"num": "3"
+			},
+			{
+				"src": "./img/sl_3.jpg",
+				"before": "./img/sl_3_b.jpg",
+				"num": "5"
+			}] 
+	},
+	next2: { meta: {
+			description: 'Тест 2',
+			name: 'Прочее 2'
+		},
+		examples: [{
+				"src": "./img/sl_1.jpg",
+				"before": "./img/sl_1_b.jpg",
+				"num": "3",
+			},
+			{
+				"src": "./img/sl_2.jpg",
+				"before": "./img/sl_2_b.jpg",
+				"num": "1"
+			},
+			{
+				"src": "./img/sl_3.jpg",
+				"before": "./img/sl_3_b.jpg",
+				"num": "2"
+			}] 
+	}
 }

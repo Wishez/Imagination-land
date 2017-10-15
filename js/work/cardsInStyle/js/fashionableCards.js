@@ -39,11 +39,11 @@ const fashionableCards = function() {
 	 * @param {String} event - Событие, на которое будет тригерить функция
 	 * По умолчанию стоит событие клика.
 	 *
-	 * @public
+	 * @private
 	 */
-	const screwed = (selector, callback, event='click') =>  {
+	const _screwed = (selector, callback, event='click') =>  {
 		$(document).on(event, selector, callback);
-	}
+	};
 
 	/*
 	 * Создаёт строку с экземпляром работы стиля в виде изображения.
@@ -132,6 +132,7 @@ const fashionableCards = function() {
 			imageNumberId: '#imageNumber',
 			workExamplesContainerId: '#workExamples',
 			styleDescriptionId: '#stlyleDescription',
+			openOrderFormButtonId: '#orderPictureButton',
 			zoomImageBg: '#212121'
 		}
 	) => {
@@ -145,6 +146,7 @@ const fashionableCards = function() {
 		let $imageNumber = $(props.imageNumberId);
 		let $workExamples = $(props.workExamplesContainerId);
 		let $styleDescription = $(props.styleDescriptionId);
+		let $openFromButton = $(props.openOrderFormButtonId);
 		// Устанавливает масштабирование для главной картинки в карточке стиля
 		const zooming = new Zooming({
 			bgColor: props.zoomImageBg
@@ -155,7 +157,7 @@ const fashionableCards = function() {
 		 * Открывает краточку стиля по нажатию на кнопку "Подробнее",
 		 * а после заполняет её данными
 		 */
-		screwed('.workExamples__image', function(e) {
+		_screwed('.workExamples__image', function(e) {
 			_customMainImage({
 				...$(this).data(),
 				$imageNumber,
@@ -163,6 +165,7 @@ const fashionableCards = function() {
 				$before,
 				$after
 			});
+
 			_changeActiveButton($after);
 		});
 
@@ -170,11 +173,12 @@ const fashionableCards = function() {
 		 * Открывает краточку стиля по нажатию на кнопку "Подробнее",
 		 * а после заполняет её данными
 		 */
-		screwed('.singleStyleImageContainer__button', e => {
+		_screwed('.singleStyleImageContainer__button', e => {
 			// Берутся данные о стиле и его примеры
 			const cls = 'styleCard';
+			const currStyle = e.target.dataset.style;
 			// Objects
-			const styleData = styles[e.target.dataset.style];
+			const styleData = styles[currStyle];
 			const meta = styleData.meta;
 			// Array
 			const examples = styleData.examples;
@@ -183,12 +187,13 @@ const fashionableCards = function() {
 
 			// Анимация карточки и стилей
 			$styles.addClass('styles_hidden');
-			$styleCard
-				.removeClass(`${cls}_zeroHeight`)
-				.addClass(`${cls}_shown`);
-
+			$styleCard.addClass(`${cls}_shown`);
 			// Заполнение карточки данными
 			$styleName.text(meta.name);
+			$openFromButton.data({
+				'styleName': meta.name,
+				'style': currStyle
+			});
 			$styleDescription.text(meta.description);
 			// Главная картинка
 			_customMainImage({
@@ -214,14 +219,10 @@ const fashionableCards = function() {
 		 * Плавно закрывает карточку стиля 
 		 * и очищает контейнер с экземплярами работ.
 		 */
-		screwed('#closeStyleCardButton', () => {
+		_screwed('#closeStyleCardButton', () => {
 			const cls = 'styleCard';
 			$styles.removeClass('styles_hidden');
 			$styleCard.removeClass(`${cls}_shown`);
-			
-			setTimeout(() => {
-				$styleCard.addClass(`${cls}_zeroHeight`);
-			}, 1000)
 
 			$workExamples.empty();
 		}); // End screwed
@@ -230,7 +231,7 @@ const fashionableCards = function() {
 		 * Меняется активное состояние кнопки "До" и "После" состояние кнопки,
 		 * вместе с главной картинкой в карточке стиля.
 		 */
-		screwed('#after, #before', function() {
+		_screwed('#after, #before', function() {
 			let $this = $(this);
 			// Меняется картинка
 			$mainImage.attr('src', $this.data('src'));
@@ -244,7 +245,6 @@ const fashionableCards = function() {
 	}; // End baseScrewed
 
 	// Импортируется в фасад медиатора.
-	this.screwed = screwed;
 	this.FC = {
 		run: baseScrewed
 	};

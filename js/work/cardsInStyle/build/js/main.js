@@ -151,8 +151,135 @@ var styles = exports.styles = {
 			"src": "./img/sl_3.jpg",
 			"before": "./img/sl_3_b.jpg",
 			"num": "3"
-		}] // end "a"
-	} };
+		}]
+	}, // end "sl"
+	imp: { meta: {
+			description: 'Яркое выражение вашей натуры.',
+			name: 'Импрессионизм'
+		},
+		examples: [{
+			"src": "./img/sl_1.jpg",
+			"before": "./img/sl_1_b.jpg",
+			"num": "1"
+		}, {
+			"src": "./img/sl_2.jpg",
+			"before": "./img/sl_2_b.jpg",
+			"num": "2"
+		}, {
+			"src": "./img/sl_3.jpg",
+			"before": "./img/sl_3_b.jpg",
+			"num": "3"
+		}]
+	}, // end "imp"
+	mdrn: { meta: {
+			description: 'Современное изображение.',
+			name: 'Модернизм'
+		},
+		examples: [{
+			"src": "./img/sl_1.jpg",
+			"before": "./img/sl_1_b.jpg",
+			"num": "1"
+		}, {
+			"src": "./img/sl_2.jpg",
+			"before": "./img/sl_2_b.jpg",
+			"num": "2"
+		}, {
+			"src": "./img/sl_3.jpg",
+			"before": "./img/sl_3_b.jpg",
+			"num": "3"
+		}]
+	}, // end "mdrn"
+	cb: { meta: {
+			description: 'Сделаем из вас квадрат.',
+			name: 'Кубизм'
+		},
+		examples: [{
+			"src": "./img/sl_1.jpg",
+			"before": "./img/sl_1_b.jpg",
+			"num": "1"
+		}, {
+			"src": "./img/sl_2.jpg",
+			"before": "./img/sl_2_b.jpg",
+			"num": "2"
+		}, {
+			"src": "./img/sl_3.jpg",
+			"before": "./img/sl_3_b.jpg",
+			"num": "3"
+		}]
+	},
+	gpr: { meta: {
+			description: 'Тоже самое, что и фотореализм.',
+			name: 'Гиперреализм'
+		},
+		examples: [{
+			"src": "./img/sl_1.jpg",
+			"before": "./img/sl_1_b.jpg",
+			"num": "4"
+		}, {
+			"src": "./img/sl_2.jpg",
+			"before": "./img/sl_2_b.jpg",
+			"num": "4"
+		}, {
+			"src": "./img/sl_3.jpg",
+			"before": "./img/sl_3_b.jpg",
+			"num": "4"
+		}]
+	},
+	phr: { meta: {
+			description: 'Сделаем из квадрата реальную фотографию.',
+			name: 'Фотореализм'
+		},
+		examples: [{
+			"src": "./img/sl_1.jpg",
+			"before": "./img/sl_1_b.jpg",
+			"num": "1414"
+		}, {
+			"src": "./img/sl_2.jpg",
+			"before": "./img/sl_2_b.jpg",
+			"num": "2594"
+		}, {
+			"src": "./img/sl_3.jpg",
+			"before": "./img/sl_3_b.jpg",
+			"num": "34"
+		}]
+	},
+	next1: { meta: {
+			description: 'Тест1',
+			name: 'Прочее 1'
+		},
+		examples: [{
+			"src": "./img/sl_1.jpg",
+			"before": "./img/sl_1_b.jpg",
+			"num": "19"
+		}, {
+			"src": "./img/sl_2.jpg",
+			"before": "./img/sl_2_b.jpg",
+			"num": "3"
+		}, {
+			"src": "./img/sl_3.jpg",
+			"before": "./img/sl_3_b.jpg",
+			"num": "5"
+		}]
+	},
+	next2: { meta: {
+			description: 'Тест 2',
+			name: 'Прочее 2'
+		},
+		examples: [{
+			"src": "./img/sl_1.jpg",
+			"before": "./img/sl_1_b.jpg",
+			"num": "3"
+		}, {
+			"src": "./img/sl_2.jpg",
+			"before": "./img/sl_2_b.jpg",
+			"num": "1"
+		}, {
+			"src": "./img/sl_3.jpg",
+			"before": "./img/sl_3_b.jpg",
+			"num": "2"
+		}]
+	}
+};
 
 },{}],3:[function(require,module,exports){
 'use strict';
@@ -212,9 +339,9 @@ var fashionableCards = function fashionableCards() {
   * @param {String} event - Событие, на которое будет тригерить функция
   * По умолчанию стоит событие клика.
   *
-  * @public
+  * @private
   */
-	var screwed = function screwed(selector, callback) {
+	var _screwed = function _screwed(selector, callback) {
 		var event = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'click';
 
 		$(document).on(event, selector, callback);
@@ -302,6 +429,7 @@ var fashionableCards = function fashionableCards() {
 			imageNumberId: '#imageNumber',
 			workExamplesContainerId: '#workExamples',
 			styleDescriptionId: '#stlyleDescription',
+			openOrderFormButtonId: '#orderPictureButton',
 			zoomImageBg: '#212121'
 		};
 
@@ -315,6 +443,7 @@ var fashionableCards = function fashionableCards() {
 		var $imageNumber = $(props.imageNumberId);
 		var $workExamples = $(props.workExamplesContainerId);
 		var $styleDescription = $(props.styleDescriptionId);
+		var $openFromButton = $(props.openOrderFormButtonId);
 		// Устанавливает масштабирование для главной картинки в карточке стиля
 		var zooming = new _zooming2.default({
 			bgColor: props.zoomImageBg
@@ -325,13 +454,14 @@ var fashionableCards = function fashionableCards() {
    * Открывает краточку стиля по нажатию на кнопку "Подробнее",
    * а после заполняет её данными
    */
-		screwed('.workExamples__image', function (e) {
+		_screwed('.workExamples__image', function (e) {
 			_customMainImage(_extends({}, $(this).data(), {
 				$imageNumber: $imageNumber,
 				$mainImage: $mainImage,
 				$before: $before,
 				$after: $after
 			}));
+
 			_changeActiveButton($after);
 		});
 
@@ -339,11 +469,12 @@ var fashionableCards = function fashionableCards() {
    * Открывает краточку стиля по нажатию на кнопку "Подробнее",
    * а после заполняет её данными
    */
-		screwed('.singleStyleImageContainer__button', function (e) {
+		_screwed('.singleStyleImageContainer__button', function (e) {
 			// Берутся данные о стиле и его примеры
 			var cls = 'styleCard';
+			var currStyle = e.target.dataset.style;
 			// Objects
-			var styleData = _conf.styles[e.target.dataset.style];
+			var styleData = _conf.styles[currStyle];
 			var meta = styleData.meta;
 			// Array
 			var examples = styleData.examples;
@@ -352,10 +483,13 @@ var fashionableCards = function fashionableCards() {
 
 			// Анимация карточки и стилей
 			$styles.addClass('styles_hidden');
-			$styleCard.removeClass(cls + '_zeroHeight').addClass(cls + '_shown');
-
+			$styleCard.addClass(cls + '_shown');
 			// Заполнение карточки данными
 			$styleName.text(meta.name);
+			$openFromButton.data({
+				'styleName': meta.name,
+				'style': currStyle
+			});
 			$styleDescription.text(meta.description);
 			// Главная картинка
 			_customMainImage({
@@ -380,14 +514,10 @@ var fashionableCards = function fashionableCards() {
    * Плавно закрывает карточку стиля 
    * и очищает контейнер с экземплярами работ.
    */
-		screwed('#closeStyleCardButton', function () {
+		_screwed('#closeStyleCardButton', function () {
 			var cls = 'styleCard';
 			$styles.removeClass('styles_hidden');
 			$styleCard.removeClass(cls + '_shown');
-
-			setTimeout(function () {
-				$styleCard.addClass(cls + '_zeroHeight');
-			}, 1000);
 
 			$workExamples.empty();
 		}); // End screwed
@@ -396,7 +526,7 @@ var fashionableCards = function fashionableCards() {
    * Меняется активное состояние кнопки "До" и "После" состояние кнопки,
    * вместе с главной картинкой в карточке стиля.
    */
-		screwed('#after, #before', function () {
+		_screwed('#after, #before', function () {
 			var $this = $(this);
 			// Меняется картинка
 			$mainImage.attr('src', $this.data('src'));
@@ -409,7 +539,6 @@ var fashionableCards = function fashionableCards() {
 	}; // End baseScrewed
 
 	// Импортируется в фасад медиатора.
-	this.screwed = screwed;
 	this.FC = {
 		run: baseScrewed
 	};
@@ -417,7 +546,7 @@ var fashionableCards = function fashionableCards() {
 
 exports.default = fashionableCards;
 
-},{"./conf.js":2,"lozad":6,"zooming":7}],4:[function(require,module,exports){
+},{"./conf.js":2,"lozad":7,"zooming":8}],4:[function(require,module,exports){
 'use strict';
 
 require('jquery');
@@ -426,6 +555,10 @@ var _fashionableCards = require('./fashionableCards.js');
 
 var _fashionableCards2 = _interopRequireDefault(_fashionableCards);
 
+var _orderForm = require('./orderForm.js');
+
+var _orderForm2 = _interopRequireDefault(_orderForm);
+
 var _ScrewDriver = require('./ScrewDriver.js');
 
 var _ScrewDriver2 = _interopRequireDefault(_ScrewDriver);
@@ -433,13 +566,153 @@ var _ScrewDriver2 = _interopRequireDefault(_ScrewDriver);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _ScrewDriver2.default.mount('fashionableCards', _fashionableCards2.default);
+_ScrewDriver2.default.mount('orderForm', _orderForm2.default);
+
 _ScrewDriver2.default.init('fashionableCards');
+_ScrewDriver2.default.init('orderForm');
 
 $(document).ready(function () {
 	_ScrewDriver2.default.FC.run();
+	_ScrewDriver2.default.orderForm.run();
 });
 
-},{"./ScrewDriver.js":1,"./fashionableCards.js":3,"jquery":5}],5:[function(require,module,exports){
+},{"./ScrewDriver.js":1,"./fashionableCards.js":3,"./orderForm.js":5,"jquery":6}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _conf = require('./conf.js');
+
+var orderForm = function orderForm() {
+	var _this = this;
+
+	/* 
+  * Обычная обёртка для установки события элементу.
+  * 
+  * @param {String} selector - Селектор, к которому привязывается событие. 
+  * @param {Function} callback - Обратный вызов, вызывающийся после того, как событие произойдёт.
+  * @param {String} event - Событие, на которое будет тригерить функция
+  * По умолчанию стоит событие клика.
+  *
+  * @public
+  */
+	var _screwed = function _screwed(selector, callback) {
+		var event = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'click';
+
+		$(document).on(event, selector, callback);
+	};
+	var _openForm = function _openForm($node) {};
+
+	var _cloeseForm = function _cloeseForm() {};
+
+	var _tryMakeOrder = function _tryMakeOrder(url, data, callback, failure) {
+
+		$.ajaxSetup({
+			url: url,
+			method: 'POST',
+			data: data
+		});
+
+		$.ajax({
+			success: function success(response) {
+				callback(response);
+			},
+			error: function error(xhr, errmsg, err) {
+				failure(xhr, errmsg, err);
+			}
+		});
+	};
+
+	var _createNumOption = function _createNumOption(num) {
+		return '<option value=\'' + num + '\' class=\'orderFormController__option\'>' + num + '</option>';
+	};
+
+	var _composeAndShowNumbersOfImages = function _composeAndShowNumbersOfImages($node, examples) {
+		var resultHtml = "<option value='' disabled selected " + "class='orderFormController__option'>Номер изображения</option>";
+
+		examples.forEach(function (example) {
+			resultHtml += _createNumOption(example.num);
+		});
+
+		$node.html(resultHtml);
+	};
+
+	var customForm = function customForm() {
+		var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+			formId: "#orderForm",
+			containerFormId: "#orderFormContainer",
+			containerFormClass: '.orderFormContainer',
+			openFormButtonId: "#orderPictureButton",
+			closeFormButtonId: "#orderFormCloseButton",
+			submitButtonId: '#orderFormSubmitButton',
+			formTitleId: '#orderFormTitle',
+			fieldWithNumId: '#preferedImageNum',
+			formErrorId: '#formError',
+			url: '/fashionableImages/registerOrder/',
+			errorHandler: false,
+			successHandler: false
+		};
+
+		var $form = $(props.fromId);
+		var $formContainer = $(props.containerFormId);
+		var $openButton = $(props.openFormButtonId);
+		var $closeButton = $(props.closeFormButtonId);
+		var $submitButton = $(props.submitButtonId);
+		var $formTitle = $(props.formTitleId);
+		var $preferedNumField = $(props.fieldWithNumId);
+		var $formError = $(props.formErrorId);
+
+		_screwed(props.closeFormButtonId, function () {
+			// Убираю точку вначале строки.
+			var cls = props.containerFormClass.slice(1);
+
+			$formContainer.addClass(cls + '_closed');
+
+			setTimeout(function () {
+				$formContainer.addClass(cls + '_hidden');
+				$preferedNumField.empty();
+			}, 1200);
+		});
+
+		_screwed(props.openFormButtonId, function () {
+			// Убираю точку вначале строки.
+			var data = $openButton.data();
+			var cls = props.containerFormClass.slice(1);
+			// Заполняет форму данными - ставит стиль в заголовок и добавляет номера изображений
+			// в поле с выбором предпочтительного изображения.
+			$formTitle.html('\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C \u043F\u043E\u0440\u0442\u0440\u0435\u0442 \u0432 \u0441\u0442\u0438\u043B\u0435 "' + data.styleName + '"');
+			_composeAndShowNumbersOfImages($preferedNumField, _conf.styles[data.style].examples);
+			// Отображает форму.
+			$formContainer.removeClass(cls + '_closed ' + cls + '_hidden');
+		});
+
+		_screwed(props.formId, function (e) {
+			var formData = $(_this).serialize();
+
+			_tryMakeOrder(props.url, formData, props.success ? props.success : function (response) {
+				var message = '<p class="orderForm__successMessage">' + 'В ближайшее время мы свяжемся с вами, чтобы обсудить детали.</p>';
+
+				$form.html(message);
+			}, // end props.success
+			props.error ? props.error : function (xhr, errmsg, err) {
+				$formError.html('Внутренняя ошибка сервера');
+			} // end props.error
+			); // end _tryMakeOrder
+
+			e.preventDefault();
+		}, 'submit'); // end _screwed
+	};
+
+	this.orderForm = {
+		run: customForm
+	};
+};
+
+exports.default = orderForm;
+
+},{"./conf.js":2}],6:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -10702,7 +10975,7 @@ return jQuery;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*! lozad.js - v1.0.7 - 2017-10-13
 * https://github.com/ApoorvSaxena/lozad.js
 * Copyright (c) 2017 Apoorv Saxena; Licensed MIT */
@@ -10803,7 +11076,7 @@ return lozad;
 
 })));
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
