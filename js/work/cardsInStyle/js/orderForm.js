@@ -14,12 +14,6 @@ const orderForm = function() {
 	const _screwed = (selector, callback, event='click') =>  {
 		$(document).on(event, selector, callback);
 	};
-	const _openForm = ($node) => {
-	};
-
-	const _cloeseForm = () => {
-
-	};
 
 	const _tryMakeOrder = (
 		url,
@@ -60,8 +54,6 @@ const orderForm = function() {
 		$node.html(resultHtml);
 	}
 
-	 
-
 	const customForm = (
 		props = {
 			formId: "#orderForm",
@@ -78,7 +70,7 @@ const orderForm = function() {
 			successHandler: false
 		}
 	) => {
-		let $form = $(props.fromId);
+		let $form = $(props.formId);
 		let $formContainer = $(props.containerFormId);
 		let $openButton = $(props.openFormButtonId);
 		let $closeButton = $(props.closeFormButtonId);
@@ -122,7 +114,9 @@ const orderForm = function() {
 					response => {
 						const message = '<p class="orderForm__successMessage">' + 
 							'В ближайшее время мы свяжемся с вами, чтобы обсудить детали.</p>';
-							
+
+						$formTitle.html('Вы успешно заказали портрет');
+						$('.orderFormContainer__hint').remove();
 						$form.html(message);
 					},// end props.success
 				props.error ?

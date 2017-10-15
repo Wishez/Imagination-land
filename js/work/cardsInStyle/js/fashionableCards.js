@@ -186,8 +186,12 @@ const fashionableCards = function() {
 			const firstExample = examples[0];
 
 			// Анимация карточки и стилей
-			$styles.addClass('styles_hidden');
+			const currWidth = window.innerWidth;
 			$styleCard.addClass(`${cls}_shown`);
+			// Скролл к карточке.
+			$('html, body').animate({
+				scrollTop:  $styleCard.offset().top
+			}, 1000);
 			// Заполнение карточки данными
 			$styleName.text(meta.name);
 			$openFromButton.data({
@@ -221,6 +225,7 @@ const fashionableCards = function() {
 		 */
 		_screwed('#closeStyleCardButton', () => {
 			const cls = 'styleCard';
+
 			$styles.removeClass('styles_hidden');
 			$styleCard.removeClass(`${cls}_shown`);
 

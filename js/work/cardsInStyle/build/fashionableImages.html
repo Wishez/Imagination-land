@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="/static/cardInStyle/css/main.css">
+</head>
+<body>
+	<!-- START container -->
+	<div class="container">
+		<!-- START styles -->
+		<ul class="styles" id='styles'>
+			<!-- START singleStyle -->	
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Релизм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/r_1.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button 
+						data-style='r'
+						class="singleStyleImageContainer__button">Подробнее
+					</button>
+				</div>
+			</li>
+			<!-- END singleStyle -->
+
+			<!-- START singleStyle -->
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Сюрреализм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/sl_1.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='sl' 
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<!-- END singleStyle -->
+			<!-- START singleStyle -->
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Импрессионизм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/r_2.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='imp' 
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<!-- END singleStyle -->
+
+			<!-- START singleStyle -->
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Модернизм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/sl_2.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='mdrn' 
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<!-- END singleStyle -->
+			<!-- START singleStyle -->
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Кубизм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/a_2.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='cb' 
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<!-- END singleStyle -->
+			<!-- START singleStyle -->
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Гиперреализм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/r_3.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='gpr' 
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<!-- END singleStyle -->
+			<!-- START singleStyle -->
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Фотореализм</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/sl_3.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='phr' 
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<!-- END singleStyle -->
+			<!-- START singleStyle -->
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Прочее 1</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/r_1_b.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='next1' 
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<!-- END singleStyle -->
+
+			<!-- START singleStyle -->
+			<li class="singleStyle">
+				<h3 class="singleStyle__name">Прочее 2</h3>
+				<div class="singleStyleImageContainer">	
+					<img  data-src="/static/cardInStyle/img/a_1_b.jpg" class="imageContainer singleStyleImageContainer__image" alt='Пример работы' />
+					<button data-style='next2'
+						type='button' 
+						class="singleStyleImageContainer__button">Подробнее</button>
+				</div>
+			</li>
+			<!-- END singleStyle  -->
+		</ul>
+		<!-- END styles -->
+
+
+		<!-- START style card -->
+		<div id='styleCard' class="styleCard styleCard_hidden">
+			<button id='closeStyleCardButton'
+				type='button' 
+				class='styleCard__closeButton closeButton'>x</button>
+
+			<h3 id='styleName' class="styleCard__name"></h3>
+			<!-- START styleCardPresentation -->
+			<div class="styleCardPresentation">
+				<div class="styleCardPresentationMainImage">
+					<img id='mainImage' data-src="" class="imageContainer styleCardPresentationImageContainer" alt='Пример работы' />
+					<button 
+					    type='button'
+						id='before' 
+						class="styleCardPresentation__button styleCardPresentation__button_before">
+							До
+					</button>
+					<button 
+						type='button'
+						id='after' 
+						class="styleCardPresentation__button styleCardPresentation__button_after"
+					>
+							После
+					</button>
+					<span id='imageNumber' class='styleCardPresentation__number'></span>
+				</div>
+				<!-- END styleCardPresentationMainImage -->
+
+				<!-- START workExamples -->
+				<div id='workExamples' class="workExamples"></div>
+				<!-- END workExamples -->
+			</div>
+			<!-- END styleCardPresentation -->
+			<div class="styleCardData">	
+				<h5 class="styleCardData__title">Популярные размеры:</h5>
+				<!-- START styleCardDataSizesList -->
+				<ul class="styleCardDataSizesList">
+					<li class="styleCardDataSizesList__size">30x50&nbsp;&mdash; 3500&#8381;</li>
+					<li class="styleCardDataSizesList__size">40x60&nbsp;см&nbsp;&mdash; 3990&#8381;</li>
+					<li class="styleCardDataSizesList__size">60x90&nbsp;см&nbsp;&mdash; 4990&#8381;</li>
+					<li class="styleCardDataSizesList__size">80x80&nbsp;см&nbsp;&mdash; 5990&#8381;</li>
+					<li class="styleCardDataSizesList__size">100x100&nbsp;см&nbsp;&mdash; 8500&#8381;</li>
+				</ul>
+				<!-- END styleCardDataSizesList -->
+				<button 
+					type="button" 
+					class='styleCardData__button bigButton' 
+					id='orderPictureButton'>Заказать</button>
+				<!-- START styleCardDataConditions -->
+				<ul class="styleCardDataConditions">
+					<li class="styleCardDataConditions__condition">Готовность эскиза: 4&nbsp;&ndash;&nbsp;36 часов</li>
+					<li class="styleCardDataConditions__condition">Предоплата: 1000&#8381;</li>
+					<li class="styleCardDataConditions__condition">+1 человек: 1000&#8381;</li>
+					<li class="styleCardDataConditions__condition">Любой размер под заказ</li>
+				</ul>
+				<!-- END styleCardDataConditions -->
+				<h5 class="styleCardData__title">Особенности стиля: </h5>
+				<!-- START styleCardDataStyleBrief -->
+				<ul class="styleCardDataStyleBrief" id='stlyleDescription'>
+					<li class="styleCardDataStyleBrief__description"></li>
+				</ul>
+				<!-- END styleCardDataStyleBrief -->
+			</div>
+		</div>
+		<!-- END style card -->
+		
+		<!-- begin orderFormContainer -->
+		<div id='orderFormContainer' 
+			class="orderFormContainer orderFormContainer_closed orderFormContainer_hidden">
+			<button id='orderFormCloseButton'
+				type='button' 
+				class='orderFormContainer__closeButton closeButton'>x</button>
+			<h2 class="orderFormContainer__styleName" id='orderFormTitle'></h2>
+			<p class="orderFormContainer__hint">Оставьте Ваши данные, 
+				мы перезвоним и расскажем подробнее</p>
+			<!-- begin orderForm -->
+			<form 
+				id='orderForm'
+				class="orderForm"
+				method='post'
+			>
+				<!-- begin orderFormController -->
+				<div class="orderFormController">
+					<label class='orderFormController__label'>Ваше имя</label>
+					<input type="text"
+					 	name="name"
+					 	class='orderFormController__input' 
+					 	placeholder="Светлана Иванова"
+					 	maxlength='90'
+					 	minlength='3'
+					 	required
+					 	autofocus
+					 	pattern='^[A-Za-zА-Яа-я\s]*'
+					 >
+				</div>
+				<div class="orderFormController">
+					<label class='orderFormController__label'>Ваш e-mail</label>
+					<input type="email"
+					 	name="email"
+					 	class='orderFormController__input' 
+					 	placeholder="example@mail.ru"
+					 	maxlength='120'
+					 	minlength='5'
+					 	required
+
+					 >
+				</div>
+				<div class="orderFormController">
+					<label class='orderFormController__label'>Ваш телефон:</label>
+					<input type="tel"
+					 	name="phone"
+					 	class='orderFormController__input' 
+					 	placeholder="+7 (912) 345-67-89"
+					 	maxlength='20'
+					 	minlength='3'
+					 	required 
+					 	pattern='^[^A-Za-zА-Яа-я!@#$%^&*~`=]*'
+					 >
+				</div>
+				<div class="orderFormController orderFormController_select">
+					<label class='orderFormController__label'>Номер понравившегося изображения</label>
+					<select class='orderFormController__select'
+					 	name="preferedNumber" 
+					 	id='preferedImageNum'>
+					</select>
+				</div>
+				<!-- end orderFormController -->
+				<!-- begin orderForm__error -->
+				<p class="orderForm__error" id='formError'>
+					
+				</p>
+				<!-- end orderForm__error -->
+				<button 
+					type="submit" 
+					class='orderForm__button bigButton'
+					id='orderFormSubmitButton'>Оставить заявку</button>
+	</div>
+	<!-- END container -->
+	<script src="/static/cardInStyle/js/main.js"></script>
+</body>
+
+</html>
