@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
+@import 'breakpoint';
+
+$darkGray: #212121
+$first: #FDD349
+$second: #78302F
+$third: #365E63
+$white: #f1f1f1
+
+$bigScreen: 1600px
+$lg: 1200 1600px
+$md: 992px 1199px
+$sm: 801px 991px
+$xs: max-width 800px
+$xxs: max-width 540px
+
+$baseFontSize: 18
+
+%darkCianBg
+	background-color: $third
+%burgundyBg
+	background-color: $second
+%yellowBg
+	background-color: $first
+%clearfix 
+	&::after, &::before 
+		visibility: hidden;
+		display: block;
+		font-size: 0;
+		content: " ";
+		clear: both;
+		height: 0;
+
+%pointIt
+	cursor: pointer
+// Positions
+%relative
+	position: relative	
+%absolute
+	position: absolute
+// Display
+%block
+	display: block
+%inlineBlock
+	display: inline-block
+// Simple Grid
+%zeroMaxHeight
+	max-height: 0
+%bigMaxHeight
+	max-height: 1920px
+%zeroWidth
+	width: 0
+%fullWidth
+	width: 100%
+%halfWidth
+	width: 49.7%
+%four
+	width: 23.5%
+%five
+	width: 20%
+// md
+%fullWidth-md
+	@include breakpoint($md)
+		width: 100%
+%four-md
+	@include breakpoint($md)
+		width: 25%
+%halfWidth-md
+	@include breakpoint($md)
+		width: 49.7%
+		width: 25%
+%five-md
+	@include breakpoint($md)
+		width: 20%
+// sm
+%fullWidth-sm
+	@include breakpoint($sm)
+		width: 100%
+%halfWidth-sm
+	@include breakpoint($sm)
+		width: 45%
+%four-sm
+	@include breakpoint($sm)
+		width: 25%
+%five-sm
+	@include breakpoint($sm)
+		width: 20%
+// xs
+%fullWidth-xs
+	@include breakpoint($xs)
+		width: 100%
+%halfWidth-xs
+	@include breakpoint($xs)
+		width: 45%
+%four-xs
+	@include breakpoint($xs)
+%five-xs
+	@include breakpoint($xs)
+		width: 20%
+%fullWidth-xxs
+	@include breakpoint($xxs)
+		width: 100%
+// Borders
+%defaultBorderRadius
+	border-radius: 2px
+// Margins
+%defaultMarginTop
+	margin-top: 1em	
+%zeroMarginTop
+	margin-top: 0	
+%increasedMarginTop
+	margin-top: 1.5em	
+%redusedMarginTop
+	margin-top: 0.5em	
+%centerBlock
+	margin-left: auto
+	margin-right: auto
+	@extend %block
+// Opacity
+%lowestOpacity
+	opacity: 0
+%halfOpacity
+	opacity: 0.5
+%fullOpacity
+	opacity: 1
+// Flex-box classes
+%flex
+	display: flex
+
+%defaultFlexFlow
+	flex-flow: row wrap
+%nowrap
+	flex-wrap: nowrap
+%wrap
+	flex-wrap: wrap
+
+%rowDirection
+	flex-direction: row
+%columnDirection
+	flex-direction: column
+
+%spaceBetween
+	justify-content: space-between
+%justifyStart
+	justify-content: flex-start
+%justifyAround
+	justify-content: space-around
+%alignCenter
+	align-items: center
+%alignStart
+	align-items: flex-start
+%defaultFlex
+	@extend %flex
+	@extend %defaultFlexFlow
+	@extend %justifyStart
+	@extend %alignCenter
+// Font classes
+%fs-16
+	font-size: 	(16em / $baseFontSize)
+%fs-18
+	font-size: 	(18em / $baseFontSize)
+%fs-21
+	font-size: 	(21em / $baseFontSize)
+%fs-24
+	font-size: 	(24em / $baseFontSize)
+%fs-28
+	font-size: 	(28em / $baseFontSize)
+%fs-21-xs
+	@include breakpoint($xs)
+		font-size: 	(21em / $baseFontSize)
+%fs-28-xs
+	@include breakpoint($xs)
+		font-size: 	(28em / $baseFontSize)
+%fs-32-xs
+	@include breakpoint($xs)
+		font-size: 	(32em / $baseFontSize)
+%bold 
+	font-weight: bold
+// Transitions
+%smoothButton
+	transition: color 0.6s, background 0.5s, transform 0.5s, opacity 0.5s
+	&:active
+		transform: translateY(3px)
+%paleButton
+	@extend %halfOpacity
+	transition: color 0.6s, background 0.5s, opacity 0.7s, transform 0.5s
+	&:hover
+		@extend %fullOpacity
+// List styles
+%unstyled
+	list-style: none
+%hiddenFlow
+	overflow: hidden
+%hiddenElement
+	visibility: hidden
+%zeroIndex
+	z-index: 0
+%bigIndex
+	z-index: 4
+
+// Блоки и элементы по-умолчанию 
+.imageContainer
+	@extend %defaultBorderRadius
+	@extend %relative
+	@extend %lowestOpacity
+	&_fadeIn
+  		transition: opacity 1.5s
+	  	@extend %fullOpacity
+
+.bigButton
+	@extend %bold
+	padding: 10px 0;
+	@extend %defaultBorderRadius
+	@extend %yellowBg
+	@extend %smoothButton
+	&:hover
+		background-color: darken($first, 10%)
+		color: lighten($darkGray, 10%)
+
+.closeButton
+	@extend %absolute
+	top: -20px;
+	right: -20px
+	padding: 5px 10px;
+	border: 2px solid $darkGray;
+	border-radius: 50%
+	line-height: 100%
+	transform: none
+	@extend %paleButton
+	@extend %fs-21-xs
+	@include breakpoint($xs)
+		padding-top: 3px
+
+	&:hover
+		transform: rotate(25deg)
+body
+	& * 
+		margin: 0	
+		border: 0
+		padding: 0
+		outline-color: #6F95B5
+		&, &::after, &::before
+			box-sizing: border-box
+	background-color: $white
+	padding: 5% 0;
+	font-size: 	#{$baseFontSize}px
+	line-height: 135%
+	font-family: 'PT Sans', sans-serif;
