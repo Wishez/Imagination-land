@@ -261,7 +261,6 @@ body
 	@extend %defaultFlexFlow
 	@extend %fullOpacity
 	&, & *
-		@extend %bigMaxHeight
 		transition: max-height 1s, opacity 1s, display 2s
 	@include breakpoint($xs)
 		flex-direction: column
@@ -315,12 +314,10 @@ body
 	@extend %defaultBorderRadius
 	@extend %darkCianBg
 	@extend %lowestOpacity
-	// @extend %zeroWidth
 	@extend %relative
 	@extend %fs-28-xs
 	@extend %zeroMaxHeight
 	@extend %centerBlock
-	// @extend %fullWidth
 	max-width: 900px
 	padding: 3% 1.5em 5%
 	margin-top: 0

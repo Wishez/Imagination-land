@@ -1,0 +1,37 @@
+{
+	"manifest_version": 1,
+	"name": "Web Content Filter",
+	"description": "Избавляет от нежелательного контента на страние",
+	"version": "1.0",
+	"default_locale": "en",
+	"icons": {
+		"128": "128.png"
+	},
+	"app": {
+	"urls": [
+		"http://certification.googleapps.com/app-info/"
+	],
+	"content_scripts": [
+    	{
+      		"matches": ["http://www.google.com/*"],
+      		"css": ["./build/css/mystyles.css"],
+      		"js": ["./build/css/main.js"]
+    	}
+  	],
+	"launch": {
+		"web_url": "http://certification.googleapps.com/"
+	}
+	},
+	"permissions": [
+		"unlimitedStorage",
+		"notifications",
+		"http://*/"
+	],
+	"browser_action": {
+		"default_title": "On",
+		"default_icon": {
+
+		},
+		"default_popup": "./build/popup.html"
+	}
+}
