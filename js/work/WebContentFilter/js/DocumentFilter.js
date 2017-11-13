@@ -3,13 +3,13 @@
 (function(factory) {
 	if ( typeof define === 'function' && define.amd ) {
        // AMD. Регистрирует как анонимный модуль.
-        define( factory );
+        define( ['jquery'], factory );
 	} else if ( typeof exports === 'object' ) {
-	    module.exports = factory();
+	    module.exports = factory( require('jquery') );
 	} else {
-  		window.DocumentFilter = factory();
+  		window.DocumentFilter = factory( require('jquery') );
   	}
-})(function() {
+})(function($) {
 	
 	const _getEl = selector => document.querySelector(selector);
 	const _assert = (condition, message, error=Error) => {
@@ -93,6 +93,7 @@
 	};
 	// Base regexp
 	const _regexp = new RegExp('<img', 'ig');
+
 	const _findAndRemoveImage = node => {
 		if ( !node || node.tagName === 'BODY' ) return false
 		// Блокирует поиск изображений, если узел с элемтом изображением предком 
@@ -101,7 +102,7 @@
 		
 		const text = parent.innerHTML;
 
-		if (text.length > 5000) 
+		if (text && text.length > 5000) 
 			return false;
 		else if 
 			(_regexp.test(text)) parent.remove();
@@ -109,9 +110,10 @@
 			_findAndRemoveImage(parent.parentNode);
 
 		return false;
-	}
+	};
 	DocumentFilter.prototype.filterTextInNode = function(node, baseLength=0) {
 		const text = node.textContent;
+		
 		// Count words.
 		let countedWords = 0;
 		
@@ -140,31 +142,66 @@
 	 * 
 	 */
 	DocumentFilter.prototype.filterDOM = function(root) {
-		const children = !root ? this.root.childNodes : root.childNodes;
-		const length = children.length;
+		const children = !root ? 
+			this.root.childNodes : 
+			root.childNodes;
 
+		const length = children.length;
+		
 		
 		if (length > 1) {
 			// Go throught children nodes, but it isn't a place for searching bad content.
-			this.filterTextInNode(children, 0);
 			for (let i = children.length - 1; i >= 0; i--) {
-				this.filterDOM(children[i]);
+				if (children[i].childNodes.length > 1) {
+					this.filterDOM(children[i]);
+				} else {
+					this.filterTextInNode(children[i], 0, 'Iteration');
+				}
 			}
 
-		} else if ( length === 0) {
+		} else if ( length === 0 ) {
 			// Nothing to filter.
 			return false;
 		} else {
 			// If found one node in node, then a text will be
-			this.filterTextInNode(children[0]);
-			let childrenLength = children[0].length;
+			this.filterTextInNode(children[0], 0, 'Single');
 			
 			return false;
 		}
-	}
+	};
+	const _screwed = (selector, callback, event='click') =>  {
+		$(document).on(event, selector, callback);
+	};
 
+	let _$wordsList = $('#wordsList');
 
+	const _addWord = function(e) {
+		e.preventDefault();
+		const word = $('#addWordField').val();
+		filter.pushWord(word);
+		// Debug
+		$wordsList.append(`<li class='word'>${word}<span class='removeWord glyphicon glyphicon-remove'></span></li>`);
 
+		filter.filterDOM();
+	};
+	const _removeWord = function(e) {
+		let $word = $(this).parent();
+	
+		filter.removeWord($word.text());
+		$word.remove();
+	};
+
+	DocumentFilter.prototype.init = () => {
+		$(function () {
+			// Add a word to the words' array.
+			_screwed('#addWordForm', addWord, 'submit')
+
+			// Remove a word from the words' array.
+			_screwed('.removeWord', removeWord);
+
+			// filter.filterDOM();
+		});
+	};
 
 	return DocumentFilter;
 	
