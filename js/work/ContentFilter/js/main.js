@@ -2,8 +2,8 @@ import 'jquery';
 import DocumentFilter from './libs/DocumentFilter.js';
 
 const filter = new DocumentFilter({
-	root: 'body'
+	root: document.body
 });
 
-console.log(document.domain);
-filter.init();
+
+filter.init(document.domain);

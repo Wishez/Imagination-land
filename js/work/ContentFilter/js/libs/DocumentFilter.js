@@ -86,7 +86,7 @@
 	const DocumentFilter = function(props) {
 		// Create array of words in localStorage.
 		if (!_getWords()) _setWords([]);
-		this.root = _getEl(props.root);
+		this.root = props.root;
 		// The base value of blocking content by matched words in a node.
 		this.baseLength = props.baseLength ? 
 			props.baseLength : 0;
@@ -222,13 +222,14 @@
 		};
 	};
 
-	DocumentFilter.prototype.init = function() {
-		console.log('I am initializing!');
+	DocumentFilter.prototype.init = function(domainName) {
+		
 		const that = this;
 		$(function () {
 			let $wordsList = $(that.wordsListId);
 			_showWords($wordsList);
-
+			console.log('Set', domainName);
+			$('#domainName').html(domainName);
 			let $addWordField = $(that.addWordFieldId);
 
 			const _addWord = that.addWordEvent(that, $wordsList, $addWordField);
