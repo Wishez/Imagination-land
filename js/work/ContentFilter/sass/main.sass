@@ -1,0 +1,53 @@
+
+@import '_conf.sass'
+@import '_background.sass'
+@import '_position.sass'
+@import '_display.sass'
+@import '_grid.sass'
+@import '_border.sass';
+@import '_margin.sass'
+@import '_font.sass'
+@import '_transition.sass';
+@import '_blocks.sass';
+
+body
+	& * 
+		margin: 0	
+		border: 0
+		padding: 0
+		outline-color: #6F95B5
+		&, &::after, &::before
+			box-sizing: border-box
+	background-color: $white
+	padding: 5% 0;
+	font-size: 	#{$baseFontSize}px
+	line-height: 135%
+	font-family: 'PT Sans', sans-serif
+
+@import '_color.sass'
+// @import '_orderForm.sass'
+
+h3, .header
+	@extend %fs-21
+	margin-top: 1.5em
+
+p, .listArticlesItem__paragraph, .word
+	margin-top: 1em
+
+
+.navListItem 
+	@extend %inlineBlock
+	width: span(2 of 12);
+	padding: 0 0.5em 1em;
+
+.main 
+	padding-top: 5%
+
+.header
+
+.removeWord
+	cursor: pointer
+
+.filterPluginAlert
+	font-size: 18px
+	padding: 1em 2em

@@ -1,0 +1,65 @@
+%pointIt
+	cursor: pointer
+
+%clearfix 
+	&::after, &::before 
+		visibility: hidden;
+		display: block;
+		font-size: 0;
+		content: " ";
+		clear: both;
+		height: 0;
+
+%block
+	display: block
+%inlineBlock
+	display: inline-block
+
+%lowestOpacity
+	opacity: 0
+%halfOpacity
+	opacity: 0.5
+%fullOpacity
+	opacity: 1
+
+%flex
+	display: flex
+
+%defaultFlexFlow
+	flex-flow: row wrap
+%nowrap
+	flex-wrap: nowrap
+%wrap
+	flex-wrap: wrap
+
+%rowDirection
+	flex-direction: row
+%columnDirection
+	flex-direction: column
+
+%spaceBetween
+	justify-content: space-between
+%justifyStart
+	justify-content: flex-start
+%justifyAround
+	justify-content: space-around
+%alignCenter
+	align-items: center
+%alignStart
+	align-items: flex-start
+%defaultFlex
+	@extend %flex
+	@extend %defaultFlexFlow
+	@extend %justifyStart
+	@extend %alignCenter
+
+%hiddenFlow
+	overflow: hidden
+%hiddenElement
+	visibility: hidden
+%zeroIndex
+	z-index: 0
+%bigIndex
+	z-index: 4
+%unstyled
+	list-style: none
