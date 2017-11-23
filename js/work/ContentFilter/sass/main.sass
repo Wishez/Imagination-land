@@ -16,24 +16,112 @@ body
 		border: 0
 		padding: 0
 		outline-color: #6F95B5
+		box-sizing: border-box
 		&, &::after, &::before
 			box-sizing: border-box
-	background-color: $white
+	color: $defaultColor
 	padding: 5% 0;
 	font-size: 	#{$baseFontSize}px
 	line-height: 135%
 	font-family: 'PT Sans', sans-serif
+	background-color: $backgroundColor
 
 @import '_color.sass'
-// @import '_orderForm.sass'
 
-h3, .header
+// @function createExtention($name, $content, $breakpoint: false)
+	
+// 	@if $breakpoint == 'lg' 
+// 		%#{name}-lg
+// 			@include breakpoint($lg)
+// 				#{$content}
+// 	@else if $breakpoint == 'md'
+// 		%#{name}-md
+// 			@include breakpoint($md)
+// 				#{$content}
+// 	@else if $breakpoint == 'sm'
+// 	 	%#{name}-sm
+// 			@include breakpoint($sm)
+// 				#{$content}
+// 	@else if $breakpoint == 'xs'
+// 		%#{name}-xs
+// 			@include breakpoint($xs)
+// 				#{$content}
+// 	@else if $breakpoint == 'xxs'
+// 		%#{name}-xxs
+// 			@include breakpoint($xxs)
+// 				#{$content}	
+// 	@else
+// 		%#{name}
+// 			#{$content}
+
+// createExtention('textCenter', 'text-align: center');
+	
+%textCenter 
+	text-align: center
+
+.mainTitle
+	@extend %textCenter
+	font-weight: normal
 	@extend %fs-21
-	margin-top: 1.5em
+.workPlaceContainer
+	padding: 0 1.5em
+	min-width: 500px
+
+.mainInfoHeader 
+	@extend %defaultMarginTop
+.mainInfoHeader__title
+	@extend %textCenter
+	padding-top: 1.3em
+.mainInfoHeaderContent
+	@extend %fs-16
+	padding: 0.6em 1em 0
+.mainInfoHeaderContent, .mainInfoHeader__title
+	background-color: $first
+	vertical-align: middle
+	color: $darkGray
+	@extend %halfWidth
+	width: calc(50% - 1px)
+	float: left
+	height: 70px
+
+
+
+.mainInfoHeaderContent
+	@extend %relative
+	left: 2px
+
+.mainContent
+	background-color: $listWordsBackground
+	@extend %fullWidth
+	// max-width: 450px 
+	min-height: 300px
+	max-height: 300px
+	padding: 1.5em 2em
+	overflow: auto
+	@extend %centerBlock
+	color: $white
+.wordsList
+	list-style: none
+
+.controller__input
+	background-color: transparent
+
+.controller__input, .word
+	border-bottom: 1px solid $gray
+	@extend %fullWidth
+	padding: 0.5em
+	color: $white
+
+.word
+	padding-left: 0
+	padding-right: 0 
+
+
+
+	
 
 p, .listArticlesItem__paragraph, .word
 	margin-top: 1em
-
 
 .navListItem 
 	@extend %inlineBlock
