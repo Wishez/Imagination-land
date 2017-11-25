@@ -103,7 +103,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	var DocumentFilter = function DocumentFilter(props) {
 		// Create array of words in localStorage.
 		if (!_getWords()) _setWords([]);
-		this.root = _getEl(props.root);
+		this.root = props.root;
 		// The base value of blocking content by matched words in a node.
 		this.baseLength = props.baseLength ? props.baseLength : 0;
 		this.wordsListId = props.listWords ? props.listWords : '#wordsList';
@@ -212,13 +212,14 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		};
 	};
 
-	DocumentFilter.prototype.init = function () {
-		console.log('I am initializing!');
+	DocumentFilter.prototype.init = function (domainName) {
+
 		var that = this;
 		$(function () {
 			var $wordsList = $(that.wordsListId);
 			_showWords($wordsList);
-
+			console.log('Set', domainName);
+			$('#domainName').html(domainName);
 			var $addWordField = $(that.addWordFieldId);
 
 			var _addWord = that.addWordEvent(that, $wordsList, $addWordField);
@@ -247,11 +248,10 @@ var _DocumentFilter2 = _interopRequireDefault(_DocumentFilter);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var filter = new _DocumentFilter2.default({
-	root: 'body'
+	root: document.body
 });
 
-console.log(document.domain);
-filter.init();
+filter.init(document.domain, window);
 
 },{"./libs/DocumentFilter.js":1,"jquery":3}],3:[function(require,module,exports){
 (function (global){

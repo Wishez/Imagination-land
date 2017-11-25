@@ -1,0 +1,34 @@
+// Блоки и элементы по-умолчанию 
+.imageContainer
+	@extend %defaultBorderRadius
+	@extend %relative
+	@extend %lowestOpacity
+	&_fadeIn
+  		transition: opacity 1.5s
+	  	@extend %fullOpacity
+
+.bigButton
+	@extend %bold
+	padding: 10px 0;
+	@extend %defaultBorderRadius
+	@extend %yellowBg
+	@extend %smoothButton
+	&:hover
+		background-color: darken($first, 10%)
+		color: lighten($darkGray, 10%)
+
+.closeButton
+	@extend %absolute
+	top: -20px;
+	right: -20px
+	padding: 5px 10px;
+	border: 2px solid $darkGray;
+	border-radius: 50%
+	line-height: 100%
+	transform: none
+	@extend %paleButton
+	@extend %fs-21-xs
+	@include breakpoint($xs)
+		padding-top: 3px
+	&:hover
+		transform: rotate(25deg)

@@ -6,4 +6,4 @@ const filter = new DocumentFilter({
 });
 
 
-filter.init(document.domain);
+filter.init(document.domain, window);

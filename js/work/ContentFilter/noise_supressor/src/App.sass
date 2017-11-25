@@ -1,0 +1,140 @@
+.App 
+  text-align: center
+
+.App-logo
+  animation: App-logo-spin infinite 20s linear
+  height: 80px
+
+.App-header
+  background-color: #222
+  height: 150px
+  padding: 20px  
+  color: white
+
+.App-title 
+  font-size: 1.5em;
+
+.App-intro 
+  font-size: large;
+
+@keyframes App-logo-spin 
+  from 
+    transform: rotate(0deg)
+  to 
+    transform: rotate(360deg)
+
+
+@import 'styles/_conf.sass'
+@import 'styles/_background.sass'
+@import 'styles/_position.sass'
+@import 'styles/_display.sass'
+@import 'styles/_grid.sass'
+@import 'styles/_border.sass'
+@import 'styles/_margin.sass'
+@import 'styles/_font.sass'
+@import 'styles/_transition.sass'
+@import 'styles/_blocks.sass'
+
+body
+  & * 
+    margin: 0 
+    border: 0
+    padding: 0
+    outline-color: #6F95B5
+    box-sizing: border-box
+    &, &::after, &::before
+      box-sizing: border-box
+  color: $defaultColor
+  padding: 5% 0;
+  font-size:  #{$baseFontSize}px
+  line-height: 135%
+  font-family: 'PT Sans', sans-serif
+  background-color: $backgroundColor
+
+
+@import './styles/_color.sass'
+
+%textCenter 
+  text-align: center
+
+.mainTitle
+  @extend %textCenter
+  font-weight: normal
+  @extend %fs-21
+.workPlaceContainer
+  padding: 1em 1.5em
+  min-width: 500px
+  max-width: 500px
+  max-heigth: 450px
+  margin: 0 auto
+  display: block
+
+.mainInfo
+  @extend %defaultMarginTop
+
+.mainInfoHeader__title
+  @extend %textCenter
+  padding-top: 1.3em
+.mainInfoHeaderContent
+  @extend %fs-16
+  padding: 0.6em 1em 0
+.mainInfoHeaderContent, .mainInfoHeader__title
+  background-color: $first
+  vertical-align: middle
+  color: $darkGray
+  @extend %halfWidth
+  width: calc(50% - 1px)
+  float: left
+  height: 70px
+
+
+
+.mainInfoHeaderContent
+  @extend %relative
+  left: 2px
+
+.mainContent
+  background-color: $listWordsBackground
+  @extend %fullWidth
+  // max-width: 450px 
+  min-height: 300px
+  max-height: 300px
+  padding: 1.5em 2em
+  overflow: auto
+  @extend %centerBlock
+  color: $white
+.wordsList
+  list-style: none
+
+.controller__input
+  background-color: transparent
+
+.controller__input, .word
+  border-bottom: 1px solid $gray
+  @extend %fullWidth
+  padding: 0.5em
+  color: $white
+
+.word
+  padding-left: 0
+  padding-right: 0 
+
+p, .listArticlesItem__paragraph, .word
+  margin-top: 1em
+
+.navListItem 
+  @extend %inlineBlock
+  width: span(2 of 12);
+  padding: 0 0.5em 1em;
+
+.main 
+  padding-top: 5%
+
+.header
+
+.removeWord
+  cursor: pointer
+
+.filterPluginAlert
+  font-size: 18px
+  padding: 1em 2em

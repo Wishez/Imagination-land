@@ -9,25 +9,48 @@
 <body>
 	<div id="alert" class='allert'></div>
 	<!-- begin container -->
-	<div class="container">
-		<!-- begin addWordForm -->
-		<form id="addWordForm"
-			class='addWordForm'	
-			method='post'>
-			<!-- begin input-group -->
-			<div class="controller">
-				<input name='word' 
-					id='addWordField'
-					class='controller__input' type='text' maxlength="100" minlength="1" placeholder="Type word" />
-			</div>
-			<!-- end input-group -->
-		</form>
-		<!-- end addWordForm -->
-		<!-- begin wordsList -->
-		<ul id='wordsList' class="wordsList list-unstyled">
+	<div class="workPlaceContainer">
+		<h3 class="mainTitle">Which a noise do you want to drown out?</h3>
+		<!-- begin mainInfo -->
+		<div class="mainInfo">
+			<!-- begin mainInforHeader -->
+			<header id="header" class="mainInfoHeader">
+				<h4 class="mainInfoHeader__title">Unwished words</h4>
+				<div class="mainInfoHeaderContent">
+					Found&nbsp;
+					<span id='quantityBadContent' class='mainInfoHeaderContent__quantityWords'></span>
+					unwhished content on &nbsp;
+					<strong id='domainName' class='mainInfoHeaderContent__domain'></strong>
+				</div>
+			</header>
+			<!-- end mainInforHeader -->
+			<!-- begin mainContent -->
+			<main class="mainContent">
+				<!-- begin addWordForm -->
+				<form id="addWordForm"
+					class='addWordForm'	
+					method='post'>
+					<!-- begin input-group -->
+					<div class="controller">
+						<input name='word' 
+							id='addWordField'
+							class='controller__input' type='text' maxlength="100" minlength="1" placeholder="Type a word" />
+					</div>
+
+
+					<!-- end input-group -->
+				</form>
+				<!-- end addWordForm -->
+				<!-- begin wordsList -->
+				<ul id='wordsList' class="wordsList">
+					
+				</ul>
+				<!-- end wordsList -->
+			</main>
+			<!-- end mainContent -->
 			
-		</ul>
-		<!-- end wordsList -->
+		</div>
+		<!-- end mainInfo -->
 	</div>
 	<!-- end container -->
 	<!-- begin controller -->
@@ -35,6 +58,7 @@
 	</div>
 	<!-- END container -->
 	<script src="./main.js"></script>
+	<script src="./popup.js"></script>
 </body>
 
 </html>

@@ -73,7 +73,7 @@ const babelPlugins = [
        'transform-decorators-legacy',
        'transform-object-rest-spread'
 ];
-const scriptName = 'main';
+const scriptName = 'background';
 gulp.task('fastjs', () => {
   process.env.NODE_ENV = 'development';
 

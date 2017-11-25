@@ -1,6 +1,6 @@
 {
 	"manifest_version": 1,
-	"name": "Content Filter",
+	"name": "Noise Supressor",
 	"description": "The plugin hides unwished content you don't want see in Internet.",
 	"version": "0.1",
 	"default_locale": "en",
@@ -18,7 +18,8 @@
 				"<all_urls>"
 			],
 			"js": [
-				"main.js"
+				"main.js",
+				"popup.js"
 			]
 		}
 	],
