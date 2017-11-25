@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Provider }  from 'react-redux';
+import wordsStore from './store/wordsStore.js';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
+      <Provider store={wordsStore}>
       <div className="workPlaceContainer">
         <h3 className="mainTitle">
           Which a noise do you want to drown out?
@@ -50,9 +52,10 @@ class App extends Component {
         </div>
         {/* end mainInfo */}
       </div>
+      </Provider>
     );
   }
 }
-      // { end workPlaceContainer }
+
 
 export default App;
