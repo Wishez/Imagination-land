@@ -25,7 +25,7 @@ class App extends Component {
                 Found&nbsp;
                 <span id='quantityBadContent' className='mainInfoHeaderContent__quantityWords'></span>
                 unwhished content on &nbsp;
-                <strong id='domainName' className='mainInfoHeaderContent__domain'></strong>
+                <strong id='domainName' className='mainInfoHeaderContent__domain'>{document.domain}</strong>
               </div>
             </header>
             {/* end mainInforHeader */}

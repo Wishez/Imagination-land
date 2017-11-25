@@ -119,8 +119,10 @@ body
   padding-left: 0
   padding-right: 0 
 
-p, .listArticlesItem__paragraph, .word
+p, .listArticlesItem__paragraph
   margin-top: 1em
+.word:first-of-type
+  margin-top: 0.5em
 
 .navListItem 
   @extend %inlineBlock
@@ -130,11 +132,18 @@ p, .listArticlesItem__paragraph, .word
 .main 
   padding-top: 5%
 
-.header
-
-.removeWord
-  cursor: pointer
 
 .filterPluginAlert
   font-size: 18px
   padding: 1em 2em
+
+@supports (display: grid)
+  .word
+    display: grid
+    grid-template-columns: 40% 40% 20%
+
+.allowOnThisSiteButton, .removeWord 
+  text-align: right
+  
+  cursor: pointer  
+  color: $first
