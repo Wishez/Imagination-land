@@ -1,0 +1,5 @@
+export const REQUEST_USER_DATA  = 'REQUEST_USER_DATA';
+export const REACHING_USER_DATA = 'REACHING_USER_DATA';
+export const ADD_WORD = 'ADD_WORD';
+export const REMOVE_WORD = 'REMOVE_WORD';
+export const THANK_YOU_SERVER = 'THANK_YOU_SERVER';
