@@ -1,0 +1,2 @@
+export const REGISTER = 'REGISTER';
+export const REQUEST_REGISTER = 'REQUEST_REGISTER';
