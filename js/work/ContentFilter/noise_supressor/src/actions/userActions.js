@@ -61,12 +61,8 @@ export const tryRemoveWord = (words, word, userId) => dispatch => {
 				// Cache index.
 				const index = words.indexOf(word);
 				// Create the action.
-				const part1 = words.slice(0, index);
-				const part2 = words.slice(index + 1);
-				console.log('part_1:', part1, '\npart_2:', part2);
-				const newArrayWithWords = [part1, part2]
 				return removeWord(
-					[words.slice(0, index), words.slice(index + 1)]
+					[...words.slice(0, index), ...words.slice(index + 1)]
 				);
 			}()),
 			url: '/words/remove_word/',
@@ -87,7 +83,7 @@ export const tryRemoveWord = (words, word, userId) => dispatch => {
 export const tryAddWord = (words, word, userId) => dispatch => {
 	dispatch(
 			make_action({
-			createdAction: addWord( [words.slice(0), word] ),
+			createdAction: addWord( [...words.slice(0), word] ),
 			url: '/words/add_word/',
 			data: {
 				word: word,
@@ -109,7 +105,6 @@ export const getUserData = userId => dispatch => {
 	return fetch(`https://filipp-zhuravlev.ru/getMe/plugin_user/${userId}/`)
 		.then(resp => resp.json())
 		.then(data => { 
-			console.log(data);
 			dispatch(requestUserData(data))
 		})
 		.catch(err => {

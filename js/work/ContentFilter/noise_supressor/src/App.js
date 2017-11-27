@@ -1,15 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import './App.css';
 import WordsList from './components/WordsList';
 import AddWordForm  from './components/AddWordForm.js';
-import { connect } from 'react-redux';
+import RegistrationContainer from './containers/RegistrationContainer.js';
+import { 
+  tryAddWord, 
+  tryRemoveWord,
+  getUserData
+} from './actions/userActions.js';
 
 class App extends Component {
 
-  addWordFormSubmit = (values, dispatch) => {
 
+  componentDidMount() { 
+    const { userId, dispatch } = this.props;
+    
+    dispatch(getUserData(userId));
   }
+
+  addWordFormSubmit = (values, dispatch) => {
+    const { words, userId } = this.props;
+    dispatch(tryAddWord(words, values.word, userId));
+  }
+
+  removeWord = word => {
+      const { words, userId, dispatch } = this.props;
+      console.log(word);
+      // Clousure for preparing to remove word from user account.
+      return () => {
+        dispatch(tryRemoveWord(words, word, userId));
+      };
+  }
+
   render() {
+    const { words } = this.props;
+    console.log('From render live cycle:', words);
     return (
         <div className="workPlaceContainer">
           <h3 className="mainTitle">
@@ -32,10 +59,10 @@ class App extends Component {
             {/* begin mainContent */}
             <main className="mainContent">
               <AddWordForm onSubmit={this.addWordFormSubmit}/>
-              <WordsList words={['test', 'word']} />
+              <WordsList words={words} removeWord={this.removeWord} />
             </main>
             {/* end mainContent */}
-            
+            <RegistrationContainer />
           </div>
           {/* end mainInfo */}
         </div>
@@ -43,5 +70,20 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => {
+    const {
+      user
+    } = state;
+
+    const {
+      userId,
+      words
+    } = user;
+
+    return {
+      userId,
+      words
+    };
+};
+
 export default connect(mapStateToProps)(App);
