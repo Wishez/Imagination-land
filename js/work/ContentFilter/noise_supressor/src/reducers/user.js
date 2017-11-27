@@ -47,14 +47,12 @@ const user = (
 		case ADD_WORD:
 			return {
 				...state,
-				words: action.words,
-				is_requesting: true
+				words: action.words
 			};
 		case REMOVE_WORD:
 			return {
 				...state,
-				words: action.words,
-				is_requesting: true
+				words: action.words
 			};
 		case THANK_YOU_SERVER:
 			return {

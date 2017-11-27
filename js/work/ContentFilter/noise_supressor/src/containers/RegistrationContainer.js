@@ -59,7 +59,6 @@ const mapStateToProps = state => {
 		registered,
 		registerMessage
 	} = registration;
-	console.log(state);
 
 	return {
 		isRegistering,

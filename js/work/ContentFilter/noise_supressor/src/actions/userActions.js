@@ -1,3 +1,5 @@
+import { change } from 'redux-form';
+
 import {
 	REQUEST_USER_DATA,
 	REACHING_USER_DATA,
@@ -81,6 +83,10 @@ export const tryRemoveWord = (words, word, userId) => dispatch => {
 };
 
 export const tryAddWord = (words, word, userId) => dispatch => {
+	if ( words.indexOf(word) !== -1 ) {
+		dispatch(change('addWordForm', 'word', ''));
+		return false;
+	} 
 	dispatch(
 			make_action({
 			createdAction: addWord( [...words.slice(0), word] ),
@@ -97,6 +103,7 @@ export const tryAddWord = (words, word, userId) => dispatch => {
 			}
 		})
 	);
+	dispatch(change('addWordForm', 'word', ''));
 };
 // Test action. In futer, i will get data with logining.
 export const getUserData = userId => dispatch => {

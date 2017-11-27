@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import words from './words.js';
+import user from './user.js';
 import registration from './registration.js';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
-	words,
+	user,
 	form: formReducer,
 	registration
 });

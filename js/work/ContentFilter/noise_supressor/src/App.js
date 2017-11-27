@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Loader from './components/Loader.js';
 
 import './App.css';
 import WordsList from './components/WordsList';
@@ -10,14 +11,33 @@ import {
   tryRemoveWord,
   getUserData
 } from './actions/userActions.js';
+import {TweenLite} from 'gsap';
 
 class App extends Component {
-
+  state = {
+    didFadeIn: false
+  }
 
   componentDidMount() { 
     const { userId, dispatch } = this.props;
     
     dispatch(getUserData(userId));
+  }
+  componentDidUpdate() {
+    console.log(wordsList);
+    const wordsList = document.getElementById('wordsList');
+    if (!this.state.didFadeIn && wordsList) {
+      TweenLite.to(
+        wordsList,
+        1.2, 
+        {
+          opacity: 1
+        }
+      );
+      this.setState({
+        didFadeIn: true
+      })
+    }
   }
 
   addWordFormSubmit = (values, dispatch) => {
@@ -27,7 +47,6 @@ class App extends Component {
 
   removeWord = word => {
       const { words, userId, dispatch } = this.props;
-      console.log(word);
       // Clousure for preparing to remove word from user account.
       return () => {
         dispatch(tryRemoveWord(words, word, userId));
@@ -35,8 +54,8 @@ class App extends Component {
   }
 
   render() {
-    const { words } = this.props;
-    console.log('From render live cycle:', words);
+    const { words, is_requesting } = this.props;
+    
     return (
         <div className="workPlaceContainer">
           <h3 className="mainTitle">
@@ -59,7 +78,10 @@ class App extends Component {
             {/* begin mainContent */}
             <main className="mainContent">
               <AddWordForm onSubmit={this.addWordFormSubmit}/>
-              <WordsList words={words} removeWord={this.removeWord} />
+              {!is_requesting ? 
+                  <WordsList words={words} removeWord={this.removeWord} /> :
+                  <Loader className='wordsLoading' />
+              }
             </main>
             {/* end mainContent */}
             <RegistrationContainer />
@@ -77,12 +99,14 @@ const mapStateToProps = state => {
 
     const {
       userId,
-      words
+      words,
+      is_requesting
     } = user;
 
     return {
       userId,
-      words
+      words,
+      is_requesting
     };
 };
 
