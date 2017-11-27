@@ -1,0 +1,1 @@
+export const serverUrl = 'https://filipp-zhuravlev.ru';
