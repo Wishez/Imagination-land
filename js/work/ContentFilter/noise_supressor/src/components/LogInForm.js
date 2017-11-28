@@ -9,7 +9,8 @@ const LogInForm = ({
 	submitLogInForm,
 	handleSubmit,
 	message,
-	isLogining
+	isLogining,
+	showRegistrationForm
 }) => (
 	<form id='logInForm'
 		onSubmit={handleSubmit(submitLogInForm.bind(this))}
@@ -33,18 +34,19 @@ const LogInForm = ({
 		 	{message ? <strong className='logInFormController__error'>{message}</strong> : ''}
 			 <div className='logInFormButtons'>
 			 	<Button className='logInFormButtons__submitButton submit' 
-			 	   	content='Войти'
+			 	   	content='Sign in'
 			 	   	loading={isLogining}
-			 	   	size='normal'
+			 	   	size='medium'
 			 	/>
 			 	<Button 
 			 		className='logInFormButtons__button logInFormButtons__button_name-registration'
-			 		content='Регистрация' 
-			 		size='normal'
+			 		content='Sign up' 
+			 		size='medium'
+			 		onClick={showRegistrationForm}
 			 	/>
 			 	<a href={`#`}
 			 		className='logInFormButtons__button'>
-			 		Забыли пароль?
+			 		Forgot password?
 			 	</a>
 			 </div>
 		</form>

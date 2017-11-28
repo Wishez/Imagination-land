@@ -19,15 +19,16 @@ const RegistrationForm = ({
 	allowRegister,
 	knowRules,
 	isRegistering,
-	registerMessage
+	registerMessage,
+	showLogInForm
 }) => (
-	<form id='registerForm'
+	<form id='registrationForm'
 		onSubmit={handleSubmit(submitRegistrationForm.bind(this))}
-		className='registerForm'>
+		className='registrationForm'>
 		<Field component={RenderController}
 			name='username'
 			type='text'
-			block='registerFormController'
+			block='registrationFormController'
 			validate={[required, login, loginLength]}
 			placeholder='Логин/Login'
 			maxLength='24'
@@ -35,7 +36,7 @@ const RegistrationForm = ({
 		 <Field component={RenderController}
 		 	name='password'
 		 	type='password'
-		 	block='registerFormController'
+		 	block='registrationFormController'
 			validate={[required, passwordLength, password]}
 			placeholder='Пароль/Password'
 			maxLength='30'
@@ -43,7 +44,7 @@ const RegistrationForm = ({
 		 <Field component={RenderController}
 		 	name='repeatedPassword'
 		 	type='password'
-		 	block='registerFormController'
+		 	block='registrationFormController'
 			validate={[required]}
 			placeholder='Повторить пароль/Repeat password'
 			maxLength='30'
@@ -51,26 +52,31 @@ const RegistrationForm = ({
 		 <Field component={RenderController}
 		 	name='email'
 		 	type='email'
-		 	block='registerFormController'
+		 	block='registrationFormController'
 			validate={[required, email]}
 			placeholder='Email'
 			maxLength='100'
 		 />
 		 
-		 <div className='registerFormController'>
+		 <div className='registrationFormController'>
 			 <Checkbox onClick={allowRegister}
-			 	className='registerFormController__check'
-			    label='Вы соглашаетесь на обработку ваших персональных даных?'
+			 	className='registrationFormController__check'
+			    label='You are agree for using your data?'
 			    default={true} />
 		 </div>
-		 <div className='registerFormButtons'>
+		 <div className='registrationFormButtons'>
 			{registerMessage ? <strong className='formError'>{registerMessage}</strong> : ''}
 			<br />
 		 	<Button disabled={!knowRules}
 		 		loading={isRegistering}
-		 		className='registerFormButtons__button registerFormButtons__button--submit submit' 
-		 	   	content='Зарегистрироваться'
+		 		className='registrationFormButtons__submitButton  submit' 
+		 	   	content='Sign up'
+		 	   	size='medium'
 		 	/>
+		 	<Button className='registrationFormButtons__button'
+		 		size='medium'
+		 		onClick={showLogInForm}
+		 		content='Sign in' />
 		 </div>
 	</form>
 );

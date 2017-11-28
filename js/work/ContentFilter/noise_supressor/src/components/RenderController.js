@@ -8,16 +8,21 @@ const RenderController = ({
 		warning
 	},
 	block,
+	label,
 	...rest
 }) => (
 	<div className={block}>
+		{label ? 
+			<label className={`${block}__label`}>{label}</label> : 
+			''
+		}
 		<input {...input}
 			{...rest}
-			className={block + '__input'} />
+			className={`${block}__input`} />
 		 {touched && 
 		 	((error && 
-		 		<span className={block + '__error'}>{error}</span>) || 
-		 		(warning && <span className={block + '__error'}>{warning}</span>))}
+		 		<span className={`${block}__error formError`}>{error}</span>) || 
+		 		(warning && <span className={`${block}__error formError`}>{warning}</span>))}
 	</div>
 );
 

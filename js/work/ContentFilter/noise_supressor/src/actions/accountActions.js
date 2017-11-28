@@ -21,6 +21,7 @@ import {
 } from './../constants/conf.js';
 import customAjaxRequest, { make_request } from './../constants/ajax.js';
 import { convertDate } from './../constants/pureFunctions.js';
+import { change } from 'redux-form';
 /* User 
  * 
  * username
@@ -68,6 +69,9 @@ const setUserToCookies = (
 // Делает запрос на сервер, после изменяет состояние приложения
 // в зависимости от ответа сервера.
 export const tryLogin = data => dispatch => {
+	dispatch(change('logInForm', 'username', data.username))
+    dispatch(change('logInForm', 'password', data.password));
+
 	const empty_data = {
 		username: '',
 		password: ''
@@ -83,15 +87,15 @@ export const tryLogin = data => dispatch => {
         cache: true
 	});
 	return make_request(userData => {
-			if (userData) {
+			if (typeof userData === 'object') {
 				// Меняет состояние на удачный заход пользователя в аккаунт
-				dispatch(logIn(data, userData, true, '', 'Да прибудет с вами сила!'));
+				dispatch(logIn(data, userData, true, ''));
 				dispatch(setUserToCookies(data))
 			} else {
 				// Меняется только сообщение в состояние аккаунта,
 				// не устанавливая неправильно введённый или 
 				// не подходящий логин с паролем.
-				dispatch(logIn(empty_data, {}, false, 'Неправильный логин или пароль', ''));	
+				dispatch(logIn(empty_data, {}, false, userData));	
 			}
 
 		},

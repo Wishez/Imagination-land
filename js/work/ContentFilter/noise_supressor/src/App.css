@@ -48,7 +48,10 @@
 .closeButton:hover, .imageContainer_fadeIn {
   opacity: 1; }
 
-.mainContent, .controller__input, .word {
+.mainContent, .controller__input,
+.word,
+.registrationFormController__input,
+.logInFormController__input {
   width: 100%; }
 
 .mainInfoHeaderContent, .mainInfoHeader__title {
@@ -57,14 +60,14 @@
 .imageContainer, .bigButton {
   border-radius: 2px; }
 
-.mainInfo {
+.mainInfo, .logInFormButtons__submitButton, .registrationFormButtons__button {
   margin-top: 1em; }
 
 .mainContent {
   margin-left: auto;
   margin-right: auto; }
 
-.mainInfoHeaderContent {
+.mainInfoHeaderContent, .logInFormController__error, .registerFormController__error {
   font-size: 0.88889em; }
 
 .mainTitle {
@@ -124,6 +127,18 @@ body {
     body *, body *::after, body *::before {
       box-sizing: border-box; }
 
+a {
+  color: #f7f7f7;
+  text-decoration: none; }
+  a:hover {
+    color: #f7f7f7; }
+  a:active {
+    color: #f7f7f7; }
+  a:visited {
+    color: #f7f7f7; }
+  a:focus {
+    color: #f7f7f7; }
+
 .mainTitle, .mainInfoHeader__title {
   text-align: center; }
 
@@ -164,16 +179,23 @@ body {
   color: #f7f7f7; }
 
 .wordsList {
-  list-style: none;
-  opacity: 0; }
+  list-style: none; }
 
-.controller__input {
+.controller__input,
+.registrationFormController__input,
+.logInFormController__input {
   background-color: transparent; }
 
-.controller__input, .word {
+.controller__input,
+.word,
+.registrationFormController__input,
+.logInFormController__input {
   border-bottom: 1px solid #b1b1b1;
   padding: 0.5em;
   color: #f7f7f7; }
+
+.logInFormController__error, .registerFormController__error {
+  color: #f0ca5f; }
 
 .word {
   padding-left: 0;

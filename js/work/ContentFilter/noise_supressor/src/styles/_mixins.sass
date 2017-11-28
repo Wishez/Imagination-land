@@ -1,0 +1,189 @@
+
+@mixin round() 
+  @extend %round
+
+@mixin xs-center-text() 
+  @include breakpoint($xs) 
+    text-align: center
+    display: block
+    width: span(12)
+   
+
+
+@mixin multy-background($url, $color, $padding-bottom, $max-height) 
+  background-image: url("#{$url}")
+  
+  max-height: #{$max-height}
+  padding-bottom: #{$padding-bottom}
+  &::after 
+    background-color: #{$color}
+  
+
+%center-block 
+   margin-left: auto !important
+   margin-right: auto !important
+   display: block
+
+@mixin center-block 
+  @extend %center-block
+
+
+%responsiveBackground 
+  background: center top no-repeat
+  background-size: cover
+  
+
+@mixin responsive-background($padding-bottom: false, $url: false, $attachment: false) 
+  @extend %responsiveBackground
+
+  @if $attachment 
+    background-attachment: $attachment
+  
+  @if $padding-bottom 
+    padding-bottom: #{$padding-bottom}
+  
+  @if $url 
+    background-image: url('#{$url}')
+  
+
+
+%colorsTransition 
+  transition: color 0.5s, background-color 0.5s
+
+@mixin smooth-transition-link 
+  @extend %colorsTransition
+
+
+%colorsTransitions--props_color-background-transform-shadow 
+  transition: color 0.5s, background-color 0.5s, transform 0.1s, box-shadow, 0.5s $i
+
+@mixin smooth-transition-button($font-color: false, $background-color: false) 
+  @extend %colorsTransitions--props_color-background-transform-shadow
+  &:hover 
+    @if $font-color 
+      color: #{$font-color}
+    
+    @if $background-color 
+      background-color: #{$background-color}
+    
+  
+  &:active 
+    transform: translateY(3px)
+  
+
+
+@mixin flexable($flex, $dir_wrap, $content, $align) 
+  display: #{$flex}
+  flex-flow: #{$dir_wrap}
+  justify-content: #{$content}
+  align-items: #{$align}
+
+
+@mixin link-colors( $color: $baseLinkColor, $hover-color: $baseHoverLinkColor, $active-color: $baseActiveLinkColor, $visited-color: $baseVisitedLinkColor, $focus-color: $baseFocusLinkColor, $one-color: false)
+  @if ($one-color) 
+    $color: $one-color
+    $hover-color: $one-color
+    $active-color: $one-color
+    $visited-color: $one-color
+    $focus-color: $one-color
+  
+
+  color: #{$color}
+  &:hover 
+    color: #{$hover-color}
+  
+  &:active 
+    color: #{$active-color}
+  
+  &:visited 
+    color: #{$visited-color}  
+  
+  &:focus 
+    color: #{$focus-color} 
+  
+
+  
+
+
+@mixin placehodler-color($color) 
+
+  ::-webkit-input-placeholder 
+      color: $color
+  
+
+  :-ms-input-placeholder 
+      color: $color
+  
+
+  ::-moz-placeholder 
+      color: $color
+  
+
+  :-moz-placeholder 
+      color: $color
+  
+
+  :placeholder-shown 
+      color: $color
+  
+
+
+
+
+@mixin placehodler-color-focus($color) 
+  &:focus::-webkit-input-placeholder 
+      color: $color
+  
+
+  &:focus:-ms-input-placeholder 
+      color: $color
+  
+
+  &:focus::-moz-placeholder 
+      color: $color
+  
+
+  &:focus:-moz-placeholder 
+      color: $color
+  
+  :placeholder-shown 
+      color: $color
+  
+
+
+// =============================================================================
+// String Replace
+// =============================================================================
+
+@function str-replace($string, $search, $replace: "") 
+  $index: str-index($string, $search)
+
+  @if $index 
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace)
+  
+
+  @return $string
+
+
+// =============================================================================
+// Font Face
+// =============================================================================
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) 
+  $src: null
+
+  $extmods: ( eot: "?", svg: "#" + str-replace($name, " ", "_"))
+
+  $formats: (otf: "opentype", ttf: "truetype")
+
+  @each $ext in $exts 
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext)
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext)
+    $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma)
+  
+
+  @font-face 
+    font-family: quote($name)
+    font-style: $style
+    font-weight: $weight
+    src: $src

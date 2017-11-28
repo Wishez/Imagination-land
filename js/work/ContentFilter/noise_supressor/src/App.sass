@@ -1,3 +1,4 @@
+$i: !important
 .App 
   text-align: center
 
@@ -53,7 +54,11 @@ body
 
 
 @import './styles/_color.sass'
+@import './styles/_mixins.sass'
 
+a
+  @include link-colors($one-color: #f7f7f7)
+  text-decoration: none
 %textCenter 
   text-align: center
 
@@ -106,16 +111,23 @@ body
   color: $white
 .wordsList
   list-style: none
-  opacity: 0
 
-.controller__input
+.controller__input, 
+.registrationFormController__input,
+.logInFormController__input
   background-color: transparent
 
-.controller__input, .word
+.controller__input,
+.word, 
+.registrationFormController__input,
+.logInFormController__input
   border-bottom: 1px solid $gray
   @extend %fullWidth
   padding: 0.5em
   color: $white
+.logInFormController__error, .registerFormController__error
+  color: $first
+  @extend %fs-16
 
 .word
   padding-left: 0
@@ -205,3 +217,6 @@ p, .listArticlesItem__paragraph
   35%
     -webkit-transform: scale3D(0, 0, 1)
     transform: scale3D(0, 0, 1)
+
+.logInFormButtons__submitButton, .registrationFormButtons__button
+  @extend %defaultMarginTop
