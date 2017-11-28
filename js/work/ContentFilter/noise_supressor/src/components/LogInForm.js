@@ -32,19 +32,21 @@ const LogInForm = ({
 			 />
 		 	{message ? <strong className='logInFormController__error'>{message}</strong> : ''}
 			 <div className='logInFormButtons'>
-			 	<Button className='logInFormButtons__button logInFormButtons__button--submit submit' 
+			 	<Button className='logInFormButtons__submitButton submit' 
 			 	   	content='Войти'
 			 	   	loading={isLogining}
+			 	   	size='normal'
 			 	/>
-			 	<a href='#'
-			 		className='logInFormButtons__button logInFormButtons__button--register'>
-			 		Регистрация
+			 	<Button 
+			 		className='logInFormButtons__button logInFormButtons__button_name-registration'
+			 		content='Регистрация' 
+			 		size='normal'
+			 	/>
+			 	<a href={`#`}
+			 		className='logInFormButtons__button'>
+			 		Забыли пароль?
 			 	</a>
 			 </div>
-		 	<a href={`#`}
-		 		className='logInFormButtons__forgotPass'>
-		 		Забыли пароль?
-		 	</a>
 		</form>
 );
 
