@@ -11,6 +11,14 @@ import {
  	SUBSCRIBE,
  	CHANGE_USER_AVATAR
 } from './../constants/accountTypes.js';
+import {
+	loginUrl,
+	changePasswordUrl,
+	changeEmailUrl,
+	recoverPasswordUrl,
+	changeUserAvatarUrl,
+	subscribeUrl
+} from './../constants/conf.js';
 import customAjaxRequest, { make_request } from './../constants/ajax.js';
 import { convertDate } from './../constants/pureFunctions.js';
 /* User 
@@ -19,10 +27,8 @@ import { convertDate } from './../constants/pureFunctions.js';
  * password
  * UserData will get to request to server as object.
  * { 
- * 	name: string,
- * 	sureface: string,
+ *  username
  * 	email:　string,
- * 	active_until,
  * 	status: date or string,
  * 	balance: number,
  * 	avatar: url  
@@ -32,17 +38,14 @@ const logIn = (
 	data,
 	userData,
 	isLogged,
-	message,
-	registerMessage
+	message
 ) => ({
 	type: LOGIN,
 	isLogged,
+	...userData,
 	registered: isLogged,
 	username: data.username,
 	password: data.password,
-	userData: {
-		...userData
-	},
 	message
 });
 
@@ -73,7 +76,7 @@ export const tryLogin = data => dispatch => {
 	dispatch(loggining());
 
 	customAjaxRequest({
-		url: '/log_in/',
+		url: loginUrl,
 		data: data,
 		type: 'GET',
         processData: true,
@@ -144,7 +147,7 @@ export const tryChangeAccountPassword = data => dispatch => {
 	} else
 
 	customAjaxRequest({
-		url: '/change_password/',
+		url: changePasswordUrl,
 		data: data,
 		type: 'POST',
 		cache: true
@@ -192,7 +195,7 @@ export const tryChangeAccountEmail = data => dispatch => {
 	}
 
 	customAjaxRequest({
-		url: '/change_email/',
+		url: changeEmailUrl,
 		data: data,
 		type: 'POST',
 		cache: true
@@ -231,7 +234,7 @@ export const trySubscribeAccount = data => dispatch => {
 
 
 	customAjaxRequest({
-		url: '/subscribe/',
+		url: subscribeUrl,
 		data: data,
 		type: 'POST',
 		processData: true,
@@ -275,7 +278,7 @@ export const tryChangeUserAvatar =  data => dispatch => {
 	validData.append('newAvatar', data.newAvatar);
 
 	customAjaxRequest({
-		url: '/change_user_avatar/',
+		url: changeUserAvatarUrl,
 		data: validData, 
 		type: 'POST',
 		dataType: 'json',
@@ -305,7 +308,7 @@ export const tryRecoverPassword = data => dispatch => {
 	dispatch(changing());
 
 	customAjaxRequest({
-		url: '/recover_password/',
+		url: recoverPasswordUrl,
 		data: data,
 		type: 'POST',
 		processData: true

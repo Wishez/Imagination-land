@@ -3,7 +3,9 @@ import {
  	REQUEST_REGISTER
  	
 } from './../constants/registrationTypes.js';
-
+import {
+	registerUrl
+} from './../constants/conf.js';
 import customAjaxRequest, { make_request } from './../constants/ajax.js';
 
 // Показывает обработку регистрации.
@@ -26,7 +28,7 @@ export const tryRegister = data => dispatch => {
 	dispatch(registering());
 
 	customAjaxRequest({
-		url: '/register/',
+		url: registerUrl,
 		data: data,
 		type: 'POST',
 		processData: true,
