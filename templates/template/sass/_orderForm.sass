@@ -1,0 +1,72 @@
+.orderFormContainer
+	@extend %fullWidth
+	@extend %defaultBorderRadius
+	@extend %burgundyBg
+	position: fixed
+	top: 5%
+	left: calc(50% - 250px)
+	max-width: 500px
+	padding: 4% 5%
+	transition: width 1.5s, max-height 1s, opacity 1.5s
+	&, & *
+		@extend %bigIndex
+		@extend %fullOpacity
+	& *:not(.orderForm__button):not(.orderFormContainer__closeButton)  
+		transition: opacity 1s
+	&_hidden
+		@extend %hiddenElement
+	@extend %bigMaxHeight
+	@extend %fullOpacity
+	@extend %fs-21-xs
+	@include breakpoint($xs)
+		max-width: none
+		width: 90%
+		left: 5%
+	@include breakpoint(max-width 500px)
+		font-size: (28em / 16)
+.orderFormContainer_closed
+	@extend %zeroWidth
+	@extend %zeroMaxHeight
+	&.orderFormContainer, &.orderFormContainer * 
+		@extend %lowestOpacity
+
+.orderFormController
+	@extend %fullWidth
+.orderFormController__input, .orderFormController__label
+	@extend %block 
+.orderFormController__label
+	@extend %defaultMarginTop
+.orderFormController__input, .orderFormController__select
+	color: $darkGray
+	background-color: $white
+	padding: 0.8em 1em
+	@extend %fullWidth
+	margin-top: 0.5em
+	&:focus
+		&:invalid, &:valid
+			border: 2px solid 
+		&:invalid	
+			border-color: #941302
+		&:valid
+			border-color: #3D6651
+
+.orderForm__button
+	@extend %halfWidth
+	@extend %centerBlock
+	@extend %increasedMarginTop
+.orderFormContainer__closeButton
+	@extend %darkCianBg
+
+.orderFormContainer__hint
+	@extend %defaultMarginTop
+
+.orderFormContainer__styleName
+	font-size: (21em / 18)
+	@extend %bold
+
+.orderForm__error
+	color: $first
+	@extend %defaultMarginTop
+
+.orderForm__successMessage
+	@extend %defaultMarginTop	
