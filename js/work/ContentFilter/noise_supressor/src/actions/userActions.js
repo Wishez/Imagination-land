@@ -7,8 +7,15 @@ import {
 	REMOVE_WORD,
 	THANK_YOU_SERVER
 } from './../constants/actionTypes.js';
+
 import customAjaxRequest, { make_request } from './../constants/ajax.js';
-import { serverUrl } from './../constants/conf.js';
+import { 
+	serverUrl,
+	setUserStateUrl,
+	removeWordUrl,
+	addWordUrl,
+	thankYouServerUrl
+} from './../constants/conf.js';
 
 const thankYouServer = () => ({
 	type: THANK_YOU_SERVER
@@ -44,7 +51,7 @@ const make_action = ({
 	dispatch(createdAction);
 	
 	customAjaxRequest({
-		url: `${serverUrl}${url}`,
+		url,
 		type: 'POST',
 		data,
 		processData: true,
@@ -67,7 +74,7 @@ export const tryRemoveWord = (words, word, userId) => dispatch => {
 					[...words.slice(0, index), ...words.slice(index + 1)]
 				);
 			}()),
-			url: '/words/remove_word/',
+			url: removeWordUrl,
 			data: {
 				word: word,
 				userId: userId
@@ -90,20 +97,19 @@ export const tryAddWord = (words, word, userId) => dispatch => {
 	dispatch(
 			make_action({
 			createdAction: addWord( [...words.slice(0), word] ),
-			url: '/words/add_word/',
+			url: addWordUrl,
 			data: {
 				word: word,
 				userId: userId
 			},
 			success: response =>  {
-				console.log(response);
+				dispatch(change('addWordForm', 'word', ''));
 			},
 			failure: (xhr, errmsg, err) => {
 				console.log(err);
 			}
 		})
 	);
-	dispatch(change('addWordForm', 'word', ''));
 };
 // Test action. In futer, i will get data with logining.
 export const getUserData = userId => dispatch => {
@@ -124,7 +130,7 @@ export const getUserData = userId => dispatch => {
 export const setUserCurrentSite_test = () => {
 	customAjaxRequest({
 		type: 'POST',
-		url: `${serverUrl}/words/set_user_state/`,
+		url: setUserStateUrl,
 		data: {
 			"current_site": "localhost:8080"
 		},
@@ -144,7 +150,7 @@ export const setUserCurrentSite_test = () => {
 export const setUserQuantity_test = () => {
 	customAjaxRequest({
 		type: 'POST',
-		url: `${serverUrl}/words/set_user_state/`,
+		url: setUserStateUrl,
 		data: {
 			"quantity_words": Math.round((Math.random() + 1) * 100)
 		},
@@ -163,7 +169,7 @@ export const setUserQuantity_test = () => {
 export const tryThankYouServer = userId => {
 	make_action({
 		createdAction: thankYouServer(),
-		url: '/words/thank_you_server/',
+		url: thankYouServerUrl,
 		data: {
 			userId: userId
 		},
