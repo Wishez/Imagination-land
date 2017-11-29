@@ -1,0 +1,21 @@
+body {
+	margin: 0;
+	padding: 0;
+	bottom: 0;
+	outline: 0;
+	font-size: 16px
+	line-height: 125%;
+}
+#crapyGame {
+	width: 500px;
+	height: 350px;
+	border: 1px solid #000;
+	margin-top: 20px;
+}
+.heading {
+	
+}
+.counter {
+	margin-top: 50px;
+	font-size: 1.2em;
+}

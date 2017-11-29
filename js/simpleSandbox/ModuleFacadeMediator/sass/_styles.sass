@@ -1,0 +1,53 @@
+// START Styles section
+.styles
+	@extend %unstyled
+	@extend %flex
+	@extend %justifyAround
+	@extend %alignStart
+	@extend %defaultFlexFlow
+	@extend %fullOpacity
+	&, & *
+		@extend %bigMaxHeight
+		transition: max-height 1s, opacity 1s, display 2s
+	@include breakpoint($xs)
+		flex-direction: column
+		flex-wrap: nowrap
+		padding: 10% 5%
+	&_hidden, &_hidden *
+		max-height: 0
+		@extend %lowestOpacity
+
+// START Single style
+
+.singleStyle
+	@extend %four
+	@extend %halfWidth-sm
+	@extend %increasedMarginTop
+	@extend %halfWidth-sm
+	@extend %fullWidth-xs
+	@extend %fs-28-xs
+		
+
+
+.singleStyleImageContainer
+	@extend %defaultMarginTop
+	@extend %relative
+	
+.singleStyleImageContainer__image
+	@extend %fullWidth
+	min-height: 164px 
+
+.singleStyleImageContainer__button
+	left: calc(50% - 55px)
+	max-width: 110px
+	@extend %halfWidth;
+	@extend %burgundyBg
+	@include breakpoint($xs)
+		max-width: 200px
+		left: calc(50% - 100px)
+		padding: 15px 0 !important
+		bottom: 30px !important
+
+
+.styleCardPresentationMainImage
+	@extend %relative

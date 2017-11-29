@@ -1,0 +1,16 @@
+body {
+	background-color: #212121;
+	color: #f1f1f1;
+	padding: 5% 10%;
+	font-size: 21px;
+	line-height: 135%;
+	font-size-adjust: 100%;
+	font-family: serif, sans-serif;
+}
+
+toggle-button:unresolved {
+	color: #079;
+}
+.tb {
+	color: #212121;			
+}

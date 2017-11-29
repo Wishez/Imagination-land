@@ -1,0 +1,48 @@
+.container{
+  	margin: 0 auto;	
+}
+.image {
+  float: left;
+}
+h1,h2 {
+  text-align: center;
+}
+h1 {
+  text-transform: capitalize;
+  margin-bottom: 0;		
+}
+h2{
+  font-style: italic;
+  margin-top:10px;			
+}
+h2:first-letter {
+  text-transform: uppercase;
+}
+::-webkit-input-placeholder:focus {
+  color:  white;
+}
+.input, button {
+  float: right;
+}
+input {
+  width: 200px;
+}
+button{
+  margin-top: 5px;		
+}
+
+.clearfix {
+  clear: both;
+}
+
+@media (min-width: 768px) {
+  .container {
+  	width: 45%;
+  }
+}   
+
+@media (max-width: 767px) {
+  .container {
+  	width: 60%;
+  }
+}

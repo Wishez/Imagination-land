@@ -1,0 +1,56 @@
+%zeroMaxHeight
+	max-height: 0
+%bigMaxHeight
+	max-height: 1920px
+%zeroWidth
+	width: 0
+%fullWidth
+	width: 100%
+%halfWidth
+	width: 49.7%
+%four
+	width: 23.5%
+%five
+	width: 20%
+// md
+%fullWidth-md
+	@include breakpoint($md)
+		width: 100%
+%four-md
+	@include breakpoint($md)
+		width: 25%
+%halfWidth-md
+	@include breakpoint($md)
+		width: 49.7%
+		width: 25%
+%five-md
+	@include breakpoint($md)
+		width: 20%
+// sm
+%fullWidth-sm
+	@include breakpoint($sm)
+		width: 100%
+%halfWidth-sm
+	@include breakpoint($sm)
+		width: 45%
+%four-sm
+	@include breakpoint($sm)
+		width: 25%
+%five-sm
+	@include breakpoint($sm)
+		width: 20%
+// xs
+%fullWidth-xs
+	@include breakpoint($xs)
+		width: 100%
+%halfWidth-xs
+	@include breakpoint($xs)
+		width: 45%
+%four-xs
+	@include breakpoint($xs)
+%five-xs
+	@include breakpoint($xs)
+		width: 20%
+%fullWidth-xxs
+	@include breakpoint($xxs)
+		width: 100%

@@ -1,0 +1,33 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+.container {
+	width: 95%;
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: center;
+	align-content: center;
+	margin: 0 auto;
+	
+}
+.row {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.col {
+	width: 30%;
+}
+img {
+	max-width: 150px;
+	height: 100px;
+	cursor: pointer;
+}
+
+button {
+	align-self: center;
+	margin: 20px auto;
+	padding: 10px;
+	font: 20px monospace;
+}

@@ -1,0 +1,34 @@
+var articles = [
+  { 
+    "title": "My first note.",   
+    "author": "",
+    "entries": {
+      "date": "01/14/2017",
+      "body": "Here is text for the article."
+    }
+  },
+  {
+    "title": "Second Note.",   
+    "author": "",
+    "entries": {
+      "date": "01/15/2017",
+      "body": "<i>The article</i> on next day."
+    }
+  },
+  {
+    "title": "The Long Note",   
+    "author": "",
+    "entries": {
+      "date": "01/15/2017",
+      "body": "Here is, how you can see, all basic functions for the blog. Of course, i'm sure, i can add more functions which my imagination could create and to styleshout this page, but i will go to learn new things next to improve a quality of a code and my imagination."
+    }
+  },
+  {
+    "title": "Update With Ajax.",   
+    "author": "",
+    "entries": {
+      "date": "01/27/2017",
+      "body": "Now, i write this text in a JSON file, and i will try to select this data form it. If you have seen the text,  it mean i have successfuly achieved my goal ,and it's the most meaningless text you have read ever."
+    }
+  }
+]
