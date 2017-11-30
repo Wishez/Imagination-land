@@ -11,7 +11,7 @@ import LogInForm from './components/LogInForm';
 import RegistrationContainer from './containers/RegistrationContainer.js';
 import { 
   tryLogin, 
-  logOut, 
+  tryLogOut, 
   tryChangeUserAvatar
 } from './actions/accountActions.js'
 import { cookiesHandler } from './constants/pureFunctions.js';
@@ -30,11 +30,9 @@ class App extends Component {
   }
 
   componentDidMount() { 
-    const { userId, dispatch } = this.props;
+    const { uuid, dispatch } = this.props;
     
     this.loginInIfMay();
-    
-    dispatch(getUserData(userId));
   }
   componentDidUpdate() {
     let node;
@@ -51,7 +49,6 @@ class App extends Component {
     else if (isShownRegistrationForm) 
       node = document.getElementById('registrationForm');
 
-    // console.log(node);
     if (!this.state.didFadeIn && node) {
       TweenLite.to(
         node,
@@ -67,16 +64,16 @@ class App extends Component {
   }
 
   addWordFormSubmit = (values, dispatch) => {
-    const { words, userId } = this.props;
+    const { words, uuid } = this.props;
     
-    dispatch(tryAddWord(words, values.word, userId));
+    dispatch(tryAddWord(words, values.word, uuid));
   }
 
   removeWord = word => {
-      const { words, userId, dispatch } = this.props;
+      const { words, uuid, dispatch } = this.props;
       // Clousure for preparing to remove word from user account.
       return () => {
-        dispatch(tryRemoveWord(words, word, userId));
+        dispatch(tryRemoveWord(words, word, uuid));
       };
   }
 
@@ -98,7 +95,7 @@ class App extends Component {
   logOut = () => {
     const { dispatch } = this.props;
 
-    dispatch(logOut());
+    dispatch(tryLogOut());
     
   }
 
@@ -146,9 +143,10 @@ class App extends Component {
     const { 
       words,
       is_requesting,
-      isLogged
+      isLogged,
+      uuid
     } = this.props;
-    console.log(isLogged);
+    
     const { 
       isShownRegistrationForm,
       isShownWordsList,
@@ -165,24 +163,24 @@ class App extends Component {
           <div className="mainInfo">
             {/* begin mainInforHeader */}
             <header id="header" className="mainInfoHeader">
-              <h4 className="mainInfoHeader__title">Unwished words</h4>
+              <h4 className="mainInfoHeader__title">Noise<br/>supressor</h4>
               <div className="mainInfoHeaderContent">
-                Found&nbsp;
-                <span id='quantityBadContent' className='mainInfoHeaderContent__quantityWords'></span>
-                unwhished content on &nbsp;
-                <strong id='domainName' className='mainInfoHeaderContent__domain'>{document.domain}</strong>
+                { isLogged ? <span className='mainInfoHeaderContent__logOut' 
+                  onClick={this.logOut}>Log out</span> : '' }<br />
+                  
               </div>
             </header>
             {/* end mainInforHeader */}
             {/* begin mainContent */}
             <main className="mainContent">
               {isLogged  ? <AddWordForm onSubmit={this.addWordFormSubmit}/> : ''}
-
               {isLogged ?
                 !is_requesting  ? 
-                    <WordsList words={words} 
-                      removeWord={this.removeWord} 
-                      showLogInForm={this.switchView('isShownLogInForm')} /> :
+                    <div className='main'>
+                        <WordsList words={words} 
+                          removeWord={this.removeWord} 
+                          showLogInForm={this.switchView('isShownLogInForm')} />
+                    </div> :
                     <Loader className='wordsLoading' /> : 
                 ''
               }
@@ -196,6 +194,7 @@ class App extends Component {
                   submitLogInForm={this.submitLogInForm}
                   showRegistrationForm={this.switchView('isShownRegistrationForm')}
                   {...this.props}
+
                 /> : ''}
               
             </main>
@@ -214,13 +213,13 @@ const mapStateToProps = state => {
     } = state;
 
     const {
-      userId,
       words,
       is_requesting
     } = user;
 
     const {
       userData,
+      uuid,
       username,
       password,
       isLogged,
@@ -229,8 +228,9 @@ const mapStateToProps = state => {
       message
     } = account;
 
+    
     return {
-      userId,
+      uuid,
       words,
       is_requesting,
       isLogining,
