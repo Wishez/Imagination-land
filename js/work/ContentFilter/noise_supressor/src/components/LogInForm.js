@@ -9,8 +9,7 @@ const LogInForm = ({
 	submitLogInForm,
 	handleSubmit,
 	message,
-	isLogining,
-	showRegistrationForm
+	isLogining
 }) => (
 	<form id='logInForm'
 		onSubmit={handleSubmit(submitLogInForm.bind(this))}
@@ -20,7 +19,7 @@ const LogInForm = ({
 				type='text'
 				block='logInFormController'
 				validate={[required]}
-				placeholder='Логин/Login'
+				placeholder='Login'
 				maxLength='75'
 			 />
 			 <Field component={RenderController}
@@ -28,26 +27,19 @@ const LogInForm = ({
 			 	type='password'
 			 	block='logInFormController'
 				validate={[required]}
-				placeholder='Пароль/Password'
+				placeholder='Password'
 				maxLength='75'
 			 />
-		 	{message ? <strong className='logInFormController__error'>{message}</strong> : ''}
+		 	{message ? <span className='logInFormController__error formErorr'>{message}</span> : ''}
 			 <div className='logInFormButtons'>
 			 	<Button className='logInFormButtons__submitButton submit' 
 			 	   	content='Sign in'
 			 	   	loading={isLogining}
 			 	   	size='medium'
 			 	/>
-			 	<Button 
-			 		className='logInFormButtons__button logInFormButtons__button_name-registration'
-			 		content='Sign up' 
-			 		size='medium'
-			 		onClick={showRegistrationForm}
-			 	/>
-			 	<a href={`#`}
-			 		className='logInFormButtons__button'>
+			 	<span className='logInFormButtons__button logInFormButtons__button_name-forgotPassword'>
 			 		Forgot password?
-			 	</a>
+			 	</span>
 			 </div>
 		</form>
 );

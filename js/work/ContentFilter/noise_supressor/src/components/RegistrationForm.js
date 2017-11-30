@@ -19,8 +19,7 @@ const RegistrationForm = ({
 	allowRegister,
 	knowRules,
 	isRegistering,
-	registerMessage,
-	showLogInForm
+	registerMessage
 }) => (
 	<form id='registrationForm'
 		onSubmit={handleSubmit(submitRegistrationForm.bind(this))}
@@ -30,7 +29,7 @@ const RegistrationForm = ({
 			type='text'
 			block='registrationFormController'
 			validate={[required, login, loginLength]}
-			placeholder='Логин/Login'
+			placeholder='Username'
 			maxLength='24'
 		 />
 		 <Field component={RenderController}
@@ -38,7 +37,7 @@ const RegistrationForm = ({
 		 	type='password'
 		 	block='registrationFormController'
 			validate={[required, passwordLength, password]}
-			placeholder='Пароль/Password'
+			placeholder='Password'
 			maxLength='30'
 		 />
 		 <Field component={RenderController}
@@ -46,7 +45,7 @@ const RegistrationForm = ({
 		 	type='password'
 		 	block='registrationFormController'
 			validate={[required]}
-			placeholder='Повторить пароль/Repeat password'
+			placeholder='Repeat password'
 			maxLength='30'
 		 />
 		 <Field component={RenderController}
@@ -62,21 +61,16 @@ const RegistrationForm = ({
 			 <Checkbox onClick={allowRegister}
 			 	className='registrationFormController__check'
 			    label='You are agree for using your data?'
-			    default={true} />
+			    checked={knowRules} />
 		 </div>
 		 <div className='registrationFormButtons'>
-			{registerMessage ? <strong className='formError'>{registerMessage}</strong> : ''}
-			<br />
+			{registerMessage ? <span className='formError'>{registerMessage}</span> : ''}
 		 	<Button disabled={!knowRules}
 		 		loading={isRegistering}
 		 		className='registrationFormButtons__submitButton  submit' 
 		 	   	content='Sign up'
 		 	   	size='medium'
 		 	/>
-		 	<Button className='registrationFormButtons__button'
-		 		size='medium'
-		 		onClick={showLogInForm}
-		 		content='Sign in' />
 		 </div>
 	</form>
 );

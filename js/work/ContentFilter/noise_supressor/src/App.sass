@@ -160,7 +160,9 @@ p, .listArticlesItem__paragraph
   width: span(2 of 12);
   padding: 0 0.5em 1em;
 
-
+.logInFormButtons__button_name-forgotPassword
+  @extend %toRight
+  line-height:  1em
 .filterPluginAlert
   font-size: 18px
   padding: 1em 2em
@@ -169,13 +171,15 @@ p, .listArticlesItem__paragraph
   .word
     display: grid
     grid-template-columns: 40% 40% 20%
-.mainInfoHeaderContent__logOut, .allowOnThisSiteButton, .removeWord
+.mainInfoHeaderContent__button,
+.allowOnThisSiteButton, .removeWord,
+.logInFormButtons__button_name-forgotPassword
   cursor: pointer  
-.mainInfoHeaderContent__logOut
+.mainInfoHeaderContent__button
   padding: 0.4em 0.5em 0.5em;
   border: 1px solid #212121;
-  display: inline-block;
-  float: right;
+  @extend %inlineBlock
+  @extend %toRight
   margin-top: 0.3em;
 .allowOnThisSiteButton, .removeWord
   text-align: right
@@ -193,7 +197,7 @@ p, .listArticlesItem__paragraph
   width: 33.33%
   height: 33.33%
   background-color: #f4f4f4
-  float: left
+  @extend %toLeft
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out
   animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out
 .sk-cube-grid .sk-cube1 
@@ -243,13 +247,15 @@ p, .listArticlesItem__paragraph
 .logInFormButtons,
 .registrationFormButtons,
 .logInForm,
-.registrationForm
+.registrationForm,
+.addWordForm
   @extend %redusedMarginTop
 
 
 .main_registration
   top: 15px
-.main_logIn
+  max-height: 215px
+.main_signIn
   top: 40px
   // @extend %defaultMarginTop
 /*

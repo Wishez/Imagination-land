@@ -146,9 +146,15 @@ class App extends Component {
             <header id="header" className="mainInfoHeader">
               <h4 className="mainInfoHeader__title">Noise<br/>supressor</h4>
               <div className="mainInfoHeaderContent">
-                { isLogged ? <span className='mainInfoHeaderContent__logOut' 
-                  onClick={this.logOut}>Log out</span> : '' }<br />
-                  
+                { isLogged ? <span className='mainInfoHeaderContent__button' 
+                  onClick={this.logOut}>Sign out</span> : '' }
+                {isShownRegistrationForm ? 
+                      <span className='mainInfoHeaderContent__button'
+                          onClick={this.switchView('isShownLogInForm')}>Sing in</span> :
+                          '' 
+                    }
+                { isShownLogInForm && !isLogged ? <span className='mainInfoHeaderContent__button'
+                  onClick={this.switchView('isShownRegistrationForm')}>Sing up</span> : '' }
               </div>
             </header>
             {/* end mainInforHeader */}
@@ -166,8 +172,7 @@ class App extends Component {
                 ''
               }
               {isShownRegistrationForm && !isLogged ? 
-                <RegistrationContainer 
-                  showLogInForm={this.switchView('isShownLogInForm')} /> :
+                <RegistrationContainer /> :
                    ''
               }
               {isShownLogInForm && !isLogged ? 
