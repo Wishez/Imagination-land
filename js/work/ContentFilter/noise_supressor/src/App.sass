@@ -79,7 +79,7 @@ a
 
 .mainInfoHeader__title
   @extend %textCenter
-  padding-top: 1.3em
+  padding-top: 0.6em
 .mainInfoHeaderContent
   @extend %fs-16
   padding: 0.6em 1em 0
@@ -88,11 +88,14 @@ a
   vertical-align: middle
   color: $darkGray
   @extend %halfWidth
-  width: calc(50% - 1px)
   float: left
   height: 70px
-
-
+.mainInfoHeader__title
+  width: 33.33%  
+  width:  calc(33.33% - 1px)
+.mainInfoHeaderContent
+  width: 66.66%  
+  width: calc(66.66% - 1px)
 
 .mainInfoHeaderContent
   @extend %relative
@@ -102,13 +105,23 @@ a
   background-color: $listWordsBackground
   @extend %relative
   @extend %fullWidth
-  // max-width: 450px 
   min-height: 300px
   max-height: 300px
   padding: 1.5em 2em
-  overflow: auto
+  overflow: hidden
   @extend %centerBlock
+  // overflow: none
   color: $white
+  
+.main
+  overflow: auto
+  max-height: 195px
+  padding-right:  0.3em
+.main, .controller
+  position: relative
+  right: -5px
+.controller
+  padding-right: 0.6em
 .wordsList
   list-style: none
 
@@ -117,6 +130,8 @@ a
 .logInFormController__input
   background-color: transparent
 
+.loginFormController, .registrationFormController
+    margin-top: 0.2em
 .controller__input,
 .word, 
 .registrationFormController__input,
@@ -125,10 +140,12 @@ a
   @extend %fullWidth
   padding: 0.5em
   color: $white
-.logInFormController__error, .registerFormController__error
+.formError
   color: $first
   @extend %fs-16
 
+.registrationFormController label, .logInFormController label
+    color: $white $i
 .word
   padding-left: 0
   padding-right: 0 
@@ -143,9 +160,6 @@ p, .listArticlesItem__paragraph
   width: span(2 of 12);
   padding: 0 0.5em 1em;
 
-.main 
-  padding-top: 5%
-
 
 .filterPluginAlert
   font-size: 18px
@@ -155,10 +169,16 @@ p, .listArticlesItem__paragraph
   .word
     display: grid
     grid-template-columns: 40% 40% 20%
-
-.allowOnThisSiteButton, .removeWord 
-  text-align: right
+.mainInfoHeaderContent__logOut, .allowOnThisSiteButton, .removeWord
   cursor: pointer  
+.mainInfoHeaderContent__logOut
+  padding: 0.4em 0.5em 0.5em;
+  border: 1px solid #212121;
+  display: inline-block;
+  float: right;
+  margin-top: 0.3em;
+.allowOnThisSiteButton, .removeWord
+  text-align: right
   color: $first
 
 .sk-cube-grid 
@@ -217,6 +237,25 @@ p, .listArticlesItem__paragraph
   35%
     -webkit-transform: scale3D(0, 0, 1)
     transform: scale3D(0, 0, 1)
+.logInForm, .registrationForm
+  color: $white
+.logInFormButtons, .registrationFormButtons
+  @extend %redusedMarginTop
 
-.logInFormButtons__submitButton, .registrationFormButtons__button
-  @extend %defaultMarginTop
+/*
+ *  STYLE 2
+ */
+
+.main::-webkit-scrollbar-track
+  // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+  border-radius: 10px
+  background-color: $second
+
+.main::-webkit-scrollbar
+  width: 12px
+  background-color: $second
+
+.main::-webkit-scrollbar-thumb
+  border-radius: 10px
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3)
+  background-color: $third
