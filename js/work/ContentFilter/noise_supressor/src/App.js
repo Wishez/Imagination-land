@@ -7,19 +7,17 @@ import './App.css';
 import Loader from './components/Loader';
 import WordsList from './components/WordsList';
 import AddWordForm  from './components/AddWordForm';
-import LogInForm from './components/LogInForm';
+import LogInContainer from './containers/LogInContainer';
 import RegistrationContainer from './containers/RegistrationContainer.js';
-import { 
-  tryLogin, 
-  tryLogOut, 
-  tryChangeUserAvatar
-} from './actions/accountActions.js'
-import { cookiesHandler } from './constants/pureFunctions.js';
+import { tryChangeUserAvatar } from './actions/accountActions.js';
 import { 
   tryAddWord, 
   tryRemoveWord,
   getUserData
 } from './actions/userActions.js';
+import { 
+  tryLogOut
+} from './actions/accountActions.js';
 
 class App extends Component {
   state = {
@@ -30,9 +28,7 @@ class App extends Component {
   }
 
   componentDidMount() { 
-    const { uuid, dispatch } = this.props;
-    
-    this.loginInIfMay();
+    // this.loginInIfMay();
   }
   componentDidUpdate() {
     let node;
@@ -77,22 +73,7 @@ class App extends Component {
       };
   }
 
-  loginInIfMay = () => {
-      const { dispatch, isLogged } = this.props;
-      // Функция, возвращающая кэшированные данные пользователя.
-      const data = cookiesHandler.getUsernameAndPasswordFromCookies();
-      // Проверка на уже залогинивщегося в свой аккаунт пользователя
-      // и логинился ли он хоть раз на сайте.
-      if (!isLogged && 
-        (data.username && data.password)) {
-        dispatch(tryLogin(data)); 
-      }
-  }
-  submitLogInForm = (values, dispatch) => {  
-    dispatch(tryLogin(values));
-  }
-
-  logOut = () => {
+   logOut = () => {
     const { dispatch } = this.props;
 
     dispatch(tryLogOut());
@@ -190,12 +171,7 @@ class App extends Component {
                    ''
               }
               {isShownLogInForm && !isLogged ? 
-                <LogInForm 
-                  submitLogInForm={this.submitLogInForm}
-                  showRegistrationForm={this.switchView('isShownRegistrationForm')}
-                  {...this.props}
-
-                /> : ''}
+                <LogInContainer showRegistrationForm={this.switchView('isShownRegistrationForm')} /> : ''}
               
             </main>
             {/* end mainContent */}
@@ -207,6 +183,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
+
     const {
       user,
       account
