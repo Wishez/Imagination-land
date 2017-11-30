@@ -1,9 +1,7 @@
-
-
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import Title from './../components/Title';
 import LogInForm from './../components/LogInForm';
 import { 
   tryLogin
@@ -11,11 +9,7 @@ import {
 import { cookiesHandler } from './../constants/pureFunctions.js';
 
 class LogInContainer extends Component {
-	// static PropTypes = {
-	// 	registered: PropTypes.bool.isRequired,
-	// 	isRegistering: PropTypes.bool.isRequired,
-	// 	dispatch: PropTypes.func.isRequired
-	// }
+
 	componentDidMount() { 
 		this.loginInIfMay();
   	}
@@ -36,7 +30,8 @@ class LogInContainer extends Component {
 
   render() {
 		return (
-			<div className='main'>
+			<div className='main main_signIn'>
+				<Title block='main' text='Sign in to Noise Supressor' />
 				<LogInForm 
                   submitLogInForm={this.submitLogInForm}                  
                   {...this.props} />
@@ -52,7 +47,6 @@ const mapStateToProps = state => {
     } = state;
 
 	const {
-      userData,
       username,
       password,
       isLogged,

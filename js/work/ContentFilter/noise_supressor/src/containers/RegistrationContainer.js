@@ -1,16 +1,12 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 
+import Title from './../components/Title';
 import Registration from './../components/Registration';
 import { tryRegister } from './../actions/registrationActions.js';
 
 class RegistrationContainer extends Component {
-	static PropTypes = {
-		registered: PropTypes.bool.isRequired,
-		isRegistering: PropTypes.bool.isRequired,
-		dispatch: PropTypes.func.isRequired
-	}
 	// Переменная для чек-бокса.
 	state = {
 		knowRules: true
@@ -38,13 +34,14 @@ class RegistrationContainer extends Component {
 
 	render() {
 		return (
-			<main className='main'>
+			<div className='main main_registration'>
+				<Title block='main' text='Sign in to Noise Supressor' />
 				<Registration {...this.props}
 					{...this.state}
 					submitRegistrationForm={this.submitRegistrationForm} 
 					allowRegister={this.allowRegister}
 				/>
-			</main>
+			</div>
 		);
 	}
 }
