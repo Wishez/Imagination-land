@@ -17,11 +17,13 @@ import {
 	changeEmailUrl,
 	recoverPasswordUrl,
 	changeUserAvatarUrl,
-	subscribeUrl
+	subscribeUrl,
+	logOutUrl
 } from './../constants/conf.js';
 import customAjaxRequest, { make_request } from './../constants/ajax.js';
 import { convertDate } from './../constants/pureFunctions.js';
 import { change } from 'redux-form';
+import { getUserData } from './userActions.js';
 /* User 
  * 
  * username
@@ -91,6 +93,7 @@ export const tryLogin = data => dispatch => {
 				// Меняет состояние на удачный заход пользователя в аккаунт
 				dispatch(logIn(data, userData, true, ''));
 				dispatch(setUserToCookies(data))
+				dispatch(getUserData(userData.uuid));
 			} else {
 				// Меняется только сообщение в состояние аккаунта,
 				// не устанавливая неправильно введённый или 
@@ -110,9 +113,27 @@ export const tryLogin = data => dispatch => {
 		});
 };
 
-export const logOut = () => ({
+const logOut = () => ({
 	type: LOGOUT
 });
+export const tryLogOut = () => dispatch => {
+	customAjaxRequest({
+		url: logOutUrl,
+		type: 'GET',
+    	processData: true,
+    	cache: true
+	});
+
+	dispatch(logOut());
+
+	return make_request(resp => {
+		console.log(resp);
+	},
+	(xhr, errmsg, err) => {
+		console.log(err);
+	}
+	);
+};
 
 const changing = () => ({
 	type: REQUEST_IN_PERSONAL_ROOM

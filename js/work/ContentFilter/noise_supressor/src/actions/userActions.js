@@ -14,7 +14,8 @@ import {
 	setUserStateUrl,
 	removeWordUrl,
 	addWordUrl,
-	thankYouServerUrl
+	thankYouServerUrl,
+	userDataForPluginUrl
 } from './../constants/conf.js';
 
 const thankYouServer = () => ({
@@ -51,9 +52,9 @@ const make_action = ({
 	dispatch(createdAction);
 	
 	customAjaxRequest({
-		url,
 		type: 'POST',
-		data,
+		url,
+		data: data,
 		processData: true,
 		cache: true
 	});
@@ -63,7 +64,7 @@ const make_action = ({
 
 };
 
-export const tryRemoveWord = (words, word, userId) => dispatch => {
+export const tryRemoveWord = (words, word, uuid) => dispatch => {
 	dispatch( 
 		make_action({
 			createdAction: (function() {
@@ -76,8 +77,8 @@ export const tryRemoveWord = (words, word, userId) => dispatch => {
 			}()),
 			url: removeWordUrl,
 			data: {
-				word: word,
-				userId: userId
+				word,
+				uuid
 			},
 			success: response =>  {
 				console.log(response);
@@ -89,7 +90,7 @@ export const tryRemoveWord = (words, word, userId) => dispatch => {
 	);
 };
 
-export const tryAddWord = (words, word, userId) => dispatch => {
+export const tryAddWord = (words, word, uuid) => dispatch => {
 	if ( words.indexOf(word) !== -1 ) {
 		dispatch(change('addWordForm', 'word', ''));
 		return false;
@@ -99,8 +100,8 @@ export const tryAddWord = (words, word, userId) => dispatch => {
 			createdAction: addWord( [...words.slice(0), word] ),
 			url: addWordUrl,
 			data: {
-				word: word,
-				userId: userId
+				word,
+				uuid
 			},
 			success: response =>  {
 				dispatch(change('addWordForm', 'word', ''));
@@ -112,10 +113,9 @@ export const tryAddWord = (words, word, userId) => dispatch => {
 	);
 };
 // Test action. In futer, i will get data with logining.
-export const getUserData = userId => dispatch => {
+export const getUserData = uuid => dispatch => {
 	dispatch(showDataRequesting());
-
-	return fetch(`https://filipp-zhuravlev.ru/getMe/plugin_user/${userId}/`)
+	return fetch(`${userDataForPluginUrl}${uuid}/`)
 		.then(resp => resp.json())
 		.then(data => { 
 			dispatch(requestUserData(data))
@@ -166,12 +166,12 @@ export const setUserQuantity_test = () => {
 	})
 };
 
-export const tryThankYouServer = userId => {
+export const tryThankYouServer = uuid => {
 	make_action({
 		createdAction: thankYouServer(),
 		url: thankYouServerUrl,
 		data: {
-			userId: userId
+			uuid: uuid
 		},
 		success: response =>  {
 			console.log(response);

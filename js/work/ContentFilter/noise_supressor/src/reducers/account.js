@@ -17,7 +17,7 @@ export const initAccountState = {
 	username: '',
 	password: '',
 	isLogged: false,
-	userData: {},
+	uuid: "",
 	// Обычное message для формы входа.
 	message: '',
 	registerMessage: '',
@@ -47,15 +47,7 @@ const account = (
 		case LOGIN:
 			return {
 				...state,
-				isLogged: action.isLogged,
-				password: action.password,
-				username: action.username,
-				userData: {
-					...action.userData
-				},
-				message: action.message,
-				registered: action.registered,
-				registerMessage: action.registerMessage,
+				...action,
 				isLogining: false
 			};
 		case LOGOUT:
