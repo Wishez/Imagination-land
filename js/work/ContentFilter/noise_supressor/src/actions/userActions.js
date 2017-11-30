@@ -10,7 +10,6 @@ import {
 
 import customAjaxRequest, { make_request } from './../constants/ajax.js';
 import { 
-	serverUrl,
 	setUserStateUrl,
 	removeWordUrl,
 	addWordUrl,

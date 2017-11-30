@@ -36,7 +36,7 @@
 .mainContent {
   display: block; }
 
-.navListItem {
+.navListItem, .mainInfoHeaderContent__button {
   display: inline-block; }
 
 .imageContainer {
@@ -57,17 +57,30 @@
 .mainInfoHeaderContent, .mainInfoHeader__title {
   width: 49.7%; }
 
+.logInFormButtons__button_name-forgotPassword, .mainInfoHeaderContent__button {
+  float: right; }
+
+.sk-cube-grid .sk-cube {
+  float: left; }
+
 .imageContainer, .bigButton {
   border-radius: 2px; }
 
-.mainInfo, .logInFormButtons__submitButton, .registrationFormButtons__button {
+.mainInfo {
   margin-top: 1em; }
+
+.logInFormButtons,
+.registrationFormButtons,
+.logInForm,
+.registrationForm,
+.addWordForm {
+  margin-top: 0.5em; }
 
 .mainContent {
   margin-left: auto;
   margin-right: auto; }
 
-.mainInfoHeaderContent, .logInFormController__error, .registerFormController__error {
+.mainInfoHeaderContent, .formError {
   font-size: 0.88889em; }
 
 .mainTitle {
@@ -154,7 +167,7 @@ a {
   display: block; }
 
 .mainInfoHeader__title {
-  padding-top: 1.3em; }
+  padding-top: 0.6em; }
 
 .mainInfoHeaderContent {
   padding: 0.6em 1em 0; }
@@ -163,9 +176,16 @@ a {
   background-color: #f0ca5f;
   vertical-align: middle;
   color: #212121;
-  width: calc(50% - 1px);
   float: left;
   height: 70px; }
+
+.mainInfoHeader__title {
+  width: 33.33%;
+  width: calc(33.33% - 1px); }
+
+.mainInfoHeaderContent {
+  width: 66.66%;
+  width: calc(66.66% - 1px); }
 
 .mainInfoHeaderContent {
   left: 2px; }
@@ -175,8 +195,20 @@ a {
   min-height: 300px;
   max-height: 300px;
   padding: 1.5em 2em;
-  overflow: auto;
+  overflow: hidden;
   color: #f7f7f7; }
+
+.main {
+  overflow: auto;
+  max-height: 195px;
+  padding-right: 0.3em; }
+
+.main, .controller {
+  position: relative;
+  right: -5px; }
+
+.controller {
+  padding-right: 0.6em; }
 
 .wordsList {
   list-style: none; }
@@ -186,6 +218,9 @@ a {
 .logInFormController__input {
   background-color: transparent; }
 
+.loginFormController, .registrationFormController {
+  margin-top: 0.2em; }
+
 .controller__input,
 .word,
 .registrationFormController__input,
@@ -194,8 +229,11 @@ a {
   padding: 0.5em;
   color: #f7f7f7; }
 
-.logInFormController__error, .registerFormController__error {
+.formError {
   color: #f0ca5f; }
+
+.registrationFormController label, .logInFormController label {
+  color: #f7f7f7 !important; }
 
 .word {
   padding-left: 0;
@@ -211,8 +249,8 @@ p, .listArticlesItem__paragraph {
   width: 15.25424%;
   padding: 0 0.5em 1em; }
 
-.main {
-  padding-top: 5%; }
+.logInFormButtons__button_name-forgotPassword {
+  line-height: 1em; }
 
 .filterPluginAlert {
   font-size: 18px;
@@ -223,9 +261,18 @@ p, .listArticlesItem__paragraph {
     display: grid;
     grid-template-columns: 40% 40% 20%; } }
 
+.mainInfoHeaderContent__button,
+.allowOnThisSiteButton, .removeWord,
+.logInFormButtons__button_name-forgotPassword {
+  cursor: pointer; }
+
+.mainInfoHeaderContent__button {
+  padding: 0.4em 0.5em 0.5em;
+  border: 1px solid #212121;
+  margin-top: 0.3em; }
+
 .allowOnThisSiteButton, .removeWord {
   text-align: right;
-  cursor: pointer;
   color: #f0ca5f; }
 
 .sk-cube-grid {
@@ -240,7 +287,6 @@ p, .listArticlesItem__paragraph {
   width: 33.33%;
   height: 33.33%;
   background-color: #f4f4f4;
-  float: left;
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
   animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }
 
@@ -295,3 +341,29 @@ p, .listArticlesItem__paragraph {
   35% {
     -webkit-transform: scale3D(0, 0, 1);
     transform: scale3D(0, 0, 1); } }
+
+.logInForm, .registrationForm {
+  color: #f7f7f7; }
+
+.main_registration {
+  top: 15px;
+  max-height: 215px; }
+
+.main_signIn {
+  top: 40px; }
+
+/*
+ *  STYLE 2
+ */
+.main::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #461e4c; }
+
+.main::-webkit-scrollbar {
+  width: 12px;
+  background-color: #461e4c; }
+
+.main::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #466661; }

@@ -42,7 +42,6 @@ class LogInContainer extends Component {
 
 const mapStateToProps = state => {
 	const {
-      user,
       account
     } = state;
 
