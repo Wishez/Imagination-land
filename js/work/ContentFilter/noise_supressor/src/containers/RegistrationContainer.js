@@ -35,7 +35,7 @@ class RegistrationContainer extends Component {
 	render() {
 		return (
 			<div className='main main_registration'>
-				<Title block='main' text='Sign in to Noise Supressor' />
+				<Title block='main' text='Sign up to Noise Supressor' />
 				<Registration {...this.props}
 					{...this.state}
 					submitRegistrationForm={this.submitRegistrationForm} 
@@ -56,11 +56,11 @@ const mapStateToProps = state => {
 		registered,
 		registerMessage
 	} = registration;
-
+	console.log(registration);
 	return {
 		isRegistering,
 		registered,
-		message: registerMessage
+		registerMessage
 	};
 }
 

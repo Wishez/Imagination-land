@@ -12,7 +12,7 @@ export const initAccountState = {
 
 
 const registration = (
-	state = {},
+	state = initAccountState,
 	action
 ) => {
 	switch (action.type) {
