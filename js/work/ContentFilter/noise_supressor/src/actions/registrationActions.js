@@ -36,14 +36,11 @@ export const tryRegister = data => dispatch => {
 	});
 
 	return make_request(
-		registerMessage => {
+		resp => {
 			// Сервер возвращает Вы успешно прошли регистрацию, если пользователь успешно зарегистрировался.
 			// В остальных случаях он возвращает другое сообщение.
-			if (registerMessage === 'Вы успешно прошли регистрацию') {
-				dispatch(register(true, registerMessage));
-			} else {
-				dispatch(register(false, registerMessage));
-			}
+			console.log(resp);
+			dispatch(register(resp.is_registered, resp.message));
 		},
 		(xhr, errmsg, err) => {
 			dispatch(register(false, 'Внутренняя ошибка сервера'));
