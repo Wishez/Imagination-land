@@ -25,7 +25,7 @@ const customAjaxRequest = ({
 		url: url,
 		type: type,
 		data: data,
-		beforeSend(xhr, settings) {
+		beforeSend: function(xhr, settings) {
 			crossDomainRequest(xhr, settings, this);
 		},
 		...rest

@@ -24,6 +24,10 @@ import customAjaxRequest, { make_request } from './../constants/ajax.js';
 import { convertDate } from './../constants/pureFunctions.js';
 import { change } from 'redux-form';
 import { getUserData } from './userActions.js';
+import { 
+	showWordsList,
+	showLogInForm 
+} from './viewActions.js';
 /* User 
  * 
  * username
@@ -94,6 +98,9 @@ export const tryLogin = data => dispatch => {
 				dispatch(logIn(data, userData, true, ''));
 				dispatch(setUserToCookies(data))
 				dispatch(getUserData(userData.uuid));
+				// Показывает список слов пользователя после того,
+				// как пользователь успешно зашёл в свой аккаунт.
+				dispatch(showWordsList());
 			} else {
 				// Меняется только сообщение в состояние аккаунта,
 				// не устанавливая неправильно введённый или 
@@ -116,6 +123,7 @@ export const tryLogin = data => dispatch => {
 const logOut = () => ({
 	type: LOGOUT
 });
+
 export const tryLogOut = () => dispatch => {
 	customAjaxRequest({
 		url: logOutUrl,
@@ -125,6 +133,7 @@ export const tryLogOut = () => dispatch => {
 	});
 
 	dispatch(logOut());
+	dispatch(showLogInForm());
 
 	return make_request(resp => {
 		console.log(resp);

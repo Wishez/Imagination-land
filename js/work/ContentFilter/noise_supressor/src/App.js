@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TweenLite } from 'gsap';
-import { change } from 'redux-form';
 
 import './App.css';
 import Loader from './components/Loader';
@@ -12,12 +11,16 @@ import RegistrationContainer from './containers/RegistrationContainer.js';
 import { tryChangeUserAvatar } from './actions/accountActions.js';
 import { 
   tryAddWord, 
-  tryRemoveWord,
-  getUserData
+  tryRemoveWord
 } from './actions/userActions.js';
 import { 
   tryLogOut
 } from './actions/accountActions.js';
+import { 
+  showLogInForm ,
+  showRegistrationForm,
+  setSomthingShown
+} from './actions/viewActions.js';
 
 class App extends Component {
   state = {
@@ -28,24 +31,21 @@ class App extends Component {
   }
 
   componentDidMount() { 
-    // this.loginInIfMay();
+    const { dispatch } = this.props;
+
+    dispatch(showLogInForm());
   }
   componentDidUpdate() {
-    let node;
     const { 
-      isShownRegistrationForm,
-      isShownWordsList,
-      isShownLogInForm
-    } = this.state;
-    
-    if (isShownWordsList) 
-      node = document.getElementById('wordsList');
-    else if (isShownLogInForm) 
-      node = document.getElementById('logInForm');
-    else if (isShownRegistrationForm) 
-      node = document.getElementById('registrationForm');
+      didFadeIn,
+      currentIsShownBlockID,
+      dispatch
+    } = this.props;
+        
+    let node = document.getElementById(currentIsShownBlockID);
 
-    if (!this.state.didFadeIn && node) {
+    if (!didFadeIn && node) {
+      console.log('Will smooth transition');
       TweenLite.to(
         node,
         1.2, 
@@ -53,9 +53,8 @@ class App extends Component {
           opacity: 1
         }
       );
-      this.setState({
-        didFadeIn: true
-      })
+
+      dispatch(setSomthingShown());
     }
   }
 
@@ -75,9 +74,8 @@ class App extends Component {
 
    logOut = () => {
     const { dispatch } = this.props;
-
     dispatch(tryLogOut());
-    
+
   }
 
   submitChangeAvatar = avatars => {
@@ -91,33 +89,12 @@ class App extends Component {
     dispatch(tryChangeUserAvatar(data));
   }
 
-  switchView = firstView => () => {
-    let secondView;
-    let thirdView;
+  switchView = actionCreator => () => {
+    const { dispatch } = this.props;
 
-    switch (firstView) {
-      case 'isShownWordsList':
-        secondView = 'isShownLogInForm';
-        thirdView = 'isShownRegistrationForm';
-        break;
-      case 'isShownRegistrationForm':
-        secondView = 'isShownLogInForm';
-        thirdView = 'isShownWordsList';
-        break;
-      case 'isShownLogInForm':
-        secondView = 'isShownRegistrationForm';
-        thirdView = 'isShownWordsList';
-        break;
-    }
-
-    this.setState({
-      [firstView]: true, 
-      [secondView]: false, 
-      didFadeIn: false, 
-      [thirdView]: false
-    });
+    dispatch(actionCreator());
   }
-
+  
 
 
   render() {
@@ -125,15 +102,11 @@ class App extends Component {
       words,
       is_requesting,
       isLogged,
-      uuid
+      isShownRegistrationForm,
+      isShownLogInForm
     } = this.props;
     
-    const { 
-      isShownRegistrationForm,
-      isShownWordsList,
-      isShownLogInForm
-    } = this.state;
-    
+ 
     return (
         <div className="workPlaceContainer">
           <h3 className="mainTitle">
@@ -146,15 +119,20 @@ class App extends Component {
             <header id="header" className="mainInfoHeader">
               <h4 className="mainInfoHeader__title">Noise<br/>supressor</h4>
               <div className="mainInfoHeaderContent">
+                {/* Start Switch buttons */}
+
                 { isLogged ? <span className='mainInfoHeaderContent__button' 
                   onClick={this.logOut}>Sign out</span> : '' }
+
                 {isShownRegistrationForm ? 
                       <span className='mainInfoHeaderContent__button'
-                          onClick={this.switchView('isShownLogInForm')}>Sing in</span> :
+                          onClick={this.switchView(showLogInForm)}>Sing in</span> :
                           '' 
                     }
                 { isShownLogInForm && !isLogged ? <span className='mainInfoHeaderContent__button'
-                  onClick={this.switchView('isShownRegistrationForm')}>Sing up</span> : '' }
+                  onClick={this.switchView(showRegistrationForm)}>Sing up</span> : '' }
+
+                {/* End switch buttons */}
               </div>
             </header>
             {/* end mainInforHeader */}
@@ -166,7 +144,7 @@ class App extends Component {
                     <div className='main'>
                         <WordsList words={words} 
                           removeWord={this.removeWord} 
-                          showLogInForm={this.switchView('isShownLogInForm')} />
+                        />
                     </div> :
                     <Loader className='wordsLoading' /> : 
                 ''
@@ -176,7 +154,7 @@ class App extends Component {
                    ''
               }
               {isShownLogInForm && !isLogged ? 
-                <LogInContainer showRegistrationForm={this.switchView('isShownRegistrationForm')} /> : ''}
+                <LogInContainer /> : ''}
               
             </main>
             {/* end mainContent */}
@@ -191,7 +169,8 @@ const mapStateToProps = state => {
 
     const {
       user,
-      account
+      account,
+      view
     } = state;
 
     const {
@@ -200,26 +179,26 @@ const mapStateToProps = state => {
     } = user;
 
     const {
-      userData,
       uuid,
-      username,
-      password,
       isLogged,
-      isLogining,
-      registered,
-      message
     } = account;
 
+    const {
+      isShownRegistrationForm,
+      isShownWordsList,
+      isShownLogInForm,
+      didFadeIn
+    } = view;
     
     return {
       uuid,
       words,
       is_requesting,
-      isLogining,
-      username,
-      password,
-      message,
-      isLogged
+      isLogged,
+      isShownRegistrationForm,
+      isShownWordsList,
+      isShownLogInForm,
+      didFadeIn
     };
 };
 
