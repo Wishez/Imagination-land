@@ -34,6 +34,8 @@ const user = (
 )  => {
 	switch (action.type) {
 		case REQUEST_USER_DATA:
+			window.uuid = action.user_data.uuid;
+			
 			return {
 				...state,
 				...action.user_data,
