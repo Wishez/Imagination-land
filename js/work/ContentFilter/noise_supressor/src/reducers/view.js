@@ -14,8 +14,7 @@ const initViewState = {
 	isShownRegistrationForm: false,
 	isShownLogInForm: false,
 	isShownWordsList: false,
-	didFadeIn: false,
-	currentIsShownBlockID: '#logInForm'	
+	didFadeIn: false
 };
 
 const view = (
@@ -27,22 +26,19 @@ const view = (
 			return {
 				...state,
 				...initViewState,
-				isShownRegistrationForm: true,
-				currentIsShownBlockID: 'registrationForm'
+				isShownRegistrationForm: true
 			};
 		case SHOW_WORDS_LIST:
 			return {
 				...state,
 				...initViewState,
-				isShownWordsList: true,
-				currentIsShownBlockID: 'wordsList'
+				isShownWordsList: true
 			};
 		case SHOW_LOGIN_FORM:
 			return {
 				...state,
 				...initViewState,
-				isShownLogInForm: true,
-				currentIsShownBlockID: 'logInForm'
+				isShownLogInForm: true
 			};
 		case SET_SOMETHING_SHOWN:
 			return {
