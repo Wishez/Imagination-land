@@ -1,4 +1,8 @@
-
+// import 	customAjaxRequest,
+// { 
+// 	make_request, 
+// 	getUsernameAndPasswordFromCookies 
+// } from './ajax.js';
 
 (function(factory) {
 	if ( typeof define === 'function' && define.amd ) {
@@ -22,37 +26,17 @@
 	};
 	const _insistenceOf = (obj, type) => typeof obj === type;
 	const _createMessage = word => `About ${ word }. Go next!`;
-	const _getWords = () => chrome.words; //JSON.parse( localStorage.getItem( _filteredWords ) );
-	/*
-	 * @param {Array} words - The array words are filtering the page
-	 */
-	const _setWords = words => {
-		chrome.words = words;
-		console.log(_getWords());
-		// localStorage.setItem( _filteredWords,  JSON.stringify( words ));
-	};
-	const _low = word => word.toLowerCase();  
+	
+	 
 	/*
 	 *
 	 */
 	const _showBlock = function(node, message='', i) {
-		// if (!node.tagName)
-		// 	node.textContent = message;
-		// else
-		// 	node.innerHTML = message;
-		node.remove()
-	};
-
-
-	const _pushWordToList = ($list, word) => {
-		console.log('Will push:', `<li class='word'>${word}<span class='removeWord glyphicon glyphicon-remove'></span></li>`);
-		$list
-			.append(`<li class='word'>${word}<span class='removeWord glyphicon glyphicon-remove'></span></li>`);
-	};
-	const _showWords = function($wordsList) {
-		_getWords().forEach(word => {
-			_pushWordToList($wordsList, word);
-		});
+		if (!node.tagName)
+			node.textContent = message;
+		else
+			node.innerHTML = message;
+		// node.remove()
 	};
 
 	const _screwed = (selector, callback, event='click') =>  {
@@ -83,80 +67,49 @@
 	 * 
 	 * 
 	 */
-	const DocumentFilter = function(props) {
-		// Create array of words in localStorage.
-		if (!_getWords()) _setWords([]);
+	const DocumentFilter = function(props) {	
+
 		this.root = props.root;
 		// The base value of blocking content by matched words in a node.
 		this.baseLength = props.baseLength ? 
 			props.baseLength : 0;
-		this.wordsListId = props.listWords ? 
-			props.listWords : '#wordsList';
-		this.addWordFieldId = props.addWordField ? 
-			props.addWordField : '#addWordField';
 		this.foundWords = 0;
 		this.domain = window.origin;
-	};
-
-
-
-	
-	DocumentFilter.prototype.pushWord = function(word) {
-		_assert(
-			!_insistenceOf(word, 'string'),
-			'First argument must be a string.',
-			TypeError
-		);
-
-		const oldWords = _getWords();
-		const lowerWord = _low(word);
-		console.log('Word in push:', word);
-		_assert(
-			oldWords.some(arrWord => _low(arrWord) === lowerWord),
-			'Threre is the same word word in array'
-		);
-
-		_setWords( [...oldWords, word] );
-	};
-
-	DocumentFilter.prototype.removeWord = function(word) {
-		_assert(
-			!_insistenceOf(word, 'string'),
-			'First argument must be a string.',
-			TypeError
-		);
-
-		const words = _getWords();
-		const index = words.indexOf(word);
+		this.words = [];
+		console.log('When init uuid is', localStorage.getItem('user_uuid'));
+		this.uuid = localStorage.getItem('user_uuid');
 		
-		_setWords( [
-			...words.slice(0, index),
-			...words.slice(index + 1)
-		] );
+		this.userDataUrl = `${props.backendServerUrl}${props.userWordsUrl}${this.uuid}/`;
+		this.requestWords();
+		
 	};
 
-	
+	DocumentFilter.prototype.requestWords = function() {
+		return fetch(this.userDataUrl)
+			.then(resp => resp.json())
+			.then(data => {
+				this.words = data.words;
+				this.init();
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	};
 
-	
 	DocumentFilter.prototype.filterTextInNode = function(node, baseLength=0) {
 		const text = node.textContent;
-		
 		// Count words.
-		
-		
 		if (text)
-			_getWords().forEach( word => {
+			this.words.forEach( word => {
 				const regexp = new RegExp( word, 'gi' );
 
 				const matchedWords = text.match( regexp );
 				const amountWords = matchedWords ? matchedWords.length : false;
 				
 				if ( amountWords && (amountWords >= baseLength)) {
-					// _showBlock( node, '_createMessage(word)' );
-					_showBlock( node, '' );
+					_showBlock( node, '<img src="http://i2.kym-cdn.com/photos/images/newsfeed/000/406/325/b31.jpg" style="width: 100%;max-width: 680px;"/>' );
 					_findAndRemoveImage( node );
 					
-
 					// Exit
 					return false;
 				}
@@ -198,49 +151,24 @@
 	};
 	
 
-	DocumentFilter.prototype.addWordEvent = function(context, $wordsList, $addWordField) {
-		return function(e) {
-			e.preventDefault();
-			const word = $addWordField.val();
-			console.log(word);
-			$addWordField.val('');
-			context.pushWord(word);
+	// const _injectScript = function(context) {
+	// 	const actualCode = '(' + functuion() {
+	// 		context.filterDOM();
+	// 		console.log(document);
+	// 		console.log(window);
+	// 		window.alert('Parsed it!');
+	// 	} + ')()';
 
-			// Debug
-			_pushWordToList($wordsList, word);
-			context.filterDOM();
-		};
-	};
+	// 	let script = document.createElement('script');
+	// 	script.textContent = actualCode;
+	// 	(document.head||document.documentElement).appendChild(script);
+	// };
 
-	
-	DocumentFilter.prototype.removeWordEvent = function(context) {
-		return function(e) {
-			let $word = $(this).parent();
-			
-			context.removeWord($word.text());
-			$word.remove();
-		};
-	};
-
-	DocumentFilter.prototype.init = function(domainName) {
-		
+	DocumentFilter.prototype.init = function() {
 		const that = this;
 		$(function () {
-			let $wordsList = $(that.wordsListId);
-			_showWords($wordsList);
-			console.log('Set', domainName);
-			$('#domainName').html(domainName);
-			let $addWordField = $(that.addWordFieldId);
-
-			const _addWord = that.addWordEvent(that, $wordsList, $addWordField);
-			const _removeWord = that.removeWordEvent(that);
-			
+			// _injectScript(that);
 			that.filterDOM();
-			// Add a word to the words' array.
-			_screwed('#addWordForm', _addWord, 'submit')
-			// Remove a word from the words' array.
-			_screwed('.removeWord', _removeWord);
-			
 		});
 	};
 
