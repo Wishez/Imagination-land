@@ -10,7 +10,7 @@ const WordsList = ({
 	        	<li key={index} 
 	        		className='word'>
 	        		{word}
-	        		<span className='allowOnThisSiteButton'>Allow on this site</span>
+	        		{/*<span className='allowOnThisSiteButton'>Allow on this site</span>*/}
 	        		<span className='removeWord' 
 	        			onClick={removeWord(word)}>Delete</span>
 	        	</li>

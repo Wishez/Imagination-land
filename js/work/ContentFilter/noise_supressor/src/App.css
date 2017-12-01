@@ -259,7 +259,9 @@ p, .listArticlesItem__paragraph {
 @supports (display: grid) {
   .word {
     display: grid;
-    grid-template-columns: 40% 40% 20%; } }
+    grid-template-columns: 40% 40% 20%; }
+  .removeWord {
+    grid-column-start: 3; } }
 
 .mainInfoHeaderContent__button,
 .allowOnThisSiteButton, .removeWord,
@@ -367,3 +369,6 @@ p, .listArticlesItem__paragraph {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #466661; }
+
+.main {
+  opacity: 0; }
