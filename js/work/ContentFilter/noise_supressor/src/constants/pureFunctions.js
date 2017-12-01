@@ -10,6 +10,8 @@ export const cookiesHandler = {
 		{
 			username: localStorage.getItem(`supressorUsername`),
 			password: localStorage.getItem(`supressorPassword`)
+			
+	
 		}
 	),
 	clearCookies: () => {
