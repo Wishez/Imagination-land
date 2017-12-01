@@ -23,13 +23,6 @@ import {
 } from './actions/viewActions.js';
 
 class App extends Component {
-  state = {
-    isShownWordsList: false,
-    isShownLogInForm: true,
-    isShownRegistrationForm: false,
-    didFadeIn: false
-  }
-
   componentDidMount() { 
     const { dispatch } = this.props;
 
@@ -38,14 +31,13 @@ class App extends Component {
   componentDidUpdate() {
     const { 
       didFadeIn,
-      currentIsShownBlockID,
       dispatch
     } = this.props;
         
-    let node = document.getElementById(currentIsShownBlockID);
-
+    let node = document.querySelector('.main');
+    
     if (!didFadeIn && node) {
-      console.log('Will smooth transition');
+    
       TweenLite.to(
         node,
         1.2, 
