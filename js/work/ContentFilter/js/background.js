@@ -1,18 +1,16 @@
-chrome.app.runtime.onLaunched.addListener(function() {
-  // chrome.app.window.create('window.html', {
-  //   'outerBounds': {
-  //     'width': 550,
-  //     'height': 400
-  //   }
-  // });
-  chrome.tabs.query({ //This method output active URL 
-	    "active": true,
-	    "currentWindow": true,
-	    "status": "complete",
-	    "windowType": "normal"
-	}, function (tabs) {
-	    for (tab in tabs) {
-	        console.log(tabs[tab].url);
-	    }
-	});
-});
+const injectScriptWithUuid = uuid => {
+	if (!uuid) {
+		setTimeout(function() {
+			injectScriptWithUuid(window.uuid);
+		}, 500);
+	} else {	
+		chrome.tabs.executeScript({
+			code: `localStorage.setItem("user_uuid", "${uuid}");console.log("${uuid}");`
+		});
+		// chrome.tabs.executeScript({
+		// 	file: `main.js`
+		// });
+	}
+};
+
+injectScriptWithUuid(window.uuid);
