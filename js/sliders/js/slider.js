@@ -113,18 +113,18 @@ import NormalizeWheel from './lib/normwheel.js';
 				
 	 		}
 
-	 		function animate(anotherDuration=false) {
+	 		function animate(anotherDuration=false, additionalTransition=0) {
 	 			$firstHiddenSlide
 					.addClass(addClass)
 					.removeClass(removeClass);
 		 			
 		 		new TweenLite().to($firstHiddenSlide, anotherDuration ? anotherDuration : 0.1, {
-		 			left: leftTransition	 			
+		 			left: leftTransition + additionalTransition	 			
 		 		});
 	 		}
 	 		if (reverse) {
 		 		setTimeout(() => {
-			 		animate(0.5);
+			 		animate(0.5, -5);
 		 		}, 250);
 	 		} else {
 	 			animate();
