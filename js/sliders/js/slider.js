@@ -31,7 +31,7 @@ import NormalizeWheel from './lib/normwheel.js';
 		const $slider = $(props.sliderId).css({
 			position: 'relative',
 			overflow: 'hidden',
-			paddingLeft: '5%'
+			padding: '5% 0 5% 5%'
 		});
 		const hrefText = $slider.data('href-text');
 		// Выборка треков.
@@ -71,7 +71,6 @@ import NormalizeWheel from './lib/normwheel.js';
 				const $child = $(child).wrap('<div class="slide_container">').addClass('slider_slide');
 				const $container = $child.parent();
 				const data = $child.data();
-				console.log($container);
 				const $info = $('<div class="slide_info">');
 				
 				$info.html(
@@ -88,10 +87,11 @@ import NormalizeWheel from './lib/normwheel.js';
 			currentPosition: 0, // Позиция в пикселях.
 	    	currentSlide:  0, // Индекс.
 			tl: new TimelineMax(), // Глобальная сцена переходов.
-			paddingLeft: 1 // Для лучего отображения анимации.
+			isPlay: true
 	 	}; 
 	 	// Меняет ширину трека, когда исчезают слайды при прокрутке.
 	 	function _changeTrack(track, currentSlide, reverse=false) {
+	 		if (!_state.isPlay) return false;
 	 		// Слайд, который скроется при прокрутке
 	 		let currentChildren = track.$track.children();
 	 		const $firstHiddenSlide = $(currentChildren[currentSlide]).find('.slider_slide');
@@ -152,9 +152,18 @@ import NormalizeWheel from './lib/normwheel.js';
 	 			track.$track.html(currentChildren.slice(0, currentChildren.length - 1));
 	 		}
 	 	}
+		$(document)
+			.on('mouseover', '.slide_container', e => {
+				_state.isPlay = false;
+		})
+			.on('mouseout', '.slide_container', e => {
+				_state.isPlay = true;
+		});
 
 		$slider.on('wheel', e => {
 			e.preventDefault();
+			if (!_state.isPlay) return false;
+
 			const norm = NormalizeWheel(e.originalEvent);
 			const spinY = norm.spinY;
 
@@ -191,8 +200,7 @@ import NormalizeWheel from './lib/normwheel.js';
 				});
 				
 			}
-			
-			
+
 			_state.tl.add( 
 				new TweenLite().to($allTracks, 1, {
 					left: _state.currentPosition
