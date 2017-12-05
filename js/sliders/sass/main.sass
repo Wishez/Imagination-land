@@ -1,0 +1,83 @@
+@import '_conf.sass'
+@import '_background.sass'
+@import '_position.sass'
+@import '_display.sass'
+@import '_grid.sass'
+@import '_border.sass';
+@import '_margin.sass'
+@import '_font.sass'
+@import '_transition.sass';
+@import '_blocks.sass';
+
+body
+	& * 
+		margin: 0	
+		border: 0
+		padding: 0
+		outline-color: #6F95B5
+		&, &::after, &::before
+			box-sizing: border-box
+	background-color: $white
+	padding: 5% 0;
+	font-size: 	#{$baseFontSize}px
+	line-height: 135%
+	font-family: 'PT Sans', sans-serif
+
+@import '_color.sass'
+
+#slider 
+	width: 50%
+.slider-track
+	display: inline-block
+	left: 0
+	top: 0
+	margin-left: auto
+	margin-right: auto
+	position: relative
+	// transition: width 1s
+.slide_container
+	transform-style: preserve-3d
+	perspective: 500px
+	display: inline-block
+	margin: 0 -2.5px
+	overflow: hidden
+.slide_container > *
+	max-width: 100%
+	text-align: center
+	line-height: 8em
+	border: 1px solid $darkGray
+	position: relative
+	transition: transform 0.8s
+
+.slider-track > * 
+	
+
+.slide 
+	background-color: #fff
+.slide_hidde, .slide_container
+	position: relative
+	z-index: 10
+.slide_hidden
+	// animation: hidden 1s
+	
+	transform: rotateY(-90deg)
+	z-index: -1
+.slide_shown
+	// animation: shown 1s
+	transform: rotateY(0deg)
+	
+
+// @keyframes shown
+// 	from 
+// 		transform: rotateY(-90deg)
+// 		left: 0
+// 	to
+// 		transform: rotateY(0deg)
+// 		left: 150px
+// @keyframes hidden 
+// 	from 
+// 		transform: rotateY(0deg)
+// 		left: 150px
+// 	to 
+// 		transform: rotateY(-90deg)
+// 		left: 0
