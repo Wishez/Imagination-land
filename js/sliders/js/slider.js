@@ -20,7 +20,8 @@ import NormalizeWheel from './lib/normwheel.js';
 	const init = (props={
 		sliderId: '',
 		imageHeight: 50,
-		imageWidth: 50
+		imageWidth: 50,
+		speed: 1000
 	}) => {
 		// Высота и ширина картинки.
 		const imageHeight = props.imageHeight;
@@ -87,7 +88,9 @@ import NormalizeWheel from './lib/normwheel.js';
 			currentPosition: 0, // Позиция в пикселях.
 	    	currentSlide:  0, // Индекс.
 			tl: new TimelineMax(), // Глобальная сцена переходов.
-			isPlay: true
+			isPlay: true,
+			interval: false,
+			isReverse: false
 	 	}; 
 	 	// Меняет ширину трека, когда исчезают слайды при прокрутке.
 	 	function _changeTrack(track, currentSlide, reverse=false) {
@@ -122,7 +125,7 @@ import NormalizeWheel from './lib/normwheel.js';
 		 			left: leftTransition + additionalTransition	 			
 		 		});
 	 		}
-	 		if (reverse) {
+	 		if (_state.isReverse) {
 		 		setTimeout(() => {
 			 		animate(0.5, -5);
 		 		}, 250);
@@ -152,15 +155,11 @@ import NormalizeWheel from './lib/normwheel.js';
 	 			track.$track.html(currentChildren.slice(0, currentChildren.length - 1));
 	 		}
 	 	}
+		const clearIntervalIfNeeded = () => {
+			if (_state.interval)
+				clearInterval(_state.interval);
+		};
 
-	 	// Предотвращает передвижение слайдера при наведение на один из слайдов.
-		$(document)
-			.on('mouseover', '.slide_container', e => {
-				_state.isPlay = false;
-		})
-			.on('mouseout', '.slide_container', e => {
-				_state.isPlay = true;
-		});
 
 		// Абстракция для скролла слайдера вправо.
 		const scrollRight = () => {
@@ -171,6 +170,12 @@ import NormalizeWheel from './lib/normwheel.js';
 
 			_state.currentPosition -= imageWidth;
 			_state.currentSlide += 1;
+
+			_state.tl.add( 
+				new TweenLite().to($allTracks, 1, {
+					left: _state.currentPosition
+				})
+			);
 		};
 
 		// Абстракция для скролла слайдера влево.
@@ -195,29 +200,65 @@ import NormalizeWheel from './lib/normwheel.js';
 				
 				tracks.forEach(track => {
 					_changeTrack(track, _state.currentSlide, true)
-				});		
+				});
+
+				_state.tl.add( 
+					new TweenLite().to($allTracks, 1, {
+						left: _state.currentPosition
+					})
+				);		
 		};
+		
+
+		const scrollTracks = (isReverse) => {
+			clearIntervalIfNeeded();
+
+			_state.interval = setInterval(
+				() => {
+					if (_state.isReverse)
+						scrollLeft();
+					else
+						scrollRight();
+			}, props.speed ? props.speed : 2500);
+
+			
+			
+		}
+
+		scrollTracks();
+
+		// Предотвращает передвижение слайдера при наведение на один из слайдов.
+		$(document)
+			.on('mouseover', '.slide_container', e => {
+				_state.isPlay = false;
+				clearIntervalIfNeeded();
+
+		})
+			.on('mouseout', '.slide_container', e => {
+				_state.isPlay = true;
+				scrollTracks();
+				
+		});
 		// Скролл по нажатию на стрелки влево или вправо.
 	 	$(document).on('keydown', function(e) {
 	 		e.preventDefault();
 	 		if (!_state.isPlay) return true;
-
+	 		
 	 		switch (event.key) {
 			    case "ArrowLeft":
 			    	scrollLeft();
+			    	_state.isReverse = true;
 			    	break;
 			    case "ArrowRight":
 			    	scrollRight();
+			    	_state.isReverse = false;
 			    	break;
 			    default:
 			    	return; // Quit when this doesn't handle the key event.
 	    	}
 
-	    	_state.tl.add( 
-				new TweenLite().to($allTracks, 1, {
-					left: _state.currentPosition
-				})
-			);
+			scrollTracks();
+	    	
 	 	});
 	 	// Скролл по прокрутке влево или вправо.
 		$slider.on('wheel', e => {
@@ -226,19 +267,15 @@ import NormalizeWheel from './lib/normwheel.js';
 
 			const norm = NormalizeWheel(e.originalEvent);
 			const spinY = norm.spinY;
-
+			_state.isReverse = !(spinY > 0);
 			
-			if (spinY > 0) {
-				scrollRight();
-			} else {
+			if (_state.isReverse) {
 				scrollLeft();
+			} else {
+				scrollRight();
 			}
 
-			_state.tl.add( 
-				new TweenLite().to($allTracks, 1, {
-					left: _state.currentPosition
-				})
-			);
+			scrollTracks();
 		});
 	}
 
