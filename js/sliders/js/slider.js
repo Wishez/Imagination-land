@@ -31,8 +31,9 @@ import NormalizeWheel from './lib/normwheel.js';
 		const $slider = $(props.sliderId).css({
 			position: 'relative',
 			overflow: 'hidden',
-			paddingLeft: '1%'
+			paddingLeft: '5%'
 		});
+		const hrefText = $slider.data('href-text');
 		// Выборка треков.
 		const $allTracks = $slider.find('.slider-track');
 		/* 
@@ -53,7 +54,7 @@ import NormalizeWheel from './lib/normwheel.js';
 			currentTrack.$track = $(e);
 			let $currentChildren = currentTrack.$track.children();
 			currentTrack.childrenLength = $currentChildren.length
-			currentTrack.width = imageWidth * (currentTrack.childrenLength + 0.5);
+			currentTrack.width = imageWidth * (currentTrack.childrenLength + 1);
 
 			$currentChildren.css({
 	    		width: imageWidth,
@@ -67,7 +68,19 @@ import NormalizeWheel from './lib/normwheel.js';
 			// Оборачивает каждый слайд в контейнер для
 			// хорошей перспективы.
 			$currentChildren.each((i, child) => {
-				$(child).wrap('<div class="slide_container">');
+				const $child = $(child).wrap('<div class="slide_container">').addClass('slider_slide');
+				const $container = $child.parent();
+				const data = $child.data();
+				console.log($container);
+				const $info = $('<div class="slide_info">');
+				
+				$info.html(
+					`<h4 class="info_title">${data.title}<h4>
+					<p class="info_date">${data.date}</p>
+					<a href='${data.popupId}' class='info_reffer'>${hrefText}</a>`
+				);
+				$container.append($info);
+				
 			});
 		});
 		// Общее состояния слайдера
@@ -81,7 +94,7 @@ import NormalizeWheel from './lib/normwheel.js';
 	 	function _changeTrack(track, currentSlide, reverse=false) {
 	 		// Слайд, который скроется при прокрутке
 	 		let currentChildren = track.$track.children();
-	 		const $firstHiddenSlide = $(currentChildren[currentSlide]).find(':first-child');
+	 		const $firstHiddenSlide = $(currentChildren[currentSlide]).find('.slider_slide');
 	 	
 	 		let removeClass = '';
 	 		let addClass = '';
@@ -92,30 +105,37 @@ import NormalizeWheel from './lib/normwheel.js';
 	 		if (!reverse) {
 	 			addClass = 'slide_hidden';
 	 			removeClass = 'slide_shown';
-				_state.paddingLeft += 1;
-				
 	 		} else {
 	 			addClass = 'slide_shown';
 	 			removeClass = 'slide_hidden';
 				isAppend = false;
 				leftTransition = 0;
-				_state.paddingLeft -= 1;
+				
 	 		}
 
-	 		$firstHiddenSlide
-				.addClass(addClass)
-				.removeClass(removeClass);
-	 			
-	 		new TweenLite().to($firstHiddenSlide, 0.1, {
-	 			left: leftTransition	 			
-	 		});
+	 		function animate(anotherDuration=false) {
+	 			$firstHiddenSlide
+					.addClass(addClass)
+					.removeClass(removeClass);
+		 			
+		 		new TweenLite().to($firstHiddenSlide, anotherDuration ? anotherDuration : 0.1, {
+		 			left: leftTransition	 			
+		 		});
+	 		}
+	 		if (reverse) {
+		 		setTimeout(() => {
+			 		animate(0.5);
+		 		}, 250);
+	 		} else {
+	 			animate();
+	 		}
 
 	 		let $copyHiddenSlide = $firstHiddenSlide.parent().clone();
-	 		$copyHiddenSlide.find(':first-child')
+	 		$copyHiddenSlide.find('.slider_slide')
 	 			.addClass('slide_shown')
 	 			.removeClass('slide_hidden');
 
-			$slider.css('paddingLeft', `${_state.paddingLeft}%`);
+			
 	 		// Бесконечная прокрутка.
 	 		if (isAppend) {
 	 			// В треке увеличивается количество слайдов.
