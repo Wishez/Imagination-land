@@ -152,6 +152,8 @@ import NormalizeWheel from './lib/normwheel.js';
 	 			track.$track.html(currentChildren.slice(0, currentChildren.length - 1));
 	 		}
 	 	}
+
+	 	// Предотвращает передвижение слайдера при наведение на один из слайдов.
 		$(document)
 			.on('mouseover', '.slide_container', e => {
 				_state.isPlay = false;
@@ -160,24 +162,20 @@ import NormalizeWheel from './lib/normwheel.js';
 				_state.isPlay = true;
 		});
 
-		$slider.on('wheel', e => {
-			e.preventDefault();
-			if (!_state.isPlay) return false;
+		// Абстракция для скролла слайдера вправо.
+		const scrollRight = () => {
+			_state.tl.clear();
+			tracks.forEach(track => {
+				_changeTrack(track, _state.currentSlide)
+			});
 
-			const norm = NormalizeWheel(e.originalEvent);
-			const spinY = norm.spinY;
+			_state.currentPosition -= imageWidth;
+			_state.currentSlide += 1;
+		};
 
-			
-			if (spinY > 0) {
-				_state.tl.clear();
-				tracks.forEach(track => {
-					_changeTrack(track, _state.currentSlide)
-				});
-
-				_state.currentPosition -= imageWidth;
-				_state.currentSlide += 1;
-			} else {
-				_state.tl.clear();
+		// Абстракция для скролла слайдера влево.
+		const scrollLeft = () => {
+			_state.tl.clear();
 				_state.currentPosition += imageWidth;
 				_state.currentSlide -= 1;
 				// Скидывает состояние, если пользователь уперся в левый край слайдера.
@@ -197,8 +195,43 @@ import NormalizeWheel from './lib/normwheel.js';
 				
 				tracks.forEach(track => {
 					_changeTrack(track, _state.currentSlide, true)
-				});
-				
+				});		
+		};
+		// Скролл по нажатию на стрелки влево или вправо.
+	 	$(document).on('keydown', function(e) {
+	 		e.preventDefault();
+	 		if (!_state.isPlay) return true;
+
+	 		switch (event.key) {
+			    case "ArrowLeft":
+			    	scrollLeft();
+			    	break;
+			    case "ArrowRight":
+			    	scrollRight();
+			    	break;
+			    default:
+			    	return; // Quit when this doesn't handle the key event.
+	    	}
+
+	    	_state.tl.add( 
+				new TweenLite().to($allTracks, 1, {
+					left: _state.currentPosition
+				})
+			);
+	 	});
+	 	// Скролл по прокрутке влево или вправо.
+		$slider.on('wheel', e => {
+			e.preventDefault();
+			if (!_state.isPlay) return false;
+
+			const norm = NormalizeWheel(e.originalEvent);
+			const spinY = norm.spinY;
+
+			
+			if (spinY > 0) {
+				scrollRight();
+			} else {
+				scrollLeft();
 			}
 
 			_state.tl.add( 
