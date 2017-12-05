@@ -9,7 +9,7 @@ import Slider from './slider.js';
 $(function() {
 	Slider.init({
 		sliderId: '#slider',
-		imageHeight: 150,
-		imageWidth: 150
+		imageHeight: 160,
+		imageWidth: 160
 	});
 });
