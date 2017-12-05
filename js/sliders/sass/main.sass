@@ -1,13 +1,7 @@
 @import '_conf.sass'
-@import '_background.sass'
-@import '_position.sass'
 @import '_display.sass'
-@import '_grid.sass'
-@import '_border.sass';
-@import '_margin.sass'
 @import '_font.sass'
-@import '_transition.sass';
-@import '_blocks.sass';
+@import '_color.sass'
 
 body
 	& * 
@@ -23,61 +17,79 @@ body
 	line-height: 135%
 	font-family: 'PT Sans', sans-serif
 
-@import '_color.sass'
 
 #slider 
 	width: 50%
-.slider-track
+.slide_container, .slider-track
 	display: inline-block
+
+.slider-track
 	left: 0
 	top: 0
 	margin-left: auto
 	margin-right: auto
-	position: relative
-	// transition: width 1s
 .slide_container
 	transform-style: preserve-3d
 	perspective: 500px
-	display: inline-block
 	margin: 0 -2.5px
 	overflow: hidden
-.slide_container > *
+	cursor: pointer
+
+.slider_slide, .slide_container, .slider-track
+	position: relative
+.slider_slide
 	max-width: 100%
 	text-align: center
 	line-height: 8em
-	border: 1px solid $darkGray
-	position: relative
 	transition: transform 0.8s
 
-.slider-track > * 
+.slide_info
+	position: absolute
+	left: 0
+	top: 0
+	height: 100%
+	width: 100%
+	max-width: 0
+	padding: 0
+	transition: max-width 0.5s, padding 0.5s
+	background-color: #fff
+	z-index: 12
+	line-height: 145%
+
+
+
+
+.info_title,
+.info_date,
+.info_reffer
+	color: $darkGray
+	opacity: 0
+	z-index: 11
+	transition: opacity 0.5s
+.info_title
+	font-size: (18em / $baseFontSize)
+.info_date
+	font-size: (16em / $baseFontSize)
+.info_reffer
+	font-size: (14em / $baseFontSize)
+.info_reffer
+	position: absolute
+	right: 1em
+	bottom: 2em
+.slide_container:hover > .slide_info
+	max-width: 100%
+	width: 100%
+	padding: 1em 1em
+	& .info_title, & .info_date, & .info_reffer
+		opacity: 1
 	
 
-.slide 
-	background-color: #fff
+.slide
+	border: 1px solid $darkGray
 .slide_hidde, .slide_container
-	position: relative
 	z-index: 10
 .slide_hidden
-	// animation: hidden 1s
-	
 	transform: rotateY(-90deg)
 	z-index: -1
 .slide_shown
-	// animation: shown 1s
 	transform: rotateY(0deg)
-	
-
-// @keyframes shown
-// 	from 
-// 		transform: rotateY(-90deg)
-// 		left: 0
-// 	to
-// 		transform: rotateY(0deg)
-// 		left: 150px
-// @keyframes hidden 
-// 	from 
-// 		transform: rotateY(0deg)
-// 		left: 150px
-// 	to 
-// 		transform: rotateY(-90deg)
-// 		left: 0
