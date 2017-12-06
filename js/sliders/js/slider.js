@@ -24,19 +24,23 @@ import NormalizeWheel from './lib/normwheel.js';
 		speed: 1000
 	}) => {
 		// Высота и ширина картинки.
-		const imageHeight = props.imageHeight;
-		const imageWidth = props.imageWidth;
-
+		const imageHeight = props.imageHeight ? props.imageHeight : 50;
+		const imageWidth = props.imageWidth ? props.imageWidth : 50;
+		const sliderId = props.sliderId ? props.sliderId : '#slider';
 		// Выборки слайдера и трека
-		// и Стандартные стили слайдера.
-		const $slider = $(props.sliderId).css({
+		const $slider = $(sliderId);
+		// Не инициализирует слайдер, если его нет.
+		if (!$slider.length) {
+			throw new Error(`Определён неправильный селектор слайдера - ${sliderId}.`);
+			return false;
+		}
+		// Стандартные стили слайдера.
+		$slider.css({
 			position: 'relative',
 			overflow: 'hidden',
 			padding: '5% 0 5% 5%'
 		});
-		const hrefText = $slider.data('href-text');
-		// Выборка треков.
-		const $allTracks = $slider.find('.slider-track');
+		
 		/* 
 		 * Массив с объектами данных треков. 
   		 * В каждом треке содержится 
@@ -48,7 +52,8 @@ import NormalizeWheel from './lib/normwheel.js';
 		 */
 		const tracks = [];
 		// Компонуются данные
-		$allTracks.each((i, track) => {
+		$slider.find('.slider-track').each((i, track) => {
+			const hrefText = $slider.data('href-text');
 
 			tracks[i] = {}
 			let currentTrack = tracks[i];
@@ -56,24 +61,20 @@ import NormalizeWheel from './lib/normwheel.js';
 			const $currentChildren = currentTrack.$track.children();
 
 			currentTrack.childrenLength = $currentChildren.length;
-			currentTrack.width = (imageWidth * (currentTrack.childrenLength + 1)) * 2;//+ imageWidth;
+			currentTrack.width = (imageWidth * (currentTrack.childrenLength + 1)) * 2 + imageWidth;
 			currentTrack.currentPosition = 0;
 			currentTrack.currentSlide = 0;
 			currentTrack.tl = new TimelineMax();
 			currentTrack.additionalTransition = 0;
-
-			$currentChildren.css({
-	    		width: imageWidth,
-	    		height: imageHeight
-	    	});
+			
 	    	// Устанавливаются бызовые параметры трека.
 	    	currentTrack.$track.css({ 
 				height: imageHeight,
 				width: currentTrack.width 
 			});
+
 			// Оборачивает каждый слайд в контейнер для
 			// хорошей перспективы.
-			
 			$currentChildren.each((i, child) => {
 				const $child = $(child).wrap('<div class="slide_container">').addClass('slider_slide');
 				const $container = $child.parent();
@@ -89,9 +90,19 @@ import NormalizeWheel from './lib/normwheel.js';
 				);
 				$container.append($info);
 				$container.data('id', i);
-
+				$container.css({
+	    			width: imageWidth,
+	    			height: imageHeight
+	    		});
 				currentTrack.$track.append($container.clone());
 			});
+			// Добавлет стиль с определённой трансформацией 
+			// для каждого слайдера. 
+			const style = document.createElement('style');
+			style.type = 'text/css';
+			style.innerHTML = `${sliderId} .slide_hidden { transform: rotateY(-${(imageWidth / 2 * 0.1 + 1) + 90}deg); }`;
+			document.getElementsByTagName('head')[0].appendChild(style);
+
 		});
 		// Общее состояния слайдера
 	 	let _state = { 
@@ -112,17 +123,17 @@ import NormalizeWheel from './lib/normwheel.js';
 	 		let removeClass = '';
 	 		let addClass = '';
 	 		let isAppend = true;
-	 		let leftTransition = imageWidth / 2 + 20; // Переменная для плавного сокрытия слайда. 
+	 		let leftTransition = imageWidth / 2; // Переменная для плавного сокрытия слайда. 
 	 		// Проверяет, в какаую сторону пользователь двигает слайд.
+	 	
 	 		if (!reverse) {
-	 			addClass = 'slide_hidden';
+	 			addClass = 'slide_hidden'
 	 			removeClass = 'slide_shown';
 	 		} else {
+	 			leftTransition = 0;
+				isAppend = false;
 	 			addClass = 'slide_shown';
 	 			removeClass = 'slide_hidden';
-				isAppend = false;
-				leftTransition = 0;
-				
 	 		}
 
 	 		function animate(anotherDuration=false, additionalTransition=0) {
@@ -141,10 +152,11 @@ import NormalizeWheel from './lib/normwheel.js';
 	 		} else {
 	 			animate();
 	 		}
-	 		// Бесконечная прокрутка.
-	 		const sliderWidth = $slider.width();
-	 		const extraSlides  = (track.currentSlide + (sliderWidth / imageWidth)) ;
-	 		
+	 		/* Бесконечная прокрутка.
+	 		 *
+	 		 * Если слайды идут в правую сторону, то скрытый слайд добавляется в конец,
+	 		 * а если обратно, то они удаляются.
+	 		 */
 	 		if (!_state.isReverse) {
 				const $cloneSlide = $firstHiddenSlide.parent().clone()
 				$cloneSlide.find('.slider_slide')
@@ -156,13 +168,10 @@ import NormalizeWheel from './lib/normwheel.js';
 						left: 0
 					})
 				);
+
 				track.width += imageWidth;
 				track.$track.css('width', track.width);
-				// track.tl.add(
-				// 	new TweenLite($track, 0, {
-				// 		width: track.width
-				// 	})
-				// );
+			
 				$track.append($cloneSlide);
 	 		} else {
 				$(currentChildren[currentChildren.length - 1]).remove();
@@ -172,11 +181,11 @@ import NormalizeWheel from './lib/normwheel.js';
 	 		}
 
 	 	}
+	 	// Очищает интервал автопрокрутки, если он есть.
 		const clearIntervalIfNeeded = () => {
 			if (_state.interval)
 				clearInterval(_state.interval);
 		};
-
 
 		// Абстракция для скролла слайдера вправо.
 		const scrollRight = () => {
@@ -202,16 +211,15 @@ import NormalizeWheel from './lib/normwheel.js';
 				const $track = track.$track;
 				track.tl.clear();
 				track.currentSlide -= 1;
+				// К текущей позиции добавляется дополнительная велечина
+				// для того, чтобы картинка не заходила за левый край.
 				track.currentPosition += imageWidth + track.additionalTransition;
 				track.additionalTransition += 0.25;
+
 				// Скидывает состояние, если пользователь уперся в левый край слайдера.
-				
 				if (track.currentPosition > 0) {
 					track.currentPosition = 0;
 					track.currentSlide = 0;
-					// $track.animate({
- 				// 		left: 0
- 				// 	}, 250);
 					return false;
 				}
 				
@@ -224,21 +232,11 @@ import NormalizeWheel from './lib/normwheel.js';
 			});	
 		};
 
+		// Востанавливает нетронутое пользователем состояние слайдера. 
 		function resetTouch() {
 			setTimeout(() => {
 					_state.isTouchedSlide = false;
-			}, 1500);
-		}
-		function _makeVisible(track, node) {
-			const $this = $(node);
-			$this.addClass('slide_shown')
-				.removeClass('slide_hidden');
-
-			track.tl.add( 
-				new TweenLite().to($this, 0, {
-					left: 0
-				})
-			);
+			}, 1000);
 		}
 
 		function _clearTrack() {
@@ -250,9 +248,6 @@ import NormalizeWheel from './lib/normwheel.js';
 					const currentChildren = $track.children();
 					const currentChildrenLength = currentChildren.length;
 
-		 			
-					// console.log('curr chlds:', currentChildrenLength, '\nx3:', (track.childrenLength * 3) - 1)
-					// console.log('base length', track.childrenLength);
 	 				if (currentChildrenLength > (track.childrenLength * 3) - 1) {
 	 					const endCycle = (currentChildrenLength / 3) - 1;
 						for (let i = 0; i < endCycle; i++) {
@@ -261,7 +256,6 @@ import NormalizeWheel from './lib/normwheel.js';
 							$currentChild.remove()
 							track.width -= imageWidth;
 							track.currentPosition += imageWidth - track.additionalTransition;
-							
 							track.additionalTransition -= 0.25;
 							track.currentSlide -= 1;
 							track.tl.add( 
@@ -270,7 +264,7 @@ import NormalizeWheel from './lib/normwheel.js';
 								})
 							);
 						}
-
+						
 						const noramalPosition = Math.ceil(track.currentPosition / imageWidth) * imageWidth;
 						
 						track.tl.add( 

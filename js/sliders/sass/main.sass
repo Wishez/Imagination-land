@@ -18,8 +18,11 @@ body
 	font-family: 'PT Sans', sans-serif
 
 
-#slider 
+#slider, #thirdSlider
 	width: 50%
+
+#thirdSlider
+	float: right
 .slide_container, .slider-track
 	display: inline-block
 
@@ -39,6 +42,8 @@ body
 	position: relative
 .slider_slide
 	max-width: 100%
+	width: 100%
+	height: 100%
 	text-align: center
 	line-height: 8em
 	transition: transform 0.8s
@@ -87,10 +92,10 @@ body
 
 .slide
 	border-right: 1px solid $darkGray
-.slide_hidde, .slide_container
+.slide_container
 	z-index: 10
+
 .slide_hidden
-	transform: rotateY(-90deg)
 	z-index: -1
 .slide_shown
 	transform: rotateY(0deg)
