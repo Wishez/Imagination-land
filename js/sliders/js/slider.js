@@ -4,16 +4,16 @@ import NormalizeWheel from './lib/normwheel.js';
 (function (factory) {
 	if ( typeof define === 'function' && define.amd ) {
        // AMD. Регистрирует как анонимный модуль.
-        define(['jquery', TimelineMax, NormalizeWheel], factory);
+        define(['jquery', NormalizeWheel], factory);
 	} else if ( typeof exports === 'object' ) {
 		// Common JS
 		
-	    module.exports = factory(require('jquery'), TimelineMax, NormalizeWheel);
+	    module.exports = factory(require('jquery'), NormalizeWheel);
 	} else {
 		// Globals
-  		window.SmoothSlider = factory(require('jquery'), TimelineMax, NormalizeWheel);
+  		window.SmoothSlider = factory(require('jquery'), NormalizeWheel);
 	}
-}(function($, TweenLite, NormalizeWheel) {
+}(function($, NormalizeWheel) {
 	// $ - jQuery
 	// TweenLite - объект для реализации плавного перехода.
 
@@ -140,10 +140,22 @@ import NormalizeWheel from './lib/normwheel.js';
 	 			$firstHiddenSlide
 					.addClass(addClass)
 					.removeClass(removeClass);
-		 			
-		 		new TweenLite().to($firstHiddenSlide, anotherDuration ? anotherDuration : 0.5, {
+				
+	 			if (addClass === 'slide_hidden')
+	 				setTimeout(() => {
+				 		TweenLite.to($firstHiddenSlide, 0, {
+				 			opacity: 0 
+				 		});
+	 				}, 510);
+			 	else
+		 			TweenLite.to($firstHiddenSlide, 0, {
+			 			opacity: 1
+				 	});
+
+	 			TweenLite.to($firstHiddenSlide, anotherDuration ? anotherDuration : 0.5, {
 		 			left: leftTransition 
 		 		});
+	 				
 	 		}
 	 		if (_state.isReverse) {
 		 		setTimeout(() => {
@@ -163,12 +175,11 @@ import NormalizeWheel from './lib/normwheel.js';
 					.addClass('slide_shown')
 					.removeClass('slide_hidden');
 
-				track.tl.add(
-					new TweenLite($cloneSlide, 0, {
-						left: 0
-					})
-				);
-
+				TweenLite.to($cloneSlide.find('.slider_slide'), 0, {
+					left: 0,
+					opacity: 1
+				});
+				
 				track.width += imageWidth;
 				track.$track.css('width', track.width);
 			
@@ -198,7 +209,7 @@ import NormalizeWheel from './lib/normwheel.js';
 				track.currentSlide += 1;
 
 				track.tl.add( 
-					new TweenLite().to(track.$track, 1, {
+					TweenLite.to(track.$track, 1, {
 						left: track.currentPosition
 					})
 				);
@@ -220,12 +231,16 @@ import NormalizeWheel from './lib/normwheel.js';
 				if (track.currentPosition > 0) {
 					track.currentPosition = 0;
 					track.currentSlide = 0;
+					_changeTrack(track, track.currentSlide, true);
+					TweenLite.to($track, 1, {
+						left: track.currentPosition
+					})
 					return false;
 				}
 				
 				_changeTrack(track, track.currentSlide, true)
 				track.tl.add( 
-					new TweenLite().to($track, 1, {
+					TweenLite.to($track, 1, {
 						left: track.currentPosition
 					})
 				);		
@@ -259,7 +274,7 @@ import NormalizeWheel from './lib/normwheel.js';
 							track.additionalTransition -= 0.25;
 							track.currentSlide -= 1;
 							track.tl.add( 
-								new TweenLite().to($track, 0, {
+								TweenLite.to($track, 0, {
 									width: track.width
 								})
 							);
@@ -268,7 +283,7 @@ import NormalizeWheel from './lib/normwheel.js';
 						const noramalPosition = Math.ceil(track.currentPosition / imageWidth) * imageWidth;
 						
 						track.tl.add( 
-							new TweenLite().to($track, 0, {
+							TweenLite.to($track, 0, {
 								left: noramalPosition
 							})
 						);	
