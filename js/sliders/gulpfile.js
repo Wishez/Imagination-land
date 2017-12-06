@@ -209,7 +209,7 @@ gulp.task('watch', () => {
 
 
 gulp.task('fastdevelop', ['html', 'fastjs', 'faststyles', 'fastimages', 'serve']); 
-gulp.task('production', ['source', 'styles', 'images']);
+gulp.task('production', ['source', 'styles']);
 
 
 gulp.task('default', ['fastdevelop',  'watch']);  // development
