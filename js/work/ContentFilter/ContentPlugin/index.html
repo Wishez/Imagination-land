@@ -3,36 +3,30 @@
 <head>
 	<meta charset="utf-8">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="./css/main.css">
+	<link rel="stylesheet" href="./main.css">
 </head>
 <body>
 	<div id="alert" class='allert'></div>
-
 	<!-- begin container -->
 	<div class="container">
-		<h3 class='heading'>Which a noise do you want to drown out?</h3>
-		<!-- begin workPlace -->
-		<div class="workPlace">
-			<!-- begin addWordForm -->
-			<form id="addWordForm"
-				method='post'>
-				<!-- begin input-group -->
-				<div class="input-group">
-					<input name='word' 
-						id='addWordField'
-						class='controller 
-						form-control' type='text' maxlength="100" minlength="1" placeholder="Type word" />
-				</div>
-				<!-- end input-group -->
-			</form>
-			<!-- end addWordForm -->
-			<!-- begin wordsList -->
-			<ul id='wordsList' class="wordsList list-unstyled">
-				
-			</ul>
-			<!-- end wordsList -->
-		</div>
-		<!-- end workPlace -->
+		<!-- begin addWordForm -->
+		<form id="addWordForm"
+			method='post'>
+			<!-- begin input-group -->
+			<div class="input-group">
+				<input name='word' 
+					id='addWordField'
+					class='controller 
+					form-control' type='text' maxlength="100" minlength="1" placeholder="Type word" />
+			</div>
+			<!-- end input-group -->
+		</form>
+		<!-- end addWordForm -->
+		<!-- begin wordsList -->
+		<ul id='wordsList' class="wordsList list-unstyled">
+			
+		</ul>
+		<!-- end wordsList -->
 	</div>
 	<!-- end container -->
 	<!-- begin controller -->
@@ -179,7 +173,7 @@
 		<!-- end main-->
 	</div>
 	<!-- END container -->
-	<script src="./js/main.js"></script>
+	<script src="./main.js"></script>
 </body>
 
 </html>

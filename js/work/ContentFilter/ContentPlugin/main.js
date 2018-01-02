@@ -3,8 +3,6 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 (function (factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Регистрирует как анонимный модуль.
@@ -34,20 +32,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	var _createMessage = function _createMessage(word) {
 		return 'About ' + word + '. Go next!';
 	};
-	var _getWords = function _getWords() {
-		return chrome.words;
-	}; //JSON.parse( localStorage.getItem( _filteredWords ) );
-	/*
-  * @param {Array} words - The array words are filtering the page
-  */
-	var _setWords = function _setWords(words) {
-		chrome.words = words;
-		console.log(_getWords());
-		// localStorage.setItem( _filteredWords,  JSON.stringify( words ));
-	};
-	var _low = function _low(word) {
-		return word.toLowerCase();
-	};
+
 	/*
   *
   */
@@ -55,21 +40,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 		var i = arguments[2];
 
+
 		// if (!node.tagName)
 		// 	node.textContent = message;
 		// else
 		// 	node.innerHTML = message;
-		node.remove();
-	};
 
-	var _pushWordToList = function _pushWordToList($list, word) {
-		console.log('Will push:', '<li class=\'word\'>' + word + '<span class=\'removeWord glyphicon glyphicon-remove\'></span></li>');
-		$list.append('<li class=\'word\'>' + word + '<span class=\'removeWord glyphicon glyphicon-remove\'></span></li>');
-	};
-	var _showWords = function _showWords($wordsList) {
-		_getWords().forEach(function (word) {
-			_pushWordToList($wordsList, word);
-		});
+		// if (node.style)
+		// 	node.style.border = '3px solid #471B13';
+		node.remove();
 	};
 
 	var _screwed = function _screwed(selector, callback) {
@@ -79,7 +58,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	};
 
 	var _findAndRemoveImage = function _findAndRemoveImage(node) {
-		if (!node || node.tagName === 'BODY') return false;
+		var reqursion = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+		// if ( !node || /body|script/ig.test(node.tagName)) return false;
+		if (!node || /body/ig.test(node.tagName)) return false;
 		// Блокирует поиск изображений, если узел с элемтом изображением предком 
 		// был найден внутри него.
 		var parent = node.parentNode;
@@ -87,9 +69,22 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		if (!parent) return false;
 
 		var text = parent.innerHTML;
+		var textLength = text.length;
+		var max = 14000;
+		var maxReqursion = 2;
 
-		if (text && text.length > 5000) return false;else if (_regexp.test(text)) {
-			parent.remove();
+		if (text && textLength > max) {
+			return false;
+		} else if (_regexp.test(text)) {
+			console.log('Will remove:', parent);
+			// parent.remove();
+
+			_showBlock(node, '<img src="http://i2.kym-cdn.com/photos/images/newsfeed/000/406/325/b31.jpg" style="width:100%;max-width:190px;margin: 0 auto;" />');
+			if (reqursion < maxReqursion) {
+				_findAndRemoveImage(parent.parentNode, reqursion + 1);
+			}
+		} else {
+
 			_findAndRemoveImage(parent.parentNode);
 		}
 
@@ -101,63 +96,58 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   * 
   */
 	var DocumentFilter = function DocumentFilter(props) {
-		// Create array of words in localStorage.
-		if (!_getWords()) _setWords([]);
+
+		this.uuid = localStorage.getItem('user_uuid');
+		if (!this.uuid) return false;
 		this.root = props.root;
+		console.log(props.root, this.root, 'inited root');
 		// The base value of blocking content by matched words in a node.
 		this.baseLength = props.baseLength ? props.baseLength : 0;
-		this.wordsListId = props.listWords ? props.listWords : '#wordsList';
-		this.addWordFieldId = props.addWordField ? props.addWordField : '#addWordField';
 		this.foundWords = 0;
 		this.domain = window.origin;
+		this.words = [];
+		this.userDataUrl = '' + props.backendServerUrl + props.userWordsUrl + this.uuid + '/';
+		this.isWorking = false;
+		this.requestWords();
 	};
 
-	DocumentFilter.prototype.pushWord = function (word) {
-		_assert(!_insistenceOf(word, 'string'), 'First argument must be a string.', TypeError);
+	DocumentFilter.prototype.requestWords = function () {
+		var _this = this;
 
-		var oldWords = _getWords();
-		var lowerWord = _low(word);
-		console.log('Word in push:', word);
-		_assert(oldWords.some(function (arrWord) {
-			return _low(arrWord) === lowerWord;
-		}), 'Threre is the same word word in array');
-
-		_setWords([].concat(_toConsumableArray(oldWords), [word]));
-	};
-
-	DocumentFilter.prototype.removeWord = function (word) {
-		_assert(!_insistenceOf(word, 'string'), 'First argument must be a string.', TypeError);
-
-		var words = _getWords();
-		var index = words.indexOf(word);
-
-		_setWords([].concat(_toConsumableArray(words.slice(0, index)), _toConsumableArray(words.slice(index + 1))));
+		return fetch(this.userDataUrl).then(function (resp) {
+			return resp.json();
+		}).then(function (data) {
+			_this.words = data.words;
+			console.log('start parsing');
+			_this.init();
+		}).catch(function (err) {
+			console.log(err);
+		});
 	};
 
 	DocumentFilter.prototype.filterTextInNode = function (node) {
 		var baseLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
+		// if (/script/ig.test(node.tagName)) return false;
+
 		var text = node.textContent;
-
 		// Count words.
-
-
-		if (text) _getWords().forEach(function (word) {
+		if (text) this.words.forEach(function (word) {
 			var regexp = new RegExp(word, 'gi');
-
 			var matchedWords = text.match(regexp);
 			var amountWords = matchedWords ? matchedWords.length : false;
 
 			if (amountWords && amountWords >= baseLength) {
-				// _showBlock( node, '_createMessage(word)' );
-				_showBlock(node, '');
 				_findAndRemoveImage(node);
 
+				// node.remove();
+				_showBlock(node, '<img src="http://i2.kym-cdn.com/photos/images/newsfeed/000/406/325/b31.jpg" style="width:100%;max-width:190px;margin: 0 auto;" />');
 				// Exit
 				return false;
 			}
 		}); // end this.words.forEach
 		// Exit
+		this.isWorking = false;
 		return false;
 	};
 	/*
@@ -165,71 +155,96 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   * 
   */
 	DocumentFilter.prototype.filterDOM = function (root) {
-		var children = !root ? this.root.childNodes : root.childNodes;
+		var _this2 = this;
 
+		var isChildrenInNode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+		this.isWorking = true;
+
+		var children = !root ? this.root.childNodes : root.childNodes;
 		var length = children.length;
 
-		if (length > 1) {
+		if (isChildrenInNode || length > 1) {
+			var _loop = function _loop(i) {
+				var nextNode = children[i];
+				var nextNodeChildren = nextNode.childNodes;
+				var nextNodeChildrenLength = nextNodeChildren.length;
+				var isManyChildren = nextNodeChildrenLength > 1;
+
+				setTimeout(function () {
+					if (isManyChildren) {
+						_this2.filterDOM(nextNode, isManyChildren);
+					} else if (nextNodeChildrenLength === 1) {
+						var nextNodeChild = nextNodeChildren[0];
+						var nextNodeChildChildren = nextNodeChild.childNodes;
+						var nextNodeChildChildrenLength = nextNodeChildChildren.length;
+						var isNextNodeChildHasManyChildren = nextNodeChildChildrenLength > 1;
+
+						if (isNextNodeChildHasManyChildren) {
+							_this2.filterDOM(nextNodeChild, isNextNodeChildHasManyChildren);
+						} else {
+							_this2.filterTextInNode(nextNodeChild);
+						}
+					}
+				}, 50); // end setTimeout
+			};
+
 			// Go throught children nodes, but it isn't a place for searching bad content.
 			for (var i = children.length - 1; i >= 0; i--) {
-				if (children[i].childNodes.length > 1) {
-					this.filterDOM(children[i]);
-				} else {
-					this.filterTextInNode(children[i], 0, 'Iteration');
-				}
-			}
-		} else if (length === 0) {
-			// Nothing to filter.
-			return false;
-		} else {
+				_loop(i);
+			} // end for 
+		} else if (length === 1) {
 			// If found one node in node, then a text will be
-			this.filterTextInNode(children[0], 0, 'Single');
-
-			return false;
+			setTimeout(function () {
+				_this2.filterTextInNode(children[0], 0, 'Single');
+			}, 50);
 		}
+		this.isWorking = false;
+
+		return false;
 	};
 
-	DocumentFilter.prototype.addWordEvent = function (context, $wordsList, $addWordField) {
-		return function (e) {
-			e.preventDefault();
-			var word = $addWordField.val();
-			console.log(word);
-			$addWordField.val('');
-			context.pushWord(word);
-
-			// Debug
-			_pushWordToList($wordsList, word);
-			context.filterDOM();
-		};
-	};
-
-	DocumentFilter.prototype.removeWordEvent = function (context) {
-		return function (e) {
-			var $word = $(this).parent();
-
-			context.removeWord($word.text());
-			$word.remove();
-		};
-	};
-
-	DocumentFilter.prototype.init = function (domainName) {
+	DocumentFilter.prototype.lazyFilter = function () {
+		var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 2000;
 
 		var that = this;
+
+		return new Promise(function (resolve) {
+			setTimeout(function () {
+				resolve(that);
+			}, time);
+		});
+	};
+
+	DocumentFilter.prototype.init = function () {
+		var that = this;
+
 		$(function () {
-			var $wordsList = $(that.wordsListId);
-			_showWords($wordsList);
-			console.log('Set', domainName);
-			$('#domainName').html(domainName);
-			var $addWordField = $(that.addWordFieldId);
-
-			var _addWord = that.addWordEvent(that, $wordsList, $addWordField);
-			var _removeWord = that.removeWordEvent(that);
-
 			that.filterDOM();
-			// Add a word to the words' array.
-			_screwed('#addWordForm', _addWord, 'submit');
-			// Remove a word from the words' array.
-			_screwed('.removeWord', _removeWord);
+
+			_screwed('a, button', function () {
+				if (!that.isWorking) {
+					that.lazyFilter(6000).then(function (gogo) {
+						gogo.filterDOM();
+					}).catch(function (err) {
+						console.log('Not gogo.', err);
+					});
+				}
+			});
+
+			_screwed('body', function (e) {
+				var key = e.key.toUpperCase();
+
+				if (key === 'ENTER' || key === 'CONTROL') {
+					if (!that.isWorking) {
+						that.lazyFilter(4000).then(function (gogo) {
+							gogo.filterDOM();
+						}).catch(function (err) {
+							console.log('Not gogo.', err);
+						});
+					}
+				}
+			}, 'keydown');
 		});
 	};
 
@@ -248,10 +263,10 @@ var _DocumentFilter2 = _interopRequireDefault(_DocumentFilter);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var filter = new _DocumentFilter2.default({
-	root: document.body
+	root: document.body, //getElementById('page-manager'),
+	backendServerUrl: 'https://filipp-zhuravlev.ru',
+	userWordsUrl: '/words/api/document_data_user/'
 });
-
-filter.init(document.domain, window);
 
 },{"./libs/DocumentFilter.js":1,"jquery":3}],3:[function(require,module,exports){
 (function (global){
