@@ -24,7 +24,10 @@ const gulp = require('gulp'),
       envify = require('envify'),
       manifest = require('gulp-manifest'),
       watchify = require('watchify'),
-      jshint = require('gulp-jshint');
+      jshint = require('gulp-jshint'),
+      plumber = require('gulp-plumber'),
+      chalk = require('chalk');
+
 
 
 
@@ -60,7 +63,29 @@ gulp.task('lintsource', () => {
     }))
     .pipe(jshint.reporter('default'));
 });
+function map_error(err) {
+  if (err.fileName) {
+    // regular error
+    gutil.log(chalk.red(err.name)
+      + ': '
+      + chalk.yellow(err.fileName.replace(__dirname + '/src/js/', ''))
+      + ': '
+      + 'Line '
+      + chalk.magenta(err.lineNumber)
+      + ' & '
+      + 'Column '
+      + chalk.magenta(err.columnNumber || err.column)
+      + ': '
+      + chalk.blue(err.description))
+  } else {
+    // browserify error..
+    gutil.log(chalk.red(err.name)
+      + ': '
+      + chalk.yellow(err.message))
+  }
 
+  this.end()
+}
 /* ----------------- */
 /* SCRIPTS
 /* ----------------- */
@@ -73,7 +98,8 @@ const babelPlugins = [
        'transform-decorators-legacy',
        'transform-object-rest-spread'
 ];
-const scriptName = 'background';
+
+const scriptName = 'main';
 gulp.task('fastjs', () => {
   process.env.NODE_ENV = 'development';
 
@@ -89,6 +115,13 @@ gulp.task('fastjs', () => {
       sourceMapsAbsolute: true
     })
     .bundle()
+    .on('error', function(err)
+      {
+          console.log(err.message);
+          browserSync.notify(err.message, 3000);
+          this.emit('end');
+      })
+    .pipe(plumber())//{errorHandler: map_error}
     .pipe(source(`${scriptName}.js`))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
@@ -210,6 +243,11 @@ gulp.task('watch', () => {
   gulp.watch(settings.src + '/locales/**/*.*', ['locales']);
   gulp.watch(settings.src + '/json/*.json', ['json']);
   gulp.watch(settings.src + '/*.html',  ['html']).on('change', browserSync.reload);
+});
+gulp.task('watchjs', () => {
+  gulp.watch(settings.src + '/js/**/*.js', ['fastjs']).on('change', browserSync.reload);
+  gulp.watch(settings.src + '/locales/**/*.*', ['locales']);
+  gulp.watch(settings.src + '/json/*.json', ['json']);
 });
 
 
