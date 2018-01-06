@@ -1,0 +1,224 @@
+@import '_conf.sass'
+// @import '_background.sass'
+@import '_position.sass'
+@import '_display.sass'
+@import '_grid.sass'
+@import '_border.sass'
+@import '_margin.sass'
+@import '_font.sass'
+@import '_transition.sass'
+@import '_blocks.sass'
+@import '_color.sass'
+
+html, body
+	-webkit-overflow-scrolling: touch
+	overflow-x: hidden
+	height: 100%
+
+body
+	& * 
+		margin: 0	
+		border: 0
+		padding: 0
+		// outline-color: #6F95B5
+		&, &::after, &::before
+			box-sizing: border-box
+	background-color: $white
+	color: $darkBlue
+	font-size: 	#{$baseFontSize}px
+	line-height: 1.4
+	font-family: 'Open Sans', sans-serif
+	hyphens: auto
+	-webkit-hyphenate-before: 2
+	-webkit-hyphenate-after: 3
+	hyphenate-lines: 3
+	text-rendering: optimizeLegibility
+	font-kerning: normal
+	font-variant-ligatures: common-ligatures contextual
+	font-feauture-settings: "kern", "ling", "clig", "calt"
+	font-size-adjust: 100%
+
+
+h1
+	font-size: (38em / 15)
+	font-weight: 800
+	white-space: nowrap
+h2, .team__ratio
+	font-size: (20em / 15)
+h3	
+	font-size: (16em / 15)
+	line-height: 1.4
+h2, h3
+	font-weight: bold
+	word-break: break-word
+$i: !important
+.text-center
+	text-align: center
+.text-right
+	text-align: right
+.container
+	@include breakpoint($sm)
+		width: 90% $i
+// Start Header
+.header
+	padding: .5em 0
+	box-shadow: 0 0 20px $shadow
+	&__title
+		&_color-green
+			color: $green
+
+
+// End Header
+// Start Main
+.bold
+	font-weight: bold
+.main
+	box-shadow: 0 0 20px 5px $shadow
+	padding: 1em 1.5em 0
+	margin: 4em 0 5em
+	border-radius: 15px
+	overflow-x: auto
+	-webkit-overflow-scrolling: scroll
+	@include breakpoint(max-width 1200px)
+		padding-left: 0
+	// overflow: hidden
+.bet
+	width: 100%
+	border-bottom: 1px solid lighten($lightGray, 15%)
+	background: url('../img/cup.png') no-repeat center 20px
+	background-size: 164px 153px 
+	padding: 2em 0 3em
+	// margin: 0 1.5em
+	@include breakpoint($xs)
+		font-size: 1.5em
+	@include breakpoint(max-width 1200px)
+		min-width: (1115em / 15)
+	@include breakpoint($xxs)
+		font-size: 1em
+	&:last-child
+		border: 0
+
+
+.team
+	width: 50%
+	// min-height: (100em / 15)
+	justify-content: space-between
+	align-items: flex-start
+	padding: 0 1.5em
+	margin-top: 1em
+	&_left
+		padding-right: 1em
+		position: relative
+		&::after
+			content: "-"
+			color: $green
+			font-size: (20em / 15)
+			right: (-3em / 20)
+			font-weight: bold
+			top: (4em / 20)
+			position: absolute
+	&_right
+		padding-left: 1em
+	&__logo
+		width: (65em / 15)
+	&__title
+		max-width: (90em / 16)
+		&_left
+			margin-left: .5em
+		&_right
+			margin-right: .5em
+	&__betResource
+		width: (120em / 15)
+		position: relative
+		&_left
+			// left: .35em
+		&_right
+			// right: .35em
+	&__ratio
+		padding: (5em / 20)
+		color: $green
+		border: 2px solid
+		border-radius: (5em / 20) 	
+
+
+
+.parent
+	display: flex
+	flex-flow: row wrap
+.child
+	flex: 1 0 25%
+.betMeta
+	width: span(12)
+	&__title
+	&__date
+		color: $lightGray
+		font-weight: bold
+		margin-top: .5em
+		display: block
+		
+.teamBet
+	width: span(4)
+	&_left
+		// margin-left: 1em
+	&_right
+		// margin-right: 1em
+	&__info
+		display: block
+		color: $lightGray
+		font-size: (13em / 15)
+		margin-top: .5em
+	&__refer
+		background-color: $green
+		color: darken($white, 5%)
+		height: (40em / 15)
+		width: (143em / 15)
+		padding: (6em / 15) (12em / 15)
+		transition: .3s ease
+		font-size: 1em
+		@include breakpoint($sm)
+			border-radius: 10px
+		&:hover
+			background-color: darken($green, 5%)
+			color: $white
+			box-shadow: 0 0px 10px $shadow 
+		&:active
+			transform: translate(0, 5%)
+			box-shadow: 0 0px 5px $shadow 
+		&:focus
+			color: $white
+
+// End Main
+// Start Footer
+.footer
+	$lightenDarkBlue: lighten($darkBlue, 10%)
+	background-color: $lightenDarkBlue
+	background: linear-gradient(to right, $lightenDarkBlue 5%,  #2a5f53 35%, #2a5f53 65%, $lightenDarkBlue 100%)
+	color: $white
+	padding: 2em 0
+	&__title
+		font-size: (53em / 15)
+	&__copyright
+		color: $lightGray
+		min-width: span(12)
+		padding-top: 1em
+		margin-top: 2em
+		border-top: 1px solid rgba(lighten($lightGray, 10%), .2)
+		font-weight: 300
+.imageContainer
+	&_name-dota
+		max-width: 	(100em / 15)	
+		margin: 1.6em (85em / 16) 0 0 
+
+	&_name-csgo
+		max-width: (79em / 15)
+		margin: .9em 1.5em 0 0
+	&__image
+		background: no-repeat center
+		background-size: cover
+		&_name-dota
+			background-image: url('./../img/dota.png')
+			padding-bottom: (21% / 100 * 100)
+		&_name-csgo
+			background-image: url('./../img/csgo.png')
+			padding-bottom: (34% / 79 * 100)
+// End Footer
