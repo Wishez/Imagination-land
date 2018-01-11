@@ -16,11 +16,13 @@ html, body
 	height: 100%
 
 body
-	& * 
+	&, & * 
 		margin: 0	
 		border: 0
 		padding: 0
-		// outline-color: #6F95B5
+		text-decoration: none
+		*:hover
+			text-decoration: none
 		&, &::after, &::before
 			box-sizing: border-box
 	background-color: $white
@@ -67,7 +69,9 @@ $i: !important
 		&_color-green
 			color: $green
 
-
+.team
+	&, & * 
+		display: inline-block 
 // End Header
 // Start Main
 .bold
@@ -98,7 +102,28 @@ $i: !important
 	&:last-child
 		border: 0
 
-
+.btn 
+	border-radius: 5px;
+	padding: .45em 1em;
+		
+.text-center 
+	text-align: center;
+		
+.container 
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+	@include breakpoint(560px)
+	    max-width: 540px
+	@include breakpoint(769px)
+		max-width: 720px
+	@include breakpoint(992px)	
+	    max-width: 960px;
+	@include breakpoint(1200px)		
+	    max-width: 1140px;
+		 
 .team
 	width: 50%
 	// min-height: (100em / 15)
@@ -107,15 +132,16 @@ $i: !important
 	padding: 0 1.5em
 	margin-top: 1em
 	&_left
-		padding-right: 1em
+		@include breakpoint(max-width 1199px)
+			padding: 0 1em 0 3.5em
 		position: relative
 		&::after
 			content: "-"
 			color: $green
 			font-size: (20em / 15)
-			right: (-3em / 20)
+			right: 0
 			font-weight: bold
-			top: (4em / 20)
+			top: (15em / 20)
 			position: absolute
 	&_right
 		padding-left: 1em
@@ -157,7 +183,7 @@ $i: !important
 		display: block
 		
 .teamBet
-	width: span(4)
+	// width: span(4)
 	&_left
 		// margin-left: 1em
 	&_right
